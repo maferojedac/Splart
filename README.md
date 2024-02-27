@@ -1,1 +1,3 @@
 # Splart
+
+Integrantes del equipo:
