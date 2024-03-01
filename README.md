@@ -5,3 +5,4 @@ Integrantes del equipo:
 2. P. Carol González Negrete (0223300) - Technical Artist, Developer
 3. Jesús Mario Ciprián Sánchez (0232134) - Developer, 2D artist
 4. Santiago Fernández Barrón (0208735) - 2D artist, 3D artist
+5. Javier André Soto Hernández (0237568) - Game designer, developer, 2D artist, 3D artist
