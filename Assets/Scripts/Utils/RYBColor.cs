@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Windows;
 
-public class RYBColor
+public struct RYBColor
 {
-    public float Red;
-    public float Yellow;
-    public float Blue;
-    public float Alpha;
+    public float _red;
+    public float _yellow;
+    public float _blue;
+    public float _alpha;
 
     // Borrowing code and palette from https://github.com/ProfJski/ArtColors/
 
@@ -39,20 +39,19 @@ public class RYBColor
         Vector3 C;
         C = ((C0 * (1.0f - input.b)) + (C1 * input.b));
 
-        // C = Saturate(C, 0.5f);
-        Red = C.x;
-        Yellow = C.y;
-        Blue = C.z;
-        Alpha = input.a;
+        _red = C.x;
+        _yellow = C.y;
+        _blue = C.z;
+        _alpha = input.a;
     }
 
-    public RYBColor(float Red, float Yellow, float Blue, float Alpha)
+    public RYBColor(float p_red, float p_yellow, float p_blue, float p_alpha)
     {
         // Key = 0;
-        this.Red = Red;
-        this.Yellow = Yellow;
-        this.Blue = Blue;
-        this.Alpha = Alpha;
+        this._red = p_red;
+        this._yellow = p_yellow;
+        this._blue = p_blue;
+        this._alpha = p_alpha;
     }
 
     public Color toRGB()
@@ -68,46 +67,19 @@ public class RYBColor
 
         // Trilinear interpolation for color
         Vector3 C00, C01, C10, C11;
-        C00 = ((CG000 * (1.0f - Red)) + (CG100 * Red));
-        C01 = ((CG001 * (1.0f - Red)) + (CG101 * Red));
-        C10 = ((CG010 * (1.0f - Red)) + (CG110 * Red));
-        C11 = ((CG011 * (1.0f - Red)) + (CG111 * Red));
+        C00 = ((CG000 * (1.0f - _red)) + (CG100 * _red));
+        C01 = ((CG001 * (1.0f - _red)) + (CG101 * _red));
+        C10 = ((CG010 * (1.0f - _red)) + (CG110 * _red));
+        C11 = ((CG011 * (1.0f - _red)) + (CG111 * _red));
 
         Vector3 C0, C1;
-        C0 = ((C00 * (1.0f - Yellow)) + (C10 * Yellow));
-        C1 = ((C01 * (1.0f - Yellow)) + (C11 * Yellow));
+        C0 = ((C00 * (1.0f - _yellow)) + (C10 * _yellow));
+        C1 = ((C01 * (1.0f - _yellow)) + (C11 * _yellow));
         Vector3 C;
-        C = ((C0 * (1.0f - Blue)) + (C1 * Blue));
+        C = ((C0 * (1.0f - _blue)) + (C1 * _blue));
 
-        Color output = new Color(C.x, C.y, C.z, Alpha);
+        Color output = new Color(C.x, C.y, C.z, _alpha);
 
-        return output;
-    }
-
-    private Vector3 Saturate(Vector3 color, float sat)
-    {
-        if (Mathf.Abs(sat) < 0.004) { return color; }  //Immediately return when sat is zero or so small no difference will result (less than 1/255)
-        if ((color.x == 0)&& (color.y == 0)&& (color.z == 0)) { return color; }  //Prevents division by zero trying to saturate black
-
-        Vector3 clerp = color;
-        Vector3 output = clerp;
-
-        if (sat > 0.0)
-        {
-            Vector3 maxsat;
-            float mx = Mathf.Max(color.x, color.y, color.z);
-            maxsat = clerp * (1.0f / mx);
-            output += maxsat * sat;
-        }
-        if (sat < 0.0)
-        {
-            Vector3 grayc;
-            float avg = (color.x + color.y + color.z);
-            avg /= (3.0f * 255.0f);
-            grayc =new Vector3 (avg,avg,avg);
-            output += grayc * (-1.0f * sat);
-        }
-        
         return output;
     }
 }
