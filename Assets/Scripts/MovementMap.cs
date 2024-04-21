@@ -7,25 +7,25 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Custom/MovementMap")]
 public class MovementMap : ScriptableObject
 {
-    public List<Transform> _nodes = new List<Transform>();
+    public List<MapNode> _nodes = new List<MapNode>();
 
     private void OnEnable()
     {
         _nodes.Clear();
     }
 
-    public void Register(Transform transform)
+    public void Register(Vector3 p_position, bool p_hasWall)
     {
-        _nodes.Add(transform);
+        _nodes.Add(new MapNode(_nodes.Count, p_position, p_hasWall));
     }
 
-    public List<Vector3> Path(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
+    public List<MapNode> Path(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
-        List<Vector3> pathNodes = new List<Vector3>();
-        foreach (Transform node in _nodes)
+        List<MapNode> pathNodes = new List<MapNode>();
+        foreach (MapNode node in _nodes)
         {
             if (nodeInArea(p_atDirection, p_FOVdegrees, p_fromPosition, node))
-                pathNodes.Add(node.position);
+                pathNodes.Add(node);
         }
 
         if(pathNodes.Count > 1)
@@ -33,11 +33,11 @@ public class MovementMap : ScriptableObject
             {
                 for (int j = 0; j < pathNodes.Count - i - 1; j++)
                 {
-                    float DistanceCurrent = (pathNodes[j] - p_fromPosition).magnitude;
-                    float DistanceNext = (pathNodes[j + 1] - p_fromPosition).magnitude;
+                    float DistanceCurrent = (pathNodes[j].Position - p_fromPosition).magnitude;
+                    float DistanceNext = (pathNodes[j + 1].Position - p_fromPosition).magnitude;
                     if (DistanceCurrent > DistanceNext)
                     {
-                        Vector3 temp = pathNodes[j];
+                        MapNode temp = pathNodes[j];
                         pathNodes[j] = pathNodes[j + 1];
                         pathNodes[j + 1] = temp;
                     }
@@ -47,14 +47,14 @@ public class MovementMap : ScriptableObject
         return pathNodes;
     }
 
-    public Vector3 ClosestInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
+    public MapNode ClosestInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
-        Vector3 closestNode = new Vector3(float.MaxValue, float.MaxValue, float.MaxValue);
-        foreach (Transform node in _nodes)
+        MapNode closestNode = new MapNode(0, new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), false);
+        foreach (MapNode node in _nodes)
         {
             if (nodeInArea(p_atDirection, p_FOVdegrees, p_fromPosition, node))
-                if ((node.position - p_fromPosition).magnitude < (closestNode - p_fromPosition).magnitude)
-                    closestNode = (node.position);
+                if ((node.Position - p_fromPosition).magnitude < (closestNode.Position - p_fromPosition).magnitude)
+                    closestNode = (node);
         }
 
         return closestNode;
@@ -62,7 +62,7 @@ public class MovementMap : ScriptableObject
 
     public bool Any(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
-        foreach (Transform node in _nodes)
+        foreach (MapNode node in _nodes)
         {
             if (nodeInArea(p_atDirection, p_FOVdegrees, p_fromPosition, node))
                 return true;
@@ -70,11 +70,11 @@ public class MovementMap : ScriptableObject
         return false;
     }
 
-    private bool nodeInArea(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition, Transform p_node)
+    private bool nodeInArea(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition, MapNode p_node)
     {
         // Ignore vertical offset in nodes
-        p_fromPosition.y = p_node.position.y;
-        Quaternion transformAngle = Quaternion.FromToRotation(p_atDirection * Vector3.forward, (p_node.position - p_fromPosition).normalized);
+        p_fromPosition.y = p_node.Position.y;
+        Quaternion transformAngle = Quaternion.FromToRotation(p_atDirection * Vector3.forward, (p_node.Position - p_fromPosition).normalized);
         float diffAngle = Quaternion.Angle(Quaternion.Euler(0, 0, 0), transformAngle);
         if (diffAngle < p_FOVdegrees)
             return true;

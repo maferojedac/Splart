@@ -71,7 +71,12 @@ public class ArrayColor
             }
         }
         Max = Mathf.Max(Yellow, Blue, Red);
-        float WhiteBalance = White * 0.25f;
+        float WhiteBalance = White * (1f / _colors.Count);
+        if(Yellow == Red && Red == Blue)
+            if (Red != 0)
+                WhiteBalance = -0.5f;
+            else
+                Max = 1;
         RYBColor color = new RYBColor((Red * 1.0f / Max) + WhiteBalance, (Yellow * 1.0f / Max) + WhiteBalance, (Blue * 1.0f / Max) + WhiteBalance, 1.0f);
 
         return color.toRGB();
@@ -96,8 +101,25 @@ public class ArrayColor
             }
         }
         Max = Mathf.Max(Yellow, Blue, Red);
-        float WhiteBalance = White * 0.25f;
+        float WhiteBalance = White * (1f / p_colors.Length);
+        if (Yellow == Red && Red == Blue && Red != 0)
+            WhiteBalance = -0.5f;
         RYBColor color = new RYBColor((Red * 1.0f / Max) + WhiteBalance, (Yellow * 1.0f / Max) + WhiteBalance, (Blue * 1.0f / Max) + WhiteBalance, 1.0f);
+
+        return color.toRGB();
+    }
+
+    public static Color makeRGB(GameColor p_color)
+    {
+        RYBColor color;
+        switch (p_color)
+            {
+                case GameColor.Yellow:  color = new RYBColor(0f, 1f, 0f, 1f); break;
+                case GameColor.Blue:    color = new RYBColor(0f, 0f, 1f, 1f); ; break;
+                case GameColor.Red:     color = new RYBColor(1f, 0f, 0f, 1f); ; break;
+                case GameColor.White:   color = new RYBColor(1f, 1f, 1f, 1f); ; break;
+                default:                color = new RYBColor(0f, 0f, 0f, 1f); ; break;
+            }
 
         return color.toRGB();
     }
