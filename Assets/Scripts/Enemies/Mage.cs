@@ -2,13 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Splatter : MonoBehaviour, IEnemy
+public class Mage : MonoBehaviour, IEnemy
 {
 
+    [SerializeField] Material skyboxMaterial;
     private ArrayColor _colors = new();
-    public SpriteRenderer spriteRenderer;
 
-    [SerializeField] Splat splat;
+    public SpriteRenderer spriteRenderer;
 
     public void OnDie()
     {
@@ -18,11 +18,8 @@ public class Splatter : MonoBehaviour, IEnemy
 
     void IEnemy.OnReach()
     {
-        Color splat_color = spriteRenderer.color;
-        splat_color.a = 0.5f;
-        splat.ChangeColor(splat_color);
-        Instantiate(splat);
-        Debug.Log("Reached player! I should deal damage here!");
+        Debug.Log("Mage Reached");
+        RenderSettings.skybox = skyboxMaterial;
         Destroy(gameObject);
     }
 
@@ -52,8 +49,8 @@ public class Splatter : MonoBehaviour, IEnemy
         spriteRenderer.color = _colors.toRGB();
     }
 
-    void CreateSplat()
+    void Update()
     {
-
+        
     }
 }
