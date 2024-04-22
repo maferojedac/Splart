@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 4090103183048001661}
   - component: {fileID: 6693550080536186207}
   - component: {fileID: 4283331648329994947}
-  - component: {fileID: -1312349736579301831}
+  - component: {fileID: 7936525584745644178}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy_mage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ MonoBehaviour:
   PathDistraction: 20
   Cowardice: 0
   StayProtected: {x: 0, y: 0}
---- !u!114 &-1312349736579301831
+--- !u!114 &7936525584745644178
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -84,11 +84,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 5852056623976522717}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36e6a630fb99242468b02cfeac8e1c9b, type: 3}
+  m_Script: {fileID: 11500000, guid: 647f85aa850df0d4083f71a618d9569d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skyboxMaterial: {fileID: 2100000, guid: 1bb5c996b2f3c2f4795cdf0a9fe6af56, type: 2}
   spriteRenderer: {fileID: 6956683243872593262}
-  splat: {fileID: 7448143773666677230, guid: fd9c14ef50f872b41bdf099b85f376a2, type: 3}
 --- !u!1 &6295448740902358407
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +163,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 4fc962d847db57348bf0f39978e0bb79, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f64264f9206ab5342b77309af9026c44, type: 2}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
