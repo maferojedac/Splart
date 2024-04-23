@@ -43,10 +43,9 @@ public class Splatter : MonoBehaviour, IEnemy
             Destroy(gameObject);
         }
 
-        int[] ColorsProto = new int[5];
         for(int i = 0; i < Random.Range(1, 4);  i++)
         {
-            _colors.Add((GameColor)System.Enum.ToObject(typeof(GameColor), Random.Range(0, 3)));
+            _colors.Add((GameColor)System.Enum.ToObject(typeof(GameColor), Random.Range(0, 5)));
         }
 
         spriteRenderer.color = _colors.toRGB();

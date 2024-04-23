@@ -13,6 +13,9 @@ public class Player : MonoBehaviour, IPlayer
 
     public GameObject bullet;
 
+    public float CooldownTime;
+    private float _cooldown;
+
     void IPlayer.TakeDamage()
     {
 
@@ -27,15 +30,20 @@ public class Player : MonoBehaviour, IPlayer
     {
         if(Input.GetMouseButtonDown(0)){
             Vector3 pos = Input.mousePosition;
-            pos.z = 1f;
-            pos = Camera.main.ScreenToWorldPoint(pos);
+            if(pos.y > 125f && _cooldown < 0)
+            {
+                pos.z = 1f;
+                pos = Camera.main.ScreenToWorldPoint(pos);
 
-            Vector3 speed = (Camera.main.transform.position - pos).normalized * -BulletSpeed;
+                Vector3 speed = (Camera.main.transform.position - pos).normalized * -BulletSpeed;
 
-            GameObject generatedBullet = Instantiate(bullet, pos, Quaternion.identity);
-            generatedBullet.GetComponent<Bullet>()._color = _color;
-            generatedBullet.GetComponent<Rigidbody>().AddForce(speed, ForceMode.VelocityChange);
+                GameObject generatedBullet = Instantiate(bullet, pos, Quaternion.identity);
+                generatedBullet.GetComponent<Bullet>()._color = _color;
+                generatedBullet.GetComponent<Rigidbody>().AddForce(speed, ForceMode.VelocityChange);
+                _cooldown = CooldownTime;
+            }
         }
+        _cooldown -= Time.deltaTime;
     }
 
     public void SelectRed()

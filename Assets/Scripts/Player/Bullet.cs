@@ -12,8 +12,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        GameColor[] colors = { _color };
-        _spriteRenderer.color = ArrayColor.makeRGB(colors);
+        _spriteRenderer.color = ArrayColor.makeRGB(_color);
         _rigidBody = GetComponent<Rigidbody>();
     }
 
