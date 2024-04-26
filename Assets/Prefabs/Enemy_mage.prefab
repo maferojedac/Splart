@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 6693550080536186207}
   - component: {fileID: 4283331648329994947}
   - component: {fileID: 7936525584745644178}
+  - component: {fileID: 3805574525487255931}
   m_Layer: 0
   m_Name: Enemy_mage
   m_TagString: Untagged
@@ -72,9 +73,7 @@ MonoBehaviour:
   RunSpeed: 5
   TurnSpeed: 10
   Focus: 1
-  PathDistraction: 20
-  Cowardice: 0
-  StayProtected: {x: 0, y: 0}
+  PathDistraction: 10
 --- !u!114 &7936525584745644178
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -89,6 +88,33 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skyboxMaterial: {fileID: 2100000, guid: 1bb5c996b2f3c2f4795cdf0a9fe6af56, type: 2}
   spriteRenderer: {fileID: 6956683243872593262}
+--- !u!54 &3805574525487255931
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5852056623976522717}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &6295448740902358407
 GameObject:
   m_ObjectHideFlags: 0
@@ -163,7 +189,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: f64264f9206ab5342b77309af9026c44, type: 2}
+  m_Sprite: {fileID: 21300000, guid: f9fb6b0e320d5a94f9d4359fa4276a79, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

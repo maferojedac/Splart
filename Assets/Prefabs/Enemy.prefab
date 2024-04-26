@@ -157,7 +157,7 @@ MonoBehaviour:
   RunSpeed: 10
   TurnSpeed: 50
   Focus: 1
-  PathDistraction: 20
+  PathDistraction: 10
 --- !u!114 &-1312349736579301831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -171,6 +171,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 6956683243872593262}
+  splat: {fileID: 7448143773666677230, guid: fd9c14ef50f872b41bdf099b85f376a2, type: 3}
 --- !u!54 &5232177867496499023
 Rigidbody:
   m_ObjectHideFlags: 0
