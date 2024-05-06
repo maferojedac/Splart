@@ -18,10 +18,12 @@ public class Splatter : MonoBehaviour, IEnemy
 
     void IEnemy.OnReach()
     {
+
         Color splat_color = spriteRenderer.color;
         splat_color.a = 0.5f;
         splat.ChangeColor(splat_color);
-        Instantiate(splat);
+        Instantiate(splat, new Vector3( Random.Range(-1.12f, 1.09f), Random.Range(0.54f, 1.54f), -2.5f ), Quaternion.identity);
+
         Debug.Log("Reached player! I should deal damage here!");
         Destroy(gameObject);
     }
