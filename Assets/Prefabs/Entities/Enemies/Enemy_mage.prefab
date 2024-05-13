@@ -73,7 +73,7 @@ MonoBehaviour:
   RunSpeed: 5
   TurnSpeed: 10
   Focus: 1
-  PathDistraction: 10
+  PathDistraction: 20
 --- !u!114 &7936525584745644178
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,21 +5,32 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Custom/MovementMap")]
-public class MovementMap : ScriptableObject
+public class LevelData : ScriptableObject
 {
     public List<MapNode> _nodes = new List<MapNode>();
+    public GameObject _levelInstance;
 
     private void OnEnable()
     {
         _nodes.Clear();
     }
 
-    public void Register(Vector3 p_position, bool p_hasWall)
+    public void SetInstance(GameObject p_object)
+    {
+        _levelInstance = p_object;
+    }
+
+    public void SetPlayerPosition(Vector3 p_position)
+    {
+        _levelInstance.transform.position = -p_position;
+    }
+
+    public void RegisterNode(Vector3 p_position, bool p_hasWall)
     {
         _nodes.Add(new MapNode(_nodes.Count, p_position, p_hasWall));
     }
 
-    public List<MapNode> Path(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
+    public List<MapNode> MakePathFromNodes(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
         List<MapNode> pathNodes = new List<MapNode>();
         foreach (MapNode node in _nodes)
@@ -47,7 +58,7 @@ public class MovementMap : ScriptableObject
         return pathNodes;
     }
 
-    public MapNode ClosestInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
+    public MapNode ClosestNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
         MapNode closestNode = new MapNode(0, new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), false);
         foreach (MapNode node in _nodes)
@@ -60,7 +71,7 @@ public class MovementMap : ScriptableObject
         return closestNode;
     }
 
-    public bool Any(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
+    public bool AnyNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
         foreach (MapNode node in _nodes)
         {

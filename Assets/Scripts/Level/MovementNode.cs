@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class MovementNode : MonoBehaviour
 {
-    public MovementMap movementMap;
+    public LevelData movementMap;
     public bool hasWall;
     void Start()
     {
-        movementMap.Register(transform.position, hasWall);
+        movementMap.RegisterNode(transform.position, hasWall);
     }
 }

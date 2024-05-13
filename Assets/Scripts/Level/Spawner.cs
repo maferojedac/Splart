@@ -11,12 +11,8 @@ public class Spawner : MonoBehaviour
 
     private bool _generating;
 
-    // Componentes de GameObject
-    private MeshRenderer _meshRenderer;
-
     void Start()
     {
-        _meshRenderer = GetComponent<MeshRenderer>();
         _spawnTracker.Register(this);
     }
 
@@ -39,13 +35,6 @@ public class Spawner : MonoBehaviour
             _generating = false;
             _timer = 0f;
         }
-
-        // Animacion de spawner
-        transform.rotation *= Quaternion.Euler(0, 360f * Time.deltaTime, 0);
-        Vector3 hsvColor = Vector3.zero;
-        Color.RGBToHSV(_meshRenderer.material.color, out hsvColor.x, out hsvColor.y, out hsvColor.z);
-        hsvColor += new Vector3(1f * Time.deltaTime, 0, 0);
-        _meshRenderer.material.color = Color.HSVToRGB(hsvColor.x, hsvColor.y, hsvColor.z);
     }
 
     public bool Done()
