@@ -88,6 +88,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skyboxMaterial: {fileID: 2100000, guid: 1bb5c996b2f3c2f4795cdf0a9fe6af56, type: 2}
+  skyboxMaterialNormal: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   spriteRenderer: {fileID: 6956683243872593262}
 --- !u!1 &6295448740902358407
 GameObject:

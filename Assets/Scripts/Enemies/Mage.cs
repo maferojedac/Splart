@@ -6,6 +6,7 @@ public class Mage : MonoBehaviour, IEnemy
 {
 
     [SerializeField] Material skyboxMaterial;
+    [SerializeField] Material skyboxMaterialNormal;
     private ArrayColor _colors = new();
 
     public SpriteRenderer spriteRenderer;
@@ -13,13 +14,14 @@ public class Mage : MonoBehaviour, IEnemy
     public void OnDie()
     {
         Debug.Log("Player beat me!");
+        RenderSettings.skybox = skyboxMaterialNormal;
         Destroy(gameObject);
     }
 
     void IEnemy.OnReach()
     {
         Debug.Log("Mage Reached");
-        RenderSettings.skybox = skyboxMaterial;
+        RenderSettings.skybox = skyboxMaterialNormal;
         Destroy(gameObject);
     }
 
@@ -47,6 +49,7 @@ public class Mage : MonoBehaviour, IEnemy
         }
 
         spriteRenderer.color = _colors.toRGB();
+        RenderSettings.skybox = skyboxMaterial;
     }
 
     void Update()
