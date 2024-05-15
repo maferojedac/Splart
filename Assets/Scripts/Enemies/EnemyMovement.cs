@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class EnemyMovement : MonoBehaviour
 {
-    public MovementMap NodeMap; // Mapa de nodos
+    public LevelData NodeMap; // Mapa de nodos
 
     // Características que cambian el movimiento del enemigo
     [Header("Enemy traits")]
@@ -25,8 +25,10 @@ public class EnemyMovement : MonoBehaviour
         _target = GameObject.Find("Player");
         _rigidBody = GetComponent<Rigidbody>();
 
+        Entity.DisableCollision(GetComponent<Collider>());
+
         transform.rotation = Quaternion.LookRotation((_target.transform.position - transform.position).normalized);
-        _nodes = NodeMap.Path(transform.rotation, PathDistraction, transform.position);
+        _nodes = NodeMap.MakePathFromNodes(transform.rotation, PathDistraction, transform.position);
         _targetNode = bestNode();
     }
 

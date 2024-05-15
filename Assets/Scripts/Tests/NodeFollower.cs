@@ -5,7 +5,7 @@ using UnityEngine;
 public class NodeFollower : MonoBehaviour
 {
     string State;
-    public MovementMap mp;
+    public LevelData mp;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,7 +15,7 @@ public class NodeFollower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(mp.Any(transform.rotation, 5f, transform.position))
+        if(mp.AnyNodeInPath(transform.rotation, 5f, transform.position))
         {
             transform.position += transform.rotation * Vector3.forward;
         }

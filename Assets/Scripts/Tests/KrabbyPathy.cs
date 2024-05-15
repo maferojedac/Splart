@@ -5,7 +5,7 @@ using UnityEngine;
 public class KrabbyPathy : MonoBehaviour
 {
     public Transform flayer;
-    public MovementMap mp;
+    public LevelData mp;
     public float Degrees;
     public Material cholorer;
     public List<Vector3> noves;
