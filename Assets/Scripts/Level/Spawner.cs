@@ -26,7 +26,8 @@ public class Spawner : MonoBehaviour
             if (_timer > _spawnableQueue[0].Delay)
             {
                 _timer = 0f;
-                Instantiate(_spawnableQueue[0].SpawnObject, transform.position, Quaternion.identity);
+                GameObject enemy = Instantiate(_spawnableQueue[0].SpawnObject, transform.position, Quaternion.identity);
+                enemy.transform.parent = transform.parent;
                 _spawnableQueue.RemoveAt(0);
             }
         }

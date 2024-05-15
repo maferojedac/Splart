@@ -17,9 +17,12 @@ public class LevelManager : MonoBehaviour
 
     private GameObject _lastLevel;
 
+    private TraversalMenu _menu;
+
     void Start()
     {
         GameBase.SetActive(false);
+        _menu = GetComponent<TraversalMenu>();
     }
 
     public void StartGameSequence()
@@ -30,6 +33,8 @@ public class LevelManager : MonoBehaviour
     public void EndGameSequence()
     {
         GameBase.SetActive(false);
+        _lastLevel.SetActive(false);
+        _menu.GoToMain();
     }
 
     private IEnumerator StartGameSequenceCoroutine()

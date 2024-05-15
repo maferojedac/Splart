@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
@@ -9,65 +6,116 @@ public class Player : MonoBehaviour, IPlayer
 
     public float BulletSpeed;
 
-    private GameColor _color;
+    public LevelManager _levelManager;
 
-    public GameObject bullet;
+    public GameObject _bulletPrefab;
+    private GameObject _heldBullet;
+    private float _canRegretBullet;
+    private bool _held;
 
-    public float CooldownTime;
-    private float _cooldown;
+    private LayerMask _entityMask;
+    private LineRenderer _lineRenderer;
+    private Vector3 _cameraPos;
+
+    // public float CooldownTime;
+    public int _HP;
 
     void IPlayer.TakeDamage()
     {
-
+        _HP -= 1;
+        if(_HP < 1)
+        {
+            _levelManager.EndGameSequence();
+        }
     }
 
     void Start()
     {
+        _entityMask = LayerMask.GetMask("Entity");
+        _HP = 3;
+        _held = false;
 
+        _lineRenderer = GetComponent<LineRenderer>();   
+        _cameraPos = Camera.main.transform.position;
     }
 
     void Update()
     {
-        if(Input.GetMouseButtonDown(0)){
-            Vector3 pos = Input.mousePosition;
-            if(pos.y > 125f && _cooldown < 0)
+        if(_heldBullet != null)
+        {
+            _canRegretBullet -= Time.deltaTime;
+            if (_held)
             {
-                pos.z = 1f;
+                Vector3 pos = Input.mousePosition;
+                pos.z = transform.position.z + 2f;
                 pos = Camera.main.ScreenToWorldPoint(pos);
 
-                Vector3 speed = (Camera.main.transform.position - pos).normalized * -BulletSpeed;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit;
 
-                GameObject generatedBullet = Instantiate(bullet, pos, Quaternion.identity);
-                generatedBullet.GetComponent<Bullet>()._color = _color;
-                generatedBullet.GetComponent<Rigidbody>().AddForce(speed, ForceMode.VelocityChange);
-                _cooldown = CooldownTime;
+                _heldBullet.transform.position = pos;
+                if (Physics.Raycast(ray, out hit, 500f, _entityMask))
+                {
+                    _lineRenderer.SetPosition(0, _cameraPos - new Vector3(0, 1, 0));
+                    _lineRenderer.SetPosition(1, hit.point);
+                    _heldBullet.GetComponent<Bullet>()._target = hit.collider.gameObject;
+                }
+                else
+                {
+                    _heldBullet.GetComponent<Bullet>()._target = null;
+                }
+            }
+            else
+            {
+                _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
+                _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
+                _heldBullet.GetComponent<Bullet>().Release();
+                _heldBullet = null;
             }
         }
-        _cooldown -= Time.deltaTime;
+        if(Input.GetMouseButton(0))
+            _held = true;
+        else
+            _held = false;
     }
 
     public void SelectRed()
     {
-        _color = GameColor.Red;
+        _heldBullet = Instantiate(_bulletPrefab);
+        _heldBullet.GetComponent<Bullet>()._color = GameColor.Red;
+        _canRegretBullet = 0.2f;
+        _held = true;
     }
 
     public void SelectYellow()
     {
-        _color = GameColor.Yellow;
+        _heldBullet = Instantiate(_bulletPrefab);
+        _heldBullet.GetComponent<Bullet>()._color = GameColor.Yellow;
+        _canRegretBullet = 0.2f;
+        _held = true;
     }
 
     public void SelectBlue()
     {
-        _color = GameColor.Blue;
+        _heldBullet = Instantiate(_bulletPrefab);
+        _heldBullet.GetComponent<Bullet>()._color = GameColor.Blue;
+        _canRegretBullet = 0.2f;
+        _held = true;
     }
 
     public void SelectWhite()
     {
-        _color = GameColor.White;
+        _heldBullet = Instantiate(_bulletPrefab);
+        _heldBullet.GetComponent<Bullet>()._color = GameColor.White;
+        _canRegretBullet = 0.2f;
+        _held = true;
     }
 
     public void SelectBlack()
     {
-        _color = GameColor.Black;
+        _heldBullet = Instantiate(_bulletPrefab);
+        _heldBullet.GetComponent<Bullet>()._color = GameColor.Black;
+        _canRegretBullet = 0.2f;
+        _held = true;
     }
 }

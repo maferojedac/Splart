@@ -25,6 +25,8 @@ public class EnemyMovement : MonoBehaviour
         _target = GameObject.Find("Player");
         _rigidBody = GetComponent<Rigidbody>();
 
+        Entity.DisableCollision(GetComponent<Collider>());
+
         transform.rotation = Quaternion.LookRotation((_target.transform.position - transform.position).normalized);
         _nodes = NodeMap.MakePathFromNodes(transform.rotation, PathDistraction, transform.position);
         _targetNode = bestNode();
