@@ -16,14 +16,6 @@ public class StoreBuy : MonoBehaviour
 
     void Start()
     {
-        playerData.BoosterSlow = 0;
-        playerData.BoosterThunder = 0;
-        playerData.BoosterClean = 0;
-        playerData.BoosterLife = 0;
-        playerData.Booster_AnyUpgrade = 0;
-        playerData.Booster_ScoreUpgrade = 0;
-
-
         BoosterSlow.onClick.AddListener(BoosterSlowChanged);
         BoosterThunder.onClick.AddListener(BoosterThunderChanged);
         BoosterClean.onClick.AddListener(BoosterCleanChanged);
