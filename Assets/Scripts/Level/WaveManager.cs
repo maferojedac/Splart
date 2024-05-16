@@ -7,11 +7,17 @@ public class WaveManager : MonoBehaviour
 
     public Spawnable spawnableEnemies;
     public Spawner[] _spawners;
+
     private int _wave;
+    private int _timeScore;
+    private int _complexityScore;
+    private bool _isNextPointTowardsComplexity;
 
     void Start()
     {
         _wave = 1;
+        _complexityScore = 1;
+        _timeScore = 1;
         GenerateWave(1);
     }
 
@@ -20,6 +26,16 @@ public class WaveManager : MonoBehaviour
         if (AllDone())
         {
             _wave++;
+            if (_isNextPointTowardsComplexity)
+            {
+                _complexityScore++;
+                _isNextPointTowardsComplexity = false;
+            }
+            else
+            {
+                _timeScore++;
+                _isNextPointTowardsComplexity = true;
+            }
             GenerateWave(_wave);
         }
     }
@@ -28,7 +44,7 @@ public class WaveManager : MonoBehaviour
     {
         foreach (Spawner spawner in _spawners)
         {
-            if (!spawner.Done())
+            if (spawner.IsStillGenerating())
                 return false;
         }
         return true;
@@ -36,24 +52,29 @@ public class WaveManager : MonoBehaviour
 
     public void GenerateWave(int Wave)
     {
-        int Score = Wave * 2;
-        float MasterDelay = 0f;
+        Debug.Log("Generating new wave!");
+        int Length = Random.Range(4, 5);
         List<SpawnableObject> GeneratedWave = new();
-        while (Score > 0)
+        for(int i = 0; i < Length; i++)
         {
-            GeneratedWave.Add(new SpawnableObject(MasterDelay, spawnableEnemies.Spawnables[Random.Range(0, spawnableEnemies.Spawnables.Length)]));
-            if (GeneratedWave.Count > 0 && GeneratedWave.Count % _spawners.Length == 0)
-                MasterDelay += Random.Range(5f, 6f);
-            else
-                MasterDelay += Random.Range(0f, 1f);
-            Score--;
+            GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore), spawnableEnemies.Spawnables[Random.Range(0, spawnableEnemies.Spawnables.Length)]));
         }
-
         int Count = 0;
         foreach (SpawnableObject spawnableObject in GeneratedWave)
         {
-            _spawners[Count % _spawners.Length]._spawnableQueue.Add(spawnableObject);
+            _spawners[Count % _spawners.Length].SetComplexity(_complexityScore);
+            _spawners[Count % _spawners.Length].AddToQueue(spawnableObject);
             Count++;
         }
+    }
+
+    private float GenerateTime(int Score)
+    {
+        // collapse min time at aprox 4.9 secs
+        // first times at aprox 12 secs
+        float newTime = 0;
+        newTime = 20f / (Mathf.Sqrt(Score + 5)) + 4f;
+        newTime += Random.value * 2f;
+        return newTime;
     }
 }

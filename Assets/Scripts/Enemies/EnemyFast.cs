@@ -10,35 +10,41 @@ public class EnemyFast : MonoBehaviour, IEnemy
 
     private Transform _mainCam;
 
+    private bool _canBeDamaged;
+
     [SerializeField] Splat splat;
+
+    private Rigidbody _rigidBody;
 
     public void OnDie()
     {
         Destroy(gameObject);
     }
 
-    void IEnemy.OnReach()
+    void IEnemy.OnReach(Vector3 dir)
     {
-        GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
-
-        Color splat_color = spriteRenderer.color;
-        splat_color.a = 0.7f;
-        splat.ChangeColor(splat_color);
-        Splat splatobj = Instantiate(splat);
-        splatobj.transform.parent = _mainCam;
-        splatobj.transform.localPosition = new Vector3(Random.Range(-0.8f, 0.8f), Random.Range(-1, 1.3f), 2.5f);
-        splatobj.transform.parent = transform.parent;
-
-        Destroy(gameObject);
+        _canBeDamaged = false;
+        dir.y = 0f;
+        dir = dir.normalized * 20f;
+        dir.y = 10f;
+        _rigidBody.AddForce(dir, ForceMode.Impulse);
     }
 
     void IEnemy.TakeDamage(GameColor color)
     {
-        _colors.Remove(color);
-        spriteRenderer.color = _colors.toRGB();
+        if(_canBeDamaged)
+        {
+            _colors.Remove(color);
+            spriteRenderer.color = _colors.toRGB();
 
-        if (_colors.Count() == 0)
-            OnDie();
+            if (_colors.Count() == 0)
+                OnDie();
+        }
+    }
+
+    void IEnemy.SetColor(ArrayColor startColor)
+    {
+        _colors = startColor;
     }
 
     void Start()
@@ -49,22 +55,38 @@ public class EnemyFast : MonoBehaviour, IEnemy
             Destroy(gameObject);
         }
 
-        for(int i = 0; i < Random.Range(1, 4);  i++)
-        {
-            _colors.Add((GameColor)System.Enum.ToObject(typeof(GameColor), Random.Range(0, 5)));
-        }
-
         spriteRenderer.color = _colors.toRGB();
         _mainCam = Camera.main.transform;
+        _rigidBody = GetComponent<Rigidbody>();
+        _canBeDamaged = true;
     }
 
     void Update()
     {
-        
+        if (!_canBeDamaged)
+        {
+            if(_rigidBody.velocity.y < 0)
+            {
+                SelfDestruct();
+            }
+        }
+    }
+
+    void SelfDestruct()
+    {
+        GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
+        CreateSplat();
+        Destroy(gameObject);
     }
 
     void CreateSplat()
     {
-
+        Color splat_color = _colors.toRGB();
+        splat_color.a = 0.7f;
+        splat.ChangeColor(splat_color);
+        Splat splatobj = Instantiate(splat);
+        splatobj.transform.parent = _mainCam;
+        splatobj.transform.localPosition = new Vector3(Random.Range(-0.8f, 0.8f), Random.Range(-1, 1.3f), 2.5f);
+        splatobj.transform.parent = transform.parent;
     }
 }

@@ -23,7 +23,7 @@ public class EnemyMage : MonoBehaviour, IEnemy
         Destroy(gameObject);
     }
 
-    void IEnemy.OnReach()
+    void IEnemy.OnReach(Vector3 dir)
     {
         Debug.Log("Mage Reached");
         RenderSettings.skybox = skyboxMaterialNormal;
@@ -39,18 +39,17 @@ public class EnemyMage : MonoBehaviour, IEnemy
             OnDie();
     }
 
+    void IEnemy.SetColor(ArrayColor startColor)
+    {
+        _colors = startColor;
+    }
+
     void Start()
     {
         if (spriteRenderer == null)
         {
             Debug.Log("Sprite not found!");
             Destroy(gameObject);
-        }
-
-        int[] ColorsProto = new int[5];
-        for(int i = 0; i < Random.Range(1, 4);  i++)
-        {
-            _colors.Add((GameColor)System.Enum.ToObject(typeof(GameColor), Random.Range(0, 3)));
         }
 
         spriteRenderer.color = _colors.toRGB();

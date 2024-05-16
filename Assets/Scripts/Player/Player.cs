@@ -20,6 +20,11 @@ public class Player : MonoBehaviour, IPlayer
     // public float CooldownTime;
     public int _HP;
 
+    void IPlayer.NewGame()
+    {
+        Start();
+    }
+
     void IPlayer.TakeDamage()
     {
         _HP -= 1;
@@ -48,6 +53,7 @@ public class Player : MonoBehaviour, IPlayer
             {
                 Vector3 pos = Input.mousePosition;
                 pos.z = transform.position.z + 2f;
+                pos.y = 150f;
                 pos = Camera.main.ScreenToWorldPoint(pos);
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -62,6 +68,8 @@ public class Player : MonoBehaviour, IPlayer
                 }
                 else
                 {
+                    _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
+                    _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
                     _heldBullet.GetComponent<Bullet>()._target = null;
                 }
             }

@@ -4,16 +4,19 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    public List<SpawnableObject> _spawnableQueue = new();
-    public SpawnTracker _spawnTracker;
+    private List<SpawnableObject> _spawnableQueue = new();
 
     private float _timer;
 
     private bool _generating;
+    private GameObject _lastGenerated;
+
+    private int _complexity;
+    private bool _allowedKey;
 
     void Start()
     {
-        _spawnTracker.Register(this);
+
     }
 
     void Update()
@@ -27,19 +30,71 @@ public class Spawner : MonoBehaviour
             {
                 _timer = 0f;
                 GameObject enemy = Instantiate(_spawnableQueue[0].SpawnObject, transform.position, Quaternion.identity);
-                enemy.transform.parent = transform.parent;
+                enemy.GetComponent<IEnemy>().SetColor(GenerateColor(_complexity, _allowedKey));
+                _lastGenerated = enemy;
                 _spawnableQueue.RemoveAt(0);
             }
         }
         else
         {
-            _generating = false;
-            _timer = 0f;
+            if(_lastGenerated == null)  // dont end sequence until enemy is dead
+            {
+                _generating = false;
+                _timer = 0f;
+            }
+            else
+            {
+                _generating = true;
+            }
         }
     }
 
-    public bool Done()
+    private ArrayColor GenerateColor(int complexity, bool addKey)
     {
-        return !_generating;
+        ArrayColor finalColor = new ArrayColor();
+        for (int i = 0; i < complexity; i++)
+        {
+            GameColor newColor;
+            if (finalColor.Count() > 1)
+            {
+                newColor = finalColor[Random.Range(0, 1)];
+            }
+            else
+            {
+                newColor = (GameColor)System.Enum.ToObject(typeof(GameColor), Random.Range(0, 3));
+            }
+            finalColor.Add(newColor);
+        }
+        if (addKey)
+        {
+            if(Random.value > 0.5)
+            {
+                finalColor.Add(GameColor.White);
+            }
+            else
+            {
+                finalColor.Add(GameColor.Black);
+            }
+        }
+        return finalColor;
+    }
+
+    public void AddToQueue(SpawnableObject spawnable)
+    {
+        _generating = true;
+        _spawnableQueue.Add(spawnable);
+    }
+
+    public bool IsStillGenerating()
+    {
+        return _generating;
+    }
+
+    public void SetComplexity(int complexity)
+    {
+        _allowedKey = (complexity + 2) % 2 == 0;
+        _complexity = (complexity / 2) + 1;
+        if (_complexity > 3)
+            _complexity = 3;
     }
 }
