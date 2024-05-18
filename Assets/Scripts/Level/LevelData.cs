@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Custom/MovementMap")]
@@ -9,10 +8,40 @@ public class LevelData : ScriptableObject
 {
     public List<MapNode> _nodes = new List<MapNode>();
     public GameObject _levelInstance;
+    public bool _gameRunning;
+
+    private GameObject _menusInstance;
+    private GameObject _baseGameInstance;
 
     private void OnEnable()
     {
         _nodes.Clear();
+    }
+
+    public void SetMenuInstance(GameObject menuInstance)
+    {
+        _menusInstance = menuInstance;
+    }
+
+    public void SetBaseGameInstance(GameObject baseGameInstance)
+    {
+        _baseGameInstance = baseGameInstance;
+    }
+
+    public void EndGame()
+    {
+        _gameRunning = false;
+        _levelInstance.GetComponent<IGameState>().EndGame();
+        _menusInstance.GetComponent<IGameState>().EndGame();    
+        _baseGameInstance.GetComponent<IGameState>().EndGame(); 
+    }
+
+    public void StartGame()
+    {
+        _gameRunning = true;
+        _levelInstance.GetComponent<IGameState>().StartGame();
+        _menusInstance.GetComponent<IGameState>().StartGame();
+        _baseGameInstance.GetComponent<IGameState>().StartGame();
     }
 
     public void SetInstance(GameObject p_object)

@@ -6,7 +6,7 @@ public class Player : MonoBehaviour, IPlayer
 
     public float BulletSpeed;
 
-    public LevelManager _levelManager;
+    public LevelData _levelData;
 
     public GameObject _bulletPrefab;
     private GameObject _heldBullet;
@@ -20,6 +20,8 @@ public class Player : MonoBehaviour, IPlayer
     // public float CooldownTime;
     public int _HP;
 
+    private bool _isActive;
+
     void IPlayer.NewGame()
     {
         Start();
@@ -28,9 +30,10 @@ public class Player : MonoBehaviour, IPlayer
     void IPlayer.TakeDamage()
     {
         _HP -= 1;
-        if(_HP < 1)
+        if(_HP < 1 && _isActive)
         {
-            _levelManager.EndGameSequence();
+            _isActive = false;
+            _levelData.EndGame();
         }
     }
 
@@ -39,6 +42,7 @@ public class Player : MonoBehaviour, IPlayer
         _entityMask = LayerMask.GetMask("Entity");
         _HP = 3;
         _held = false;
+        _isActive = true;
 
         _lineRenderer = GetComponent<LineRenderer>();   
         _cameraPos = Camera.main.transform.position;
@@ -89,41 +93,37 @@ public class Player : MonoBehaviour, IPlayer
 
     public void SelectRed()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Red;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Red);
     }
 
     public void SelectYellow()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Yellow;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Yellow);
     }
 
     public void SelectBlue()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Blue;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Blue);
     }
 
     public void SelectWhite()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.White;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.White);
     }
 
     public void SelectBlack()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Black;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Black);
+    }
+
+    private void CreateBullet(GameColor color)
+    {
+        if (_isActive)
+        {
+            _heldBullet = Instantiate(_bulletPrefab);
+            _heldBullet.GetComponent<Bullet>()._color = color;
+            _canRegretBullet = 0.2f;
+            _held = true;
+        }
     }
 }

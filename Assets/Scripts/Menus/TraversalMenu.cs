@@ -21,7 +21,7 @@ public class TraversalMenu : MonoBehaviour
         MainMenu.SetActive(false);
         ConfigMenu.SetActive(false);
         StoreMenu.SetActive(false);
-        _levelManager.StartGameSequence();
+        _levelManager.ButtonStartGameAction();
     }
 
     public void GoToMain()
