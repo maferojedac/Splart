@@ -7,7 +7,7 @@ public class MainMenu : MonoBehaviour
 {
     public void PlayGame()
     {
-        SceneManager.LoadScene("LevelTest"); //Lleva a la pantalla de juego
+        SceneManager.LoadScene("GameOnly"); //Lleva a la pantalla de juego
     }
 
     /* Para salir del juego desde el menu principal
@@ -34,6 +34,6 @@ public class MainMenu : MonoBehaviour
 
     public void Return()
     {
-        SceneManager.LoadScene("Resolutions"); //Para regresar al menu principal
+        SceneManager.LoadScene("MainMenu"); //Para regresar al menu principal
     }
 }
