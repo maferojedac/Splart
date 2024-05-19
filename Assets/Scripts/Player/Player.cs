@@ -20,11 +20,13 @@ public class Player : MonoBehaviour, IPlayer
     // public float CooldownTime;
     public int _HP;
 
-    private bool _isActive;
+    public bool _isActive;
 
-    void IPlayer.NewGame()
+    public void NewGame()
     {
-        Start();
+        _HP = 3;
+        _held = false;
+        _isActive = true;
     }
 
     void IPlayer.TakeDamage()
@@ -40,12 +42,10 @@ public class Player : MonoBehaviour, IPlayer
     void Start()
     {
         _entityMask = LayerMask.GetMask("Entity");
-        _HP = 3;
-        _held = false;
-        _isActive = true;
 
         _lineRenderer = GetComponent<LineRenderer>();   
         _cameraPos = Camera.main.transform.position;
+        NewGame();
     }
 
     void Update()

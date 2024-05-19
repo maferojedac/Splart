@@ -43,6 +43,7 @@ public class LevelData : ScriptableObject
     public void EndGame()
     {
         _gameRunning = false;
+        Time.timeScale = 1.0f;
         _levelInstance.GetComponent<IGameState>().EndGame();
         _menusInstance.GetComponent<IGameState>().EndGame();    
         _baseGameInstance.GetComponent<IGameState>().EndGame(); 
