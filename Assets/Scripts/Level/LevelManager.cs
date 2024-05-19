@@ -31,6 +31,8 @@ public class LevelManager : MonoBehaviour, IGameState
 
     private IEnumerator StartGameSequenceCoroutine()
     {
+        if(_lastLevel != null)
+            _levelData.UnloadPreviousLevel();
         _timer = 0;
         while(_timer < ExitTime)
         {
@@ -43,11 +45,11 @@ public class LevelManager : MonoBehaviour, IGameState
         _lastLevel.SetActive(true);
         _levelData.SetInstance(_lastLevel);
         _levelData.StartGame();
-        while (_timer < ExitTime)
-        {
-            _timer += Time.deltaTime;
-            yield return null;
-        }
+        // while (_timer < ExitTime)
+        // {
+        //     _timer += Time.deltaTime;
+        //     yield return null;
+        // }
     }
 
     void IGameState.EndGame()

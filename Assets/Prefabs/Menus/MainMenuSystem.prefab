@@ -135,7 +135,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Levels:
   - {fileID: 4974613194237610866, guid: c04dffc5ba7d2f547bc9a4de6b665478, type: 3}
-  ExitTime: 0
+  ExitTime: 1
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
 --- !u!1001 &1119169726676130212
 PrefabInstance:

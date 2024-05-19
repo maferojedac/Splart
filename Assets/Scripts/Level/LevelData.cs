@@ -25,6 +25,11 @@ public class LevelData : ScriptableObject
         _baseGameInstance.GetComponent<IGameState>().NextWave();
     }
 
+    public void UnloadPreviousLevel()
+    {
+        _levelInstance.GetComponent<IGameState>().UnloadLevel();
+    }
+
     public void SetMenuInstance(GameObject menuInstance)
     {
         _menusInstance = menuInstance;
