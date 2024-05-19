@@ -7,16 +7,15 @@ public class Entity
 {
     public static List<GameObject> GetAll()
     {
-        Scene currentScene = SceneManager.GetActiveScene();
         LayerMask entityLayer = LayerMask.NameToLayer("Entity");
-        
-        GameObject[] allEntities = currentScene.GetRootGameObjects();
+
+        Transform EnemyTransform = GameObject.Find("Enemies").transform;
         List<GameObject> Entities = new();
 
-        foreach (GameObject obj in allEntities) { 
-            if(entityLayer.value == obj.layer)
+        foreach (Transform obj in EnemyTransform) { 
+            if(entityLayer.value == obj.gameObject.layer)
             {
-                Entities.Add(obj);
+                Entities.Add(obj.gameObject);
             }
         }
         return Entities;
@@ -24,16 +23,15 @@ public class Entity
 
     public static void DisableCollision(Collider col)
     {
-        Scene currentScene = SceneManager.GetActiveScene();
         LayerMask entityLayer = LayerMask.NameToLayer("Entity");
 
-        GameObject[] allEntities = currentScene.GetRootGameObjects();
+        Transform EnemyTransform = GameObject.Find("Enemies").transform;
 
-        foreach (GameObject obj in allEntities)
+        foreach (Transform obj in EnemyTransform)
         {
-            if (entityLayer.value == obj.layer)
+            if (entityLayer.value == obj.gameObject.layer)
             {
-                Collider otherCol = obj.GetComponent<Collider>();
+                Collider otherCol = obj.gameObject.GetComponent<Collider>();
                 if(otherCol != null)
                     Physics.IgnoreCollision(col, otherCol);
             }

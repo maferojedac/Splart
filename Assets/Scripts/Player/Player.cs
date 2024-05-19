@@ -9,7 +9,7 @@ public class Player : MonoBehaviour, IPlayer
     public LevelData _levelData;
 
     public GameObject _bulletPrefab;
-    private GameObject _heldBullet;
+    private Bullet _heldBullet;
     private float _canRegretBullet;
     private bool _held;
 
@@ -64,24 +64,27 @@ public class Player : MonoBehaviour, IPlayer
                 RaycastHit hit;
 
                 _heldBullet.transform.position = pos;
+                
                 if (Physics.Raycast(ray, out hit, 500f, _entityMask))
                 {
                     _lineRenderer.SetPosition(0, _cameraPos - new Vector3(0, 1, 0));
                     _lineRenderer.SetPosition(1, hit.point);
-                    _heldBullet.GetComponent<Bullet>()._target = hit.collider.gameObject;
+                    _lineRenderer.endColor = hit.collider.gameObject.GetComponent<IEnemy>().GetColor();
+                    _lineRenderer.startColor = ArrayColor.makeRGB(_heldBullet._color);
+                    _heldBullet._target = hit.collider.gameObject;
                 }
                 else
                 {
                     _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
                     _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
-                    _heldBullet.GetComponent<Bullet>()._target = null;
+                    _heldBullet._target = null;
                 }
             }
             else
             {
                 _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
                 _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
-                _heldBullet.GetComponent<Bullet>().Release();
+                _heldBullet.Release();
                 _heldBullet = null;
             }
         }
@@ -120,8 +123,8 @@ public class Player : MonoBehaviour, IPlayer
     {
         if (_isActive)
         {
-            _heldBullet = Instantiate(_bulletPrefab);
-            _heldBullet.GetComponent<Bullet>()._color = color;
+            _heldBullet = Instantiate(_bulletPrefab).GetComponent<Bullet>();
+            _heldBullet._color = color;
             _canRegretBullet = 0.2f;
             _held = true;
         }

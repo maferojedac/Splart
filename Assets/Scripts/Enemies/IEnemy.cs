@@ -8,4 +8,5 @@ public interface IEnemy
     void OnReach(Vector3 dir);
     void OnDie();
     void SetColor(ArrayColor startColor);
+    Color GetColor();
 }

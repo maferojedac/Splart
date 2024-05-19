@@ -21,6 +21,11 @@ public class EnemyFast : MonoBehaviour, IEnemy
         Destroy(gameObject);
     }
 
+    Color IEnemy.GetColor()
+    {
+        return _colors.toRGB();
+    }
+
     void IEnemy.OnReach(Vector3 dir)
     {
         _canBeDamaged = false;

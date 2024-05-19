@@ -22,6 +22,11 @@ public class EnemyStrong : MonoBehaviour, IEnemy
         Destroy(gameObject);
     }
 
+    Color IEnemy.GetColor()
+    {
+        return _colors.toRGB();
+    }
+
     void IEnemy.OnReach(Vector3 dir)
     {
         Debug.Log("Robot punch");

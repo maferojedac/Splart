@@ -7,5 +7,6 @@ public interface IGameState
     void EndGame();
     void StartGame();
     void UnloadLevel() { }
+    void NextWave() { }
 
 }

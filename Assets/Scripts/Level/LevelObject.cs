@@ -12,10 +12,14 @@ public class LevelObject : MonoBehaviour
     private Vector3 _grayscaleHSV;
 
     private float _time;
+    private bool _painting;
 
     void Start()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
+
+        _painting = false;
+        _time = 0f;
 
         Vector3 hsv = Vector3.zero;
         Color.RGBToHSV(_spriteRenderer.color, out hsv.x, out hsv.y, out hsv.z) ;
@@ -26,13 +30,18 @@ public class LevelObject : MonoBehaviour
         _spriteRenderer.color = Color.HSVToRGB(hsv.x, hsv.y, hsv.z);
     }
 
+    public void Paint()
+    {
+        _painting = true;
+    }
+
     void Update() 
     {
-        _time += Time.deltaTime;
-        if(_time > ColorDelay)
+        if(_painting)
         {
+            _time += Time.deltaTime;
             Vector3 hsv = Vector3.zero;
-            hsv = Vector3.Lerp(_grayscaleHSV, _originalHSV, _time - ColorDelay);
+            hsv = Vector3.Lerp(_grayscaleHSV, _originalHSV, _time);
             _spriteRenderer.color = Color.HSVToRGB(hsv.x, hsv.y, hsv.z);
         }
     }

@@ -6,6 +6,7 @@ public class WaveManager : MonoBehaviour
 {
 
     public Spawnable spawnableEnemies;
+    public LevelData _levelData;
     public Spawner[] _spawners;
 
     private int _wave;
@@ -26,16 +27,9 @@ public class WaveManager : MonoBehaviour
         if (AllDone())
         {
             _wave++;
-            if (_isNextPointTowardsComplexity)
-            {
-                _complexityScore++;
-                _isNextPointTowardsComplexity = false;
-            }
-            else
-            {
-                _timeScore++;
-                _isNextPointTowardsComplexity = true;
-            }
+            _complexityScore++;
+            _timeScore++;
+            _levelData.NextWave();
             GenerateWave(_wave);
         }
     }

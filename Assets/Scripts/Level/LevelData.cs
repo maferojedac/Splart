@@ -18,6 +18,13 @@ public class LevelData : ScriptableObject
         _nodes.Clear();
     }
 
+    public void NextWave()
+    {
+        _levelInstance.GetComponent<IGameState>().NextWave();
+        _menusInstance.GetComponent<IGameState>().NextWave();
+        _baseGameInstance.GetComponent<IGameState>().NextWave();
+    }
+
     public void SetMenuInstance(GameObject menuInstance)
     {
         _menusInstance = menuInstance;

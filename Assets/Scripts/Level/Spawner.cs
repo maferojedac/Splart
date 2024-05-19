@@ -8,6 +8,8 @@ public class Spawner : MonoBehaviour
 
     private float _timer;
 
+    public Transform _enemyParent;
+
     private bool _generating;
     private GameObject _lastGenerated;
 
@@ -16,7 +18,8 @@ public class Spawner : MonoBehaviour
 
     void Start()
     {
-
+        if(_enemyParent == null)
+            _enemyParent = GameObject.Find("Enemies").transform;
     }
 
     void Update()
@@ -31,6 +34,7 @@ public class Spawner : MonoBehaviour
                 _timer = 0f;
                 GameObject enemy = Instantiate(_spawnableQueue[0].SpawnObject, transform.position, Quaternion.identity);
                 enemy.GetComponent<IEnemy>().SetColor(GenerateColor(_complexity, _allowedKey));
+                enemy.transform.parent = _enemyParent;
                 _lastGenerated = enemy;
                 _spawnableQueue.RemoveAt(0);
             }
