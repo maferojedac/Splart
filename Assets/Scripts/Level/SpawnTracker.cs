@@ -24,7 +24,7 @@ public class SpawnTracker : ScriptableObject
     {
         foreach(Spawner spawner in _spawners)
         {
-            if (!spawner.Done())
+            // if (!spawner.Done())
                 return false;
         }
         return true;
@@ -48,7 +48,7 @@ public class SpawnTracker : ScriptableObject
         int Count = 0;
         foreach(SpawnableObject spawnableObject in GeneratedWave)
         {
-            _spawners[Count % _spawners.Count]._spawnableQueue.Add(spawnableObject);
+            // _spawners[Count % _spawners.Count]._spawnableQueue.Add(spawnableObject);
             Count++;
         }
     }

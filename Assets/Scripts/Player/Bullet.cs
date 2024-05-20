@@ -23,7 +23,7 @@ public class Bullet : MonoBehaviour
 
     void Start()
     {
-        _alpha = 0.6f;
+        _alpha = 1f;
         _originalColor = ArrayColor.makeRGB(_color);
 
         Color newColor = _originalColor;

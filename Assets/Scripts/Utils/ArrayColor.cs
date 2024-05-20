@@ -12,9 +12,21 @@ public class ArrayColor
         _colors = new List<GameColor>(p_colors);
     }
 
+    public ArrayColor(GameColor p_color)
+    {
+        _colors = new List<GameColor>();
+        _colors.Add(p_color);
+    }
+
     public ArrayColor()
     {
         _colors = new List<GameColor>();
+    }
+
+    public GameColor this[int i]
+    {
+        get { return _colors[i]; }
+        set { _colors[i] = value; }
     }
 
     public int Count() { return _colors.Count; }
@@ -71,13 +83,27 @@ public class ArrayColor
             }
         }
         Max = Mathf.Max(Yellow, Blue, Red);
-        float WhiteBalance = White * (1f / _colors.Count);
-        if(Yellow == Red && Red == Blue)
-            if (Red != 0)
-                WhiteBalance = -0.5f;
-            else
-                Max = 1;
-        RYBColor color = new RYBColor((Red * 1.0f / Max) + WhiteBalance, (Yellow * 1.0f / Max) + WhiteBalance, (Blue * 1.0f / Max) + WhiteBalance, 1.0f);
+        float rybRed, rybYellow, rybBlue;
+
+        float WhiteBalance = (White * 1f / _colors.Count);
+
+        rybRed = Mathf.Clamp((Red * 1.0f / Max) + WhiteBalance, 0, 1f);
+        rybYellow = Mathf.Clamp((Yellow * 1.0f / Max) + WhiteBalance, 0, 1f);
+        rybBlue = Mathf.Clamp((Blue * 1.0f / Max) + WhiteBalance, 0, 1f);
+
+        RYBColor color;
+        if (Yellow == Red && Red == Blue)
+        {
+            if (Red != 0)   // if color is gray
+                color = new RYBColor(0.5f, 0.5f, 0.5f, 1.0f);
+            else            
+                if(WhiteBalance > 0)    // if color is just white
+                    color = new RYBColor(1f, 1f, 1f, 1.0f);
+                else                    // if color is just black
+                    color = new RYBColor(0f, 0f, 0f, 1.0f);
+        }
+        else    // if color is any other combination
+            color = new RYBColor(rybRed, rybYellow, rybBlue, 1.0f);
 
         return color.toRGB();
     }
@@ -101,10 +127,27 @@ public class ArrayColor
             }
         }
         Max = Mathf.Max(Yellow, Blue, Red);
-        float WhiteBalance = White * (1f / p_colors.Length);
-        if (Yellow == Red && Red == Blue && Red != 0)
-            WhiteBalance = -0.5f;
-        RYBColor color = new RYBColor((Red * 1.0f / Max) + WhiteBalance, (Yellow * 1.0f / Max) + WhiteBalance, (Blue * 1.0f / Max) + WhiteBalance, 1.0f);
+        float rybRed, rybYellow, rybBlue;
+
+        float WhiteBalance = (White * 1f / p_colors.Length);
+
+        rybRed = Mathf.Clamp((Red * 1.0f / Max) + WhiteBalance, 0, 1f);
+        rybYellow = Mathf.Clamp((Yellow * 1.0f / Max) + WhiteBalance, 0, 1f);
+        rybBlue = Mathf.Clamp((Blue * 1.0f / Max) + WhiteBalance, 0, 1f);
+
+        RYBColor color;
+        if (Yellow == Red && Red == Blue)
+        {
+            if (Red != 0)   // if color is gray
+                color = new RYBColor(0.5f, 0.5f, 0.5f, 1.0f);
+            else
+                if (WhiteBalance > 0)    // if color is just white
+                color = new RYBColor(1f, 1f, 1f, 1.0f);
+            else                    // if color is just black
+                color = new RYBColor(0f, 0f, 0f, 1.0f);
+        }
+        else    // if color is any other combination
+            color = new RYBColor(rybRed, rybYellow, rybBlue, 1.0f);
 
         return color.toRGB();
     }

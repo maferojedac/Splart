@@ -12,3 +12,18 @@ public enum EnemyState
     Approaching,
     Attacking,
 }
+
+public enum Direction
+{
+    Up,
+    Down,
+    Left,
+    Right,
+}
+
+public enum LevelObjectState
+{
+    SlidingIn,
+    SlidingOut,
+    None
+}

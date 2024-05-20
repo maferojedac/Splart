@@ -88,6 +88,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   flashbang: {fileID: 8332001297077376764, guid: ed270689db12d6747b8f94bcf2efff06,
     type: 3}
+  _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   spriteRenderer: {fileID: 6956683243872593262}
 --- !u!54 &-5486837788763860719
 Rigidbody:

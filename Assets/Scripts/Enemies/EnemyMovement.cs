@@ -25,7 +25,8 @@ public class EnemyMovement : MonoBehaviour
         _target = GameObject.Find("Player");
         _rigidBody = GetComponent<Rigidbody>();
 
-        Entity.DisableCollision(GetComponent<Collider>());
+        Entity.DisableCollision(GetComponent<BoxCollider>());
+        _state = EnemyState.Approaching;
 
         transform.rotation = Quaternion.LookRotation((_target.transform.position - transform.position).normalized);
         _nodes = NodeMap.MakePathFromNodes(transform.rotation, PathDistraction, transform.position);
@@ -58,9 +59,10 @@ public class EnemyMovement : MonoBehaviour
         }
         else if (_state == EnemyState.Attacking)
         {
-            if ((transform.position - _targetNode.Position).magnitude < 2f)
+            if ((transform.position - _targetNode.Position).magnitude < 10f)
             {
-                gameObject.GetComponent<IEnemy>()?.OnReach();
+                gameObject.GetComponent<IEnemy>()?.OnReach((_targetNode.Position - transform.position));
+                Destroy(this);
             }
         }
     }

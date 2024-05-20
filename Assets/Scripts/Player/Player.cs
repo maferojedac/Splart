@@ -6,10 +6,10 @@ public class Player : MonoBehaviour, IPlayer
 
     public float BulletSpeed;
 
-    public LevelManager _levelManager;
+    public LevelData _levelData;
 
     public GameObject _bulletPrefab;
-    private GameObject _heldBullet;
+    private Bullet _heldBullet;
     private float _canRegretBullet;
     private bool _held;
 
@@ -20,23 +20,32 @@ public class Player : MonoBehaviour, IPlayer
     // public float CooldownTime;
     public int _HP;
 
+    public bool _isActive;
+
+    public void NewGame()
+    {
+        _HP = 3;
+        _held = false;
+        _isActive = true;
+    }
+
     void IPlayer.TakeDamage()
     {
         _HP -= 1;
-        if(_HP < 1)
+        if(_HP < 1 && _isActive)
         {
-            _levelManager.EndGameSequence();
+            _isActive = false;
+            _levelData.EndGame();
         }
     }
 
     void Start()
     {
         _entityMask = LayerMask.GetMask("Entity");
-        _HP = 3;
-        _held = false;
 
         _lineRenderer = GetComponent<LineRenderer>();   
         _cameraPos = Camera.main.transform.position;
+        NewGame();
     }
 
     void Update()
@@ -48,28 +57,34 @@ public class Player : MonoBehaviour, IPlayer
             {
                 Vector3 pos = Input.mousePosition;
                 pos.z = transform.position.z + 2f;
+                pos.y = 150f;
                 pos = Camera.main.ScreenToWorldPoint(pos);
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                 RaycastHit hit;
 
                 _heldBullet.transform.position = pos;
+                
                 if (Physics.Raycast(ray, out hit, 500f, _entityMask))
                 {
                     _lineRenderer.SetPosition(0, _cameraPos - new Vector3(0, 1, 0));
                     _lineRenderer.SetPosition(1, hit.point);
-                    _heldBullet.GetComponent<Bullet>()._target = hit.collider.gameObject;
+                    _lineRenderer.endColor = hit.collider.gameObject.GetComponent<IEnemy>().GetColor();
+                    _lineRenderer.startColor = ArrayColor.makeRGB(_heldBullet._color);
+                    _heldBullet._target = hit.collider.gameObject;
                 }
                 else
                 {
-                    _heldBullet.GetComponent<Bullet>()._target = null;
+                    _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
+                    _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
+                    _heldBullet._target = null;
                 }
             }
             else
             {
                 _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
                 _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
-                _heldBullet.GetComponent<Bullet>().Release();
+                _heldBullet.Release();
                 _heldBullet = null;
             }
         }
@@ -81,41 +96,37 @@ public class Player : MonoBehaviour, IPlayer
 
     public void SelectRed()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Red;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Red);
     }
 
     public void SelectYellow()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Yellow;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Yellow);
     }
 
     public void SelectBlue()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Blue;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Blue);
     }
 
     public void SelectWhite()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.White;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.White);
     }
 
     public void SelectBlack()
     {
-        _heldBullet = Instantiate(_bulletPrefab);
-        _heldBullet.GetComponent<Bullet>()._color = GameColor.Black;
-        _canRegretBullet = 0.2f;
-        _held = true;
+        CreateBullet(GameColor.Black);
+    }
+
+    private void CreateBullet(GameColor color)
+    {
+        if (_isActive)
+        {
+            _heldBullet = Instantiate(_bulletPrefab).GetComponent<Bullet>();
+            _heldBullet._color = color;
+            _canRegretBullet = 0.2f;
+            _held = true;
+        }
     }
 }

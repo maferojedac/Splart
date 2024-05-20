@@ -2,11 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelManager : MonoBehaviour
+public class LevelManager : MonoBehaviour, IGameState
 {
 
     public GameObject[] Levels;
-    public GameObject GameBase;
 
     public float ExitTime;
 
@@ -21,24 +20,19 @@ public class LevelManager : MonoBehaviour
 
     void Start()
     {
-        GameBase.SetActive(false);
         _menu = GetComponent<TraversalMenu>();
+        _levelData.SetMenuInstance(gameObject);
     }
 
-    public void StartGameSequence()
+    public void ButtonStartGameAction()
     {
         StartCoroutine(StartGameSequenceCoroutine());
     }
 
-    public void EndGameSequence()
-    {
-        GameBase.SetActive(false);
-        _lastLevel.SetActive(false);
-        _menu.GoToMain();
-    }
-
     private IEnumerator StartGameSequenceCoroutine()
     {
+        if(_lastLevel != null)
+            _levelData.UnloadPreviousLevel();
         _timer = 0;
         while(_timer < ExitTime)
         {
@@ -48,13 +42,24 @@ public class LevelManager : MonoBehaviour
         _timer = 0;
         Destroy(_lastLevel);
         _lastLevel = Instantiate(Levels[0]);
-        _levelData.SetInstance(_lastLevel);
-        GameBase.SetActive(true);
         _lastLevel.SetActive(true);
-        while (_timer < ExitTime)
-        {
-            _timer += Time.deltaTime;
-            yield return null;
-        }
+        _levelData.SetInstance(_lastLevel);
+        _levelData.StartGame();
+        // while (_timer < ExitTime)
+        // {
+        //     _timer += Time.deltaTime;
+        //     yield return null;
+        // }
+    }
+
+    void IGameState.EndGame()
+    {
+        // _lastLevel.SetActive(false);
+        _menu.GoToMain();
+    }
+
+    void IGameState.StartGame()
+    {
+        // Should not be called here as to avoid infinite loops
     }
 }

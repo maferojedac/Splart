@@ -5,6 +5,8 @@ using UnityEngine;
 public interface IEnemy
 {
     void TakeDamage(GameColor color);
-    void OnReach();
+    void OnReach(Vector3 dir);
     void OnDie();
+    void SetColor(ArrayColor startColor);
+    Color GetColor();
 }

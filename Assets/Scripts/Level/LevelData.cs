@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Custom/MovementMap")]
@@ -9,10 +8,66 @@ public class LevelData : ScriptableObject
 {
     public List<MapNode> _nodes = new List<MapNode>();
     public GameObject _levelInstance;
+    public bool _gameRunning;
+
+    public int _currentScore;
+
+    private GameObject _menusInstance;
+    private GameObject _baseGameInstance;
 
     private void OnEnable()
     {
         _nodes.Clear();
+    }
+
+    public void NextWave()
+    {
+        _levelInstance.GetComponent<IGameState>().NextWave();
+        _menusInstance.GetComponent<IGameState>().NextWave();
+        _baseGameInstance.GetComponent<IGameState>().NextWave();
+    }
+
+    public void SumScore(int score)
+    {
+        _currentScore += score;
+    }
+
+    public int GetScore()
+    {
+        return _currentScore;
+    }
+
+    public void UnloadPreviousLevel()
+    {
+        _levelInstance.GetComponent<IGameState>().UnloadLevel();
+    }
+
+    public void SetMenuInstance(GameObject menuInstance)
+    {
+        _menusInstance = menuInstance;
+    }
+
+    public void SetBaseGameInstance(GameObject baseGameInstance)
+    {
+        _baseGameInstance = baseGameInstance;
+    }
+
+    public void EndGame()
+    {
+        _gameRunning = false;
+        Time.timeScale = 1.0f;
+        _levelInstance.GetComponent<IGameState>().EndGame();
+        _menusInstance.GetComponent<IGameState>().EndGame();    
+        _baseGameInstance.GetComponent<IGameState>().EndGame(); 
+    }
+
+    public void StartGame()
+    {
+        _currentScore = 0;
+        _gameRunning = true;
+        _levelInstance.GetComponent<IGameState>().StartGame();
+        _menusInstance.GetComponent<IGameState>().StartGame();
+        _baseGameInstance.GetComponent<IGameState>().StartGame();
     }
 
     public void SetInstance(GameObject p_object)
@@ -69,6 +124,11 @@ public class LevelData : ScriptableObject
         }
 
         return closestNode;
+    }
+
+    public MapNode RandomNode()
+    {
+        return _nodes[Random.Range(0, _nodes.Count - 1)];
     }
 
     public bool AnyNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)

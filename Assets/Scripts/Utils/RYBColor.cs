@@ -14,9 +14,9 @@ public struct RYBColor
 
     public RYBColor(Color input)
     {
-
+        /*
         // RGB corners in RYB Values
-        Vector3 CG000 = new( 0.0f, 0.0f, 0.0f ); //Black
+        Vector3 CG000 = new( 0.2f, 0.2f, 0.2f ); //Black
         Vector3 CG100 = new( 0.891f, 0.0f, 0.0f ); //Red
         Vector3 CG010 = new( 0.0f, 0.714f, 0.374f ); //Green = RYB Yellow + Blue
         Vector3 CG001 = new( 0.07f, 0.08f, 0.893f ); //Blue:
@@ -24,6 +24,29 @@ public struct RYBColor
         Vector3 CG110 = new( 0.0f, 0.915f, 0.0f ); //Yellow
         Vector3 CG101 = new( 0.554f, 0.0f, 0.1f ); //Magenta =RYB Red + Blue.  Likewise dark.
         Vector3 CG111 = new( 1.0f, 1.0f, 1.0f ); //White
+        */
+
+        // Adjusted palette
+        Vector3 CG000 = new Vector3(0.2f, 0.2f, 0.2f);  //Black
+        Vector3 CG100 = new Vector3(1.0f, 0.0f, 0.2f);  //Red
+        Vector3 CG010 = new Vector3(0.9f, 0.9f, 0.2f);  //Yellow = RGB Red+Green.
+        Vector3 CG001 = new Vector3(0.2f, 0.36f, 1.0f); //Blue
+        Vector3 CG011 = new Vector3(0.2f, 0.9f, 0.2f);  //Green
+        Vector3 CG110 = new Vector3(1.0f, 0.6f, 0.2f);  //Orange = RGB full Red, 60% Green
+        Vector3 CG101 = new Vector3(0.6f, 0.2f, 1.0f);  //Purple = 60% Red, full Blue
+        Vector3 CG111 = new Vector3(1.0f, 1.0f, 1.0f);  //White
+
+        // Test pastel palette
+        /*
+        Vector3 CG000 = new Vector3(0.5f, 0.5f, 0.5f);      //Black
+        Vector3 CG100 = new Vector3(1.0f, 0.5f, 0.5f);      //Red
+        Vector3 CG010 = new Vector3(1f, 1f, 0.5f);          //Yellow = RGB Red + Green.
+        Vector3 CG001 = new Vector3(0.5f, 0.5f, 1.0f);      //Blue
+        Vector3 CG011 = new Vector3(0.5f, 1f, 0.5f);        //Green
+        Vector3 CG110 = new Vector3(1.0f, 0.8f, 0.5f);      //Orange = RGB full Red, 60% Green
+        Vector3 CG101 = new Vector3(0.8f, 0.5f, 1.0f);      //Purple = 60% Red, full Blue
+        Vector3 CG111 = new Vector3(1.0f, 1.0f, 1.0f);      //White
+        */
 
         // Trilinear interpolation for color
         Vector3 C00, C01, C10, C11;
@@ -56,14 +79,14 @@ public struct RYBColor
 
     public Color toRGB()
     {
-        Vector3 CG000 = new Vector3( 0.0f, 0.0f, 0.0f ); //Black
-        Vector3 CG100 = new Vector3( 1.0f, 0.0f, 0.0f ); //Red
-        Vector3 CG010 = new Vector3( 0.9f, 0.9f, 0.0f ); //Yellow = RGB Red+Green.  Still a bit high, but helps Yellow compete against Green.  Lower gives murky yellows.
-        Vector3 CG001 = new Vector3( 0.0f, 0.36f, 1.0f ); //Blue: Green boost of 0.36 helps eliminate flatness of spectrum around pure Blue
-        Vector3 CG011 = new Vector3( 0.0f, 0.9f, 0.2f ); //Green: A less intense green than {0,1,0}, which tends to dominate
-        Vector3 CG110 = new Vector3( 1.0f, 0.6f, 0.0f ); //Orange = RGB full Red, 60% Green
-        Vector3 CG101 = new Vector3( 0.6f, 0.0f, 1.0f ); //Purple = 60% Red, full Blue
-        Vector3 CG111 = new Vector3( 1.0f, 1.0f, 1.0f ); //White
+        Vector3 CG000 = new Vector3(0.2f, 0.2f, 0.2f);  //Black
+        Vector3 CG100 = new Vector3(1.0f, 0.0f, 0.2f);  //Red
+        Vector3 CG010 = new Vector3(0.9f, 0.9f, 0.2f);  //Yellow = RGB Red+Green.
+        Vector3 CG001 = new Vector3(0.2f, 0.36f, 1.0f); //Blue
+        Vector3 CG011 = new Vector3(0.2f, 0.9f, 0.2f);  //Green
+        Vector3 CG110 = new Vector3(1.0f, 0.6f, 0.2f);  //Orange = RGB full Red, 60% Green
+        Vector3 CG101 = new Vector3(0.6f, 0.2f, 1.0f);  //Purple = 60% Red, full Blue
+        Vector3 CG111 = new Vector3(1.0f, 1.0f, 1.0f);  //White
 
         // Trilinear interpolation for color
         Vector3 C00, C01, C10, C11;
