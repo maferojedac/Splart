@@ -12,6 +12,12 @@ public class ArrayColor
         _colors = new List<GameColor>(p_colors);
     }
 
+    public ArrayColor(GameColor p_color)
+    {
+        _colors = new List<GameColor>();
+        _colors.Add(p_color);
+    }
+
     public ArrayColor()
     {
         _colors = new List<GameColor>();

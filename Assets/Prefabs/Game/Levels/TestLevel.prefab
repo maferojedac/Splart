@@ -1367,13 +1367,13 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 964709904347848988}
-  - {fileID: 6328629144201824281}
   - {fileID: 8696751515020819250}
   - {fileID: 4071591277856256074}
   - {fileID: 9034351396797399214}
   - {fileID: 2483915708176912076}
   - {fileID: 1639780133561308756}
+  - {fileID: 964709904347848988}
+  - {fileID: 6328629144201824281}
   - {fileID: 5609499926550018621}
   - {fileID: 5049968603659500976}
   - {fileID: 8637243376557647497}
@@ -3077,6 +3077,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnableEnemies: {fileID: 11400000, guid: 72029389adb5e8649a8185c7b4f2979f, type: 2}
+  spawnableBosses: {fileID: 11400000, guid: 2b0350f86a64ba045bd9766e87061513, type: 2}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   _spawners:
   - {fileID: 3009724704991107936}

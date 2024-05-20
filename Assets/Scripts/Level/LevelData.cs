@@ -126,6 +126,11 @@ public class LevelData : ScriptableObject
         return closestNode;
     }
 
+    public MapNode RandomNode()
+    {
+        return _nodes[Random.Range(0, _nodes.Count - 1)];
+    }
+
     public bool AnyNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
         foreach (MapNode node in _nodes)

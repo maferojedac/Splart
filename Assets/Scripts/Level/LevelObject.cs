@@ -70,6 +70,11 @@ public class LevelObject : MonoBehaviour
         _painting = true;
     }
 
+    public void SetMaterial(Material material)
+    {
+        _spriteRenderer.material = material;
+    }
+
     void Update() 
     {
         if(_painting)

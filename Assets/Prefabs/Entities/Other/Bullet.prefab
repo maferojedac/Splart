@@ -283,7 +283,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _color: 0
   _target: {fileID: 0}
-  _speed: 40
+  _speed: 80
   _spriteRenderer: {fileID: 796450359055359656}
   _explosion: {fileID: 5213833512123402065, guid: 355dd6b88d67074409067aef4086a134,
     type: 3}
