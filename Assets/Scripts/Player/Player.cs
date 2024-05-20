@@ -92,6 +92,7 @@ public class Player : MonoBehaviour, IPlayer
             _held = true;
         else
             _held = false;
+        
     }
 
     public void SelectRed()

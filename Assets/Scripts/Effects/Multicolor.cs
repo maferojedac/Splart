@@ -11,6 +11,7 @@ public class Multicolor : MonoBehaviour
 
     void Start()
     {
+        Debug.Log("Se supone esta corriendo el shader");
         _furthestSprites = new LevelObject[5];
         GameObject terrainSprites = GameObject.Find("TerrainSprites");
         if(terrainSprites != null)
