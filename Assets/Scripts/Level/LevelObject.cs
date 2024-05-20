@@ -58,7 +58,6 @@ public class LevelObject : MonoBehaviour
 
     public void SlideOut()
     {
-        Debug.Log("Slide out!!");
         _painting = false;
         _time = 0;
         transform.position = _atLevelPosition;

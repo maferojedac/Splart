@@ -33,9 +33,10 @@ public class LevelLoader : MonoBehaviour, IGameState
 
     void IGameState.UnloadLevel()
     {
-        foreach (LevelObject obj in AllLevelSprites)
+        if (_lastCoroutine == null)
         {
-            obj.SlideOut();
+            SlideOutSpritesQueue = new List<LevelObject>(AllLevelSprites);
+            StartCoroutine(SlideAllObjectsOut());
         }
     }
 
@@ -68,10 +69,26 @@ public class LevelLoader : MonoBehaviour, IGameState
         while(SlideInSpritesQueue.Count > 0)
         {
             _timer += Time.deltaTime;
-            if (_timer > 0.1f)
+            if (_timer > 0.05f)
             {
                 SlideInSpritesQueue[0].SlideIn();
                 SlideInSpritesQueue.RemoveAt(0);
+                _timer = 0;
+            }
+            yield return null;
+        }
+    }
+
+    IEnumerator SlideAllObjectsOut()
+    {
+        _timer = 0;
+        while (SlideOutSpritesQueue.Count > 0)
+        {
+            _timer += Time.deltaTime;
+            if (_timer > 0.05f)
+            {
+                SlideOutSpritesQueue[0].SlideOut();
+                SlideOutSpritesQueue.RemoveAt(0);
                 _timer = 0;
             }
             yield return null;

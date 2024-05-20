@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class TraversalMenu : MonoBehaviour
 {
-    public GameObject MainMenu;
-    public GameObject ConfigMenu;
-    public GameObject StoreMenu;
+    public SimpleMenuAnimation MainMenu;
+    public SimpleMenuAnimation ConfigMenu;
+    public SimpleMenuAnimation StoreMenu;
 
     private LevelManager _levelManager;
 
@@ -18,30 +18,30 @@ public class TraversalMenu : MonoBehaviour
 
     public void StartGame()
     {
-        MainMenu.SetActive(false);
-        ConfigMenu.SetActive(false);
-        StoreMenu.SetActive(false);
+        MainMenu.SlideOut();
+        ConfigMenu.SlideOut();
+        StoreMenu.SlideOut();
         _levelManager.ButtonStartGameAction();
     }
 
     public void GoToMain()
     {
-        MainMenu.SetActive(true);
-        ConfigMenu.SetActive(false);
-        StoreMenu.SetActive(false);
+        MainMenu.SlideIn();
+        ConfigMenu.SlideOut();
+        StoreMenu.SlideOut();
     }
 
     public void GoToConfig()
     {
-        MainMenu.SetActive(false);
-        ConfigMenu.SetActive(true);
-        StoreMenu.SetActive(false);
+        MainMenu.SlideOut();
+        ConfigMenu.SlideIn();
+        StoreMenu.SlideOut();
     }
 
     public void GoToStore()
     {
-        MainMenu.SetActive(false);
-        ConfigMenu.SetActive(false);
-        StoreMenu.SetActive(true);
+        MainMenu.SlideOut();
+        ConfigMenu.SlideOut();
+        StoreMenu.SlideIn();
     }
 }

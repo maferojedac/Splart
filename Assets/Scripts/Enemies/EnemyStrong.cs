@@ -8,6 +8,7 @@ public class EnemyStrong : MonoBehaviour, IEnemy
 {
     
     [SerializeField] private GameObject flashbang;
+    [SerializeField] private LevelData _levelData;
 
     private ArrayColor _colors = new();
 
@@ -19,6 +20,7 @@ public class EnemyStrong : MonoBehaviour, IEnemy
 
     public void OnDie()
     {
+        _levelData.SumScore(100);
         Destroy(gameObject);
     }
 
@@ -82,9 +84,12 @@ public class EnemyStrong : MonoBehaviour, IEnemy
 
     void SelfDestruct()
     {
-        GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
-        GameObject fb = Instantiate(flashbang);
-        fb.transform.parent = transform.parent;
+        if (_levelData._gameRunning)
+        {
+            GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
+            GameObject fb = Instantiate(flashbang);
+            fb.transform.parent = transform.parent;
+        }
         Destroy(gameObject);
     }
 }

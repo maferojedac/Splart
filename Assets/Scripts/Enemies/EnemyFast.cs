@@ -13,11 +13,13 @@ public class EnemyFast : MonoBehaviour, IEnemy
     private bool _canBeDamaged;
 
     [SerializeField] Splat splat;
+    [SerializeField] LevelData _levelData;
 
     private Rigidbody _rigidBody;
 
     public void OnDie()
     {
+        _levelData.SumScore(100);
         Destroy(gameObject);
     }
 
@@ -86,12 +88,15 @@ public class EnemyFast : MonoBehaviour, IEnemy
 
     void CreateSplat()
     {
-        Color splat_color = _colors.toRGB();
-        splat_color.a = 0.7f;
-        splat.ChangeColor(splat_color);
-        Splat splatobj = Instantiate(splat);
-        splatobj.transform.parent = _mainCam;
-        splatobj.transform.localPosition = new Vector3(Random.Range(-0.8f, 0.8f), Random.Range(-1, 1.3f), 2.5f);
-        splatobj.transform.parent = transform.parent;
+        if (_levelData._gameRunning)
+        {
+            Color splat_color = _colors.toRGB();
+            splat_color.a = 0.7f;
+            splat.ChangeColor(splat_color);
+            Splat splatobj = Instantiate(splat);
+            splatobj.transform.parent = _mainCam;
+            splatobj.transform.localPosition = new Vector3(Random.Range(-0.8f, 0.8f), Random.Range(-1, 1.3f), 2.5f);
+            splatobj.transform.parent = transform.parent;
+        }
     }
 }

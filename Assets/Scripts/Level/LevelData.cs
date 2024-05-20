@@ -10,6 +10,8 @@ public class LevelData : ScriptableObject
     public GameObject _levelInstance;
     public bool _gameRunning;
 
+    public int _currentScore;
+
     private GameObject _menusInstance;
     private GameObject _baseGameInstance;
 
@@ -23,6 +25,16 @@ public class LevelData : ScriptableObject
         _levelInstance.GetComponent<IGameState>().NextWave();
         _menusInstance.GetComponent<IGameState>().NextWave();
         _baseGameInstance.GetComponent<IGameState>().NextWave();
+    }
+
+    public void SumScore(int score)
+    {
+        _currentScore += score;
+    }
+
+    public int GetScore()
+    {
+        return _currentScore;
     }
 
     public void UnloadPreviousLevel()
@@ -51,6 +63,7 @@ public class LevelData : ScriptableObject
 
     public void StartGame()
     {
+        _currentScore = 0;
         _gameRunning = true;
         _levelInstance.GetComponent<IGameState>().StartGame();
         _menusInstance.GetComponent<IGameState>().StartGame();

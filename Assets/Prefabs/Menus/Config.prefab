@@ -757,6 +757,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8706790844665873223}
   - component: {fileID: 6995425107293173664}
+  - component: {fileID: 5783783653552888101}
   m_Layer: 5
   m_Name: Config
   m_TagString: Untagged
@@ -804,6 +805,19 @@ MonoBehaviour:
   SoundeffectsVolume: {fileID: 2672306808407810970}
   MusicVolume: {fileID: 2488248492838786935}
   playerData: {fileID: 11400000, guid: 9806dea7c665bbb48bd95ba911894543, type: 2}
+--- !u!114 &5783783653552888101
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3910959211545281156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4d638336a9d36548a9ae3a7fdd89ea2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _exitOffset: {x: 0, y: -1000, z: 0}
 --- !u!1 &4302557296602801572
 GameObject:
   m_ObjectHideFlags: 0
