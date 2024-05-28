@@ -6,34 +6,34 @@ using TMPro;
 
 public class CantidadItems : MonoBehaviour
 {
-    public TMP_Text Producto1;
-    public TMP_Text Producto2;
-    public TMP_Text Producto3;
-    public TMP_Text Producto4;
-    public TMP_Text Producto5;
-    public TMP_Text Producto6;
+    public TMP_Text BoosterSlowText;
+    public TMP_Text BoosterThunderText;
+    public TMP_Text BoosterCleanText;
+    public TMP_Text BoosterLifeText;
+    public TMP_Text Booster_AnyUpgradeText;
+    public TMP_Text Booster_ScoreUpgradeText;
 
     public PlayerData playerData;
 
     // Start is called before the first frame update
     void Start()
     {
-        Producto1.text = playerData.BoosterSlow.ToString();
-        Producto2.text = playerData.BoosterThunder.ToString();
-        Producto3.text = playerData.BoosterClean.ToString();
-        Producto4.text = playerData.BoosterLife.ToString();
-        Producto5.text = playerData.Booster_AnyUpgrade.ToString();
-        Producto6.text = playerData.Booster_ScoreUpgrade.ToString();
+        BoosterSlowText.text = playerData.BoosterSlow.ToString();
+        BoosterThunderText.text = playerData.BoosterThunder.ToString();
+        BoosterCleanText.text = playerData.BoosterClean.ToString();
+        BoosterLifeText.text = playerData.BoosterLife.ToString();
+        Booster_AnyUpgradeText.text = playerData.Booster_AnyUpgrade.ToString();
+        Booster_ScoreUpgradeText.text = playerData.Booster_ScoreUpgrade.ToString();
     }
 
     // Update is called once per frame
     void Update()
     {
-        Producto1.text = playerData.BoosterSlow.ToString();
-        Producto2.text = playerData.BoosterThunder.ToString();
-        Producto3.text = playerData.BoosterClean.ToString();
-        Producto4.text = playerData.BoosterLife.ToString();
-        Producto5.text = playerData.Booster_AnyUpgrade.ToString();
-        Producto6.text = playerData.Booster_ScoreUpgrade.ToString();
+        BoosterSlowText.text = playerData.BoosterSlow.ToString();
+        BoosterThunderText.text = playerData.BoosterThunder.ToString();
+        BoosterCleanText.text = playerData.BoosterClean.ToString();
+        BoosterLifeText.text = playerData.BoosterLife.ToString();
+        Booster_AnyUpgradeText.text = playerData.Booster_AnyUpgrade.ToString();
+        Booster_ScoreUpgradeText.text = playerData.Booster_ScoreUpgrade.ToString();
     }
 }

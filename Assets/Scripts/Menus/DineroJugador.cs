@@ -22,7 +22,7 @@ public class DineroJugador : MonoBehaviour
         dineroJugador.text = playerData.Money.ToString();
         if (playerData.Money == 0)
         {
-            dineroJugador.text = "No hay dinero suficiente";
+            dineroJugador.text = "0";
         }
     }
 }
