@@ -3,7 +3,15 @@ guid: e2082d4b390fcd9479e2aad4989e40e9
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - BoosterSlow: {instanceID: 0}
+  - BoosterThunder: {instanceID: 0}
+  - BoosterClean: {instanceID: 0}
+  - BoosterLife: {instanceID: 0}
+  - Booster_AnyUpgrade: {instanceID: 0}
+  - Booster_ScoreUpgrade: {instanceID: 0}
+  - dineroJugador: {instanceID: 0}
+  - playerData: {fileID: 11400000, guid: 9806dea7c665bbb48bd95ba911894543, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
