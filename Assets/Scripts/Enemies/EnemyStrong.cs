@@ -18,9 +18,17 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     private Rigidbody _rigidBody;
     public SpriteRenderer spriteRenderer;
 
+    public PlayerData playerData;
+
     public void OnDie()
     {
-        _levelData.SumScore(100);
+        if (playerData.Booster_ScoreUpgrade >= 0)
+        {
+            int scoreMultiplier = playerData.Booster_ScoreUpgrade +1;
+            _levelData.SumScore(100 * scoreMultiplier);
+        }
+        else
+            _levelData.SumScore(100);
         Destroy(gameObject);
     }
 
@@ -31,7 +39,6 @@ public class EnemyStrong : MonoBehaviour, IEnemy
 
     void IEnemy.OnReach(Vector3 dir)
     {
-        Debug.Log("Robot punch");
         _canBeDamaged = false;
         dir.y = 0f;
         dir = dir.normalized * 25f;
@@ -86,9 +93,12 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     {
         if (_levelData._gameRunning)
         {
-            GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
-            GameObject fb = Instantiate(flashbang);
-            fb.transform.parent = transform.parent;
+            if (playerData.BoosterLife <= 0)
+            {
+                GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
+                GameObject fb = Instantiate(flashbang);
+                fb.transform.parent = transform.parent;
+            }else    playerData.BoosterLife--;
         }
         Destroy(gameObject);
     }

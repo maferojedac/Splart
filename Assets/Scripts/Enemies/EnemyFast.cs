@@ -17,9 +17,17 @@ public class EnemyFast : MonoBehaviour, IEnemy
 
     private Rigidbody _rigidBody;
 
+    public PlayerData playerData;
+
     public void OnDie()
     {
-        _levelData.SumScore(100);
+        if (playerData.Booster_ScoreUpgrade >= 0)
+        {
+            int scoreMultiplier = playerData.Booster_ScoreUpgrade +1;
+            _levelData.SumScore(100 * scoreMultiplier);
+        }
+        else
+            _levelData.SumScore(100);
         Destroy(gameObject);
     }
 
@@ -81,8 +89,12 @@ public class EnemyFast : MonoBehaviour, IEnemy
 
     void SelfDestruct()
     {
-        GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
-        CreateSplat();
+        if (playerData.BoosterLife <= 0)
+        {
+            GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
+            CreateSplat();
+        }
+        else    playerData.BoosterLife--;
         Destroy(gameObject);
     }
 
