@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class StoreBuy : MonoBehaviour
 {
@@ -26,31 +27,55 @@ public class StoreBuy : MonoBehaviour
 
     public void BoosterSlowChanged()
     {
-        playerData.BoosterSlow++;
+        if (playerData.Money > 0)
+        {
+            playerData.BoosterSlow++;
+            playerData.Money -= 100;
+        }
     }
 
     public void BoosterThunderChanged()
     {
-        playerData.BoosterThunder++;
+        if (playerData.Money > 0)
+        {
+            playerData.BoosterThunder++;
+            playerData.Money -= 100;
+        }
     }
 
     public void BoosterCleanChanged()
     {
-        playerData.BoosterClean++;
+        if (playerData.Money > 0)
+        {
+            playerData.BoosterClean++;
+            playerData.Money -= 100;
+        }
     }
 
     public void BoosterLifeChanged()
     {
-        playerData.BoosterLife++;
+        if (playerData.Money > 0)
+        {
+            playerData.BoosterLife++;
+            playerData.Money -= 100;
+        }
     }
 
     public void Booster_AnyUpgradeChanged()
     {
-        playerData.Booster_AnyUpgrade++;
+        if (playerData.Money > 0)
+        {
+            playerData.Booster_AnyUpgrade++;
+            playerData.Money -= 100;
+        }
     }
 
     public void Booster_ScoreUpgradeChanged()
     {
-        playerData.Booster_ScoreUpgrade++;
+        if (playerData.Money > 0)
+        {
+            playerData.Booster_ScoreUpgrade++;
+            playerData.Money -= 100;
+        }
     }
 }

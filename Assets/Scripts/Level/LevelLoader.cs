@@ -28,7 +28,10 @@ public class LevelLoader : MonoBehaviour, IGameState
 
     void IGameState.EndGame()
     {
-
+        foreach(LevelObject current in ColorSpritesQueue)
+        {
+            current.Paint();
+        }
     }
 
     void IGameState.UnloadLevel()
@@ -53,6 +56,10 @@ public class LevelLoader : MonoBehaviour, IGameState
     void IGameState.NextWave() {
         if(ColorSpritesQueue.Count > 0)
         {
+            while(ColorSpritesQueue[0].gameObject.CompareTag("Non Paintable"))
+            {
+                ColorSpritesQueue.RemoveAt(0);
+            }
             ColorSpritesQueue[0].Paint();
             ColorSpritesQueue.RemoveAt(0);
         }
@@ -85,7 +92,7 @@ public class LevelLoader : MonoBehaviour, IGameState
         while (SlideOutSpritesQueue.Count > 0)
         {
             _timer += Time.deltaTime;
-            if (_timer > 0.05f)
+            if (_timer > 0.005f)
             {
                 SlideOutSpritesQueue[0].SlideOut();
                 SlideOutSpritesQueue.RemoveAt(0);
