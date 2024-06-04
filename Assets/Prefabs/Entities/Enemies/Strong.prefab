@@ -91,7 +91,7 @@ MonoBehaviour:
     type: 3}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   spriteRenderer: {fileID: 6956683243872593262}
-  playerData: {fileID: 11400000, guid: 9806dea7c665bbb48bd95ba911894543, type: 2}
+  playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
 --- !u!54 &-5486837788763860719
 Rigidbody:
   m_ObjectHideFlags: 0

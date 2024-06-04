@@ -7,19 +7,29 @@ public class Multicolor : MonoBehaviour
     public Material _multicolorMaterial;
     public Material _defaultMaterial;
 
-    private LevelObject[] _furthestSprites;
+    private List<LevelObject> _furthestSprites;
+
+    private float _timer;
+    private float _strength;
 
     void Start()
     {
         Debug.Log("Se supone esta corriendo el shader");
-        _furthestSprites = new LevelObject[5];
-        GameObject terrainSprites = GameObject.Find("TerrainSprites");
-        if(terrainSprites != null)
+        _furthestSprites = new();
+        Transform terrainSprites = GameObject.Find("TerrainSprites").transform;
+
+        _strength = 1f;
+        _multicolorMaterial.SetFloat("_Strength", _strength);
+
+        if (terrainSprites != null)
         {
-            for (int i = 0; i < 5; i++)
+            foreach (Transform item in terrainSprites)
             {
-                _furthestSprites[i] = terrainSprites.transform.GetChild(i).gameObject.GetComponent<LevelObject>();
-                _furthestSprites[i].SetMaterial(_multicolorMaterial);
+                if(item.gameObject.CompareTag("Far Background"))
+                {
+                    _furthestSprites.Add(item.GetComponent<LevelObject>());
+                    item.GetComponent<LevelObject>().SetMaterial(_multicolorMaterial);
+                }
             }
             StartCoroutine(DoEffect());
         }
@@ -27,10 +37,18 @@ public class Multicolor : MonoBehaviour
 
     IEnumerator DoEffect()
     {
-        yield return new WaitForSeconds(5f);
-        foreach(var f in _furthestSprites)
+        yield return new WaitForSeconds(4f);
+
+        while (_strength > 0f)
         {
-            f.SetMaterial(_defaultMaterial);
+            _strength -= Time.deltaTime;
+            _multicolorMaterial.SetFloat("_Strength", _strength);
+            yield return null;
+        }
+
+        foreach(var item in _furthestSprites)
+        {
+            item.SetMaterial(_defaultMaterial);
         }
         Destroy(gameObject);
     }

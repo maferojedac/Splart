@@ -174,7 +174,7 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6956683243872593262}
   splat: {fileID: 7448143773666677230, guid: fd9c14ef50f872b41bdf099b85f376a2, type: 3}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  playerData: {fileID: 11400000, guid: 9806dea7c665bbb48bd95ba911894543, type: 2}
+  playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
 --- !u!54 &5232177867496499023
 Rigidbody:
   m_ObjectHideFlags: 0

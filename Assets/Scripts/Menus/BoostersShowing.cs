@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoostersShowing : MonoBehaviour
 {
@@ -9,9 +10,19 @@ public class BoostersShowing : MonoBehaviour
     public GameObject BoostClean;
     public GameObject BoostLifeShield;
     public GameObject BoostScore;
+
     public PlayerData _playerData;
 
+    public Image _visualTimer;
+
     private bool _isSlowBooted = false;
+
+    private float _counterTimer;
+    private float _counterGoal;
+
+    private bool _activeBooster;
+
+
 
     void Start()
     {
@@ -20,6 +31,8 @@ public class BoostersShowing : MonoBehaviour
         if (_playerData.BoosterClean <= 0) BoostClean.SetActive(false);
         if (_playerData.BoosterLife <= 0) BoostLifeShield.SetActive(false);
         if (_playerData.Booster_ScoreUpgrade <= 0) BoostScore.SetActive(false);
+
+        _visualTimer.fillAmount = 0f;
     }
 
     // Update is called once per frame
@@ -33,7 +46,7 @@ public class BoostersShowing : MonoBehaviour
 
         if (_isSlowBooted)
         {
-            StartCoroutine(SlowBoost());
+            
             _isSlowBooted = false;
             
         }
@@ -41,40 +54,59 @@ public class BoostersShowing : MonoBehaviour
 
     public void UsedBoosterSlow()
     {
-        _isSlowBooted = true;
-        
+        StartCoroutine(SlowBoost());
+
         _playerData.BoosterSlow--;
     }
 
     IEnumerator SlowBoost()
     {
-        Debug.Log("SlowBoost");
-        GameObject father = GameObject.Find("TestLevel(Clone)");
-        Transform son = father.transform.Find("Enemies");
+        Debug.Log("Slow activated");
 
-        foreach (Transform enemy in son)
+        _counterTimer = 0;
+        _counterGoal = 10f;
+
+        _visualTimer.fillAmount = 1f;
+
+        List<GameObject> enemies = Entity.GetAll();
+
+        foreach (GameObject enemy in enemies)
         {
-            enemy.GetComponent<EnemyMovement>().SetSpeedMultiplier(0.2f);
+            if (enemy != null)
+                enemy.GetComponent<EnemyMovement>()?.SetSpeedMultiplier(0.2f);
         }
 
-        yield return new WaitForSeconds(10.0f);
-
-        foreach (Transform enemy in son)
+        while( _counterTimer < _counterGoal)
         {
-            enemy.GetComponent<EnemyMovement>().SetSpeedMultiplier(1.0f);
+            _counterTimer += Time.deltaTime;
+
+            _visualTimer.fillAmount = 1 - (_counterTimer / _counterGoal);
+
+            yield return null;
         }
+
+        // yield return new WaitForSeconds(10.0f);
+
+        foreach (GameObject enemy in enemies)
+        {
+            if(enemy != null)
+                enemy.GetComponent<EnemyMovement>()?.SetSpeedMultiplier(1.0f);
+        }
+
+        _visualTimer.fillAmount = 0f;
     }
 
     public void UsedBoosterThunder()
     {
-        GameObject father = GameObject.Find("TestLevel(Clone)");
-        Transform son = father.transform.Find("Enemies");
+        Debug.Log("Thunder activated");
 
-        foreach (Transform enemy in son)
+        List<GameObject> enemies = Entity.GetAll();
+
+        foreach (GameObject enemy in enemies)
         {
-            if ((enemy.name == "Mage_Flashbang(Clone)") || (enemy.name == "Mage_Multicolor(Clone)"))
+            if (enemy.CompareTag("MageEnemy"))
             {
-                Destroy(enemy.gameObject);
+                enemy.GetComponent<IEnemy>().OnDie();
                 _playerData.BoosterThunder--;
             }
                 
