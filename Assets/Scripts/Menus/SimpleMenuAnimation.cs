@@ -7,6 +7,8 @@ public class SimpleMenuAnimation : MonoBehaviour
 
     public Vector3 _exitOffset;
 
+    private bool _isMenuIn;
+
     private bool _slidingIn;
     private bool _slidingOut;
 
@@ -41,24 +43,40 @@ public class SimpleMenuAnimation : MonoBehaviour
 
         _slidingIn = false;
         _slidingOut = false;
+
+        _isMenuIn = false;
+
     }
 
     public void SlideIn()
     {
+        if (!_isMenuIn)
+        {
             _timer = Time.realtimeSinceStartup;
+
             transform.localPosition = _exitPosition;
             transform.rotation = _exitRotation;
+
             _slidingIn = true;
             _slidingOut = false;
+
+            _isMenuIn = true;
+        }
     }
 
     public void SlideOut()
     {
-        _timer = Time.realtimeSinceStartup;
-        transform.localPosition = _displayPosition;
-        transform.rotation = _displayRotation;
-        _slidingIn = false;
-        _slidingOut = true;
+        if (_isMenuIn) {
+            _timer = Time.realtimeSinceStartup;
+
+            transform.localPosition = _displayPosition;
+            transform.rotation = _displayRotation;
+
+            _slidingIn = false;
+            _slidingOut = true;
+
+            _isMenuIn = false;
+        }
     }
 
     void Update()

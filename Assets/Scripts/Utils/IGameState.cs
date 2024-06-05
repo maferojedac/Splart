@@ -8,5 +8,6 @@ public interface IGameState
     void StartGame();
     void UnloadLevel() { }
     void NextWave() { }
+    void GameOver() { }
 
 }

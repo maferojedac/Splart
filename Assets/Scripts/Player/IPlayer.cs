@@ -4,6 +4,6 @@ using UnityEngine;
 
 public interface IPlayer
 {
-    void TakeDamage();
+    bool TakeDamage();
     void NewGame();
 }
