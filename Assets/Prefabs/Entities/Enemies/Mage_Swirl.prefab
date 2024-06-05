@@ -226,19 +226,19 @@ ParticleSystem:
       maxColor: {r: 1, g: 1, b: 1, a: 1}
       maxGradient:
         serializedVersion: 2
-        key0: {r: 1, g: 0, b: 0, a: 1}
-        key1: {r: 0, g: 1, b: 0, a: 1}
-        key2: {r: 1, g: 1, b: 0, a: 1}
-        key3: {r: 0, g: 1, b: 1, a: 0}
-        key4: {r: 0, g: 0, b: 1, a: 0}
+        key0: {r: 1, g: 0, b: 1, a: 1}
+        key1: {r: 1, g: 0, b: 0, a: 1}
+        key2: {r: 1, g: 0, b: 0, a: 1}
+        key3: {r: 1, g: 0, b: 0, a: 0}
+        key4: {r: 1, g: 0, b: 0, a: 0}
         key5: {r: 1, g: 0, b: 0, a: 0}
         key6: {r: 1, g: 0, b: 0, a: 0}
         key7: {r: 0, g: 1, b: 0, a: 0}
-        ctime0: 5628
-        ctime1: 19661
-        ctime2: 29491
-        ctime3: 39321
-        ctime4: 53430
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 58982
+        ctime3: 58982
+        ctime4: 58982
         ctime5: 58982
         ctime6: 58982
         ctime7: 52428
@@ -252,7 +252,7 @@ ParticleSystem:
         atime7: 0
         m_Mode: 2
         m_ColorSpace: 0
-        m_NumColorKeys: 6
+        m_NumColorKeys: 2
         m_NumAlphaKeys: 2
       minGradient:
         serializedVersion: 2
@@ -4843,7 +4843,7 @@ GameObject:
   - component: {fileID: 7936525584745644178}
   - component: {fileID: 3805574525487255931}
   m_Layer: 3
-  m_Name: Mage_Multicolor
+  m_Name: Mage_Swirl
   m_TagString: MageEnemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4899,7 +4899,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 647f85aa850df0d4083f71a618d9569d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Effect: {fileID: 7474230272610645831, guid: 4932d5b2e74c78642917569ccd784805, type: 3}
+  Effect: {fileID: 7474230272610645831, guid: 31703d17d0349524f9cae5b6bfbf9f80, type: 3}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   spriteRenderer: {fileID: 6956683243872593262}
   particleRenderer: {fileID: 3114172353052831273}

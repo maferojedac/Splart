@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5854239365350086730}
   - component: {fileID: 2358323534531407389}
   m_Layer: 0
-  m_Name: Swirl
+  m_Name: Darken
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46e9bb3b3f0bf84994f60fe72b61078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _multicolorMaterial: {fileID: 2100000, guid: 0fc291c15380d4d468f02d07be684e49, type: 2}
+  _multicolorMaterial: {fileID: 2100000, guid: 15b458c57f3e01f448e1fe74aa58895f, type: 2}
   _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-  _affectAll: 1
-  _duration: 5
+  _affectAll: 0
+  _duration: 0.5

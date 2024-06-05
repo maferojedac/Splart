@@ -189,7 +189,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 15, y: 0}
+  m_AnchoredPosition: {x: 15, y: 755.0011}
   m_SizeDelta: {x: -30, y: 1920}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &261278670078294133
@@ -2636,7 +2636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Protege contra un error
+  m_text: Protege contra un error (Puedes equipar hasta 3)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 07ae4946432bcc3449865dc32e4d9314, type: 2}
   m_sharedMaterial: {fileID: -7639303090198783404, guid: 07ae4946432bcc3449865dc32e4d9314,
@@ -2664,7 +2664,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.45
+  m_fontSize: 33.1
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7090,7 +7090,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d638336a9d36548a9ae3a7fdd89ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _exitOffset: {x: 0, y: -1000, z: 0}
+  _exitOffset: {x: 0, y: -2000, z: 0}
 --- !u!222 &7511843225403799313
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -8355,7 +8355,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6001102540378918815}
   m_HandleRect: {fileID: 8819620126594854156}
   m_Direction: 2
-  m_Value: 1
+  m_Value: -0.0000012934603
   m_Size: 0.6067708
   m_NumberOfSteps: 0
   m_OnValueChanged:

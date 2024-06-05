@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 using UnityEngine;
 
 public class EnemyFast : MonoBehaviour, IEnemy
@@ -15,20 +16,26 @@ public class EnemyFast : MonoBehaviour, IEnemy
     [SerializeField] Splat splat;
     [SerializeField] LevelData _levelData;
 
+    public GameObject _damageExplosion;
+    public GameObject _deathExplosion;
+
     private Rigidbody _rigidBody;
 
     public PlayerData playerData;
 
+    private Vector3 _startScale;
+    private float _timer;
+
     public void OnDie()
     {
-        if (playerData.Booster_ScoreUpgrade >= 0)
+        /*if (playerData.Booster_ScoreUpgrade >= 0)
         {
             int scoreMultiplier = playerData.Booster_ScoreUpgrade +1;
             _levelData.SumScore(100 * scoreMultiplier);
         }
-        else
-            _levelData.SumScore(100);
-        Destroy(gameObject);
+        else*/
+        _levelData.SumScore(10);
+        StartCoroutine(DeathByDefeat());
     }
 
     Color IEnemy.GetColor()
@@ -49,6 +56,13 @@ public class EnemyFast : MonoBehaviour, IEnemy
     {
         if(_canBeDamaged)
         {
+            if (_colors.Contains(color))
+            {
+                GameObject exp = Instantiate(_damageExplosion, transform.position, Quaternion.identity);
+                ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
+                colorAdjuster.startColor = ArrayColor.makeRGB(color);
+            }
+
             _colors.Remove(color);
             spriteRenderer.color = _colors.toRGB();
 
@@ -95,6 +109,21 @@ public class EnemyFast : MonoBehaviour, IEnemy
             CreateSplat();
         }
         else    playerData.BoosterLife--;
+        Destroy(gameObject);
+    }
+
+    IEnumerator DeathByDefeat()
+    {
+        _timer = 0f;
+        _startScale = transform.localScale;
+
+        while(_timer < 1f)
+        {
+            _timer += Time.deltaTime * 10f;
+            transform.localScale = Vector3.Lerp(_startScale, Vector3.zero, _timer);
+            yield return null;
+        }
+        Instantiate(_deathExplosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

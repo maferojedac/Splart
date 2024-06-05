@@ -46,3 +46,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _multicolorMaterial: {fileID: 2100000, guid: 9cc8e2660fda6b14b8632e7180f4a0ea, type: 2}
   _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  _affectAll: 1
+  _duration: 5

@@ -66,6 +66,12 @@ public class ArrayColor
         return true;
     }
 
+    public bool Contains(GameColor p_color)
+    {
+        // Ver si Colors contiene completamente a p_colors
+        return _colors.Contains(p_color);
+    }
+
     public Color toRGB()
     {
         if (_colors.Count == 0) return Color.white;

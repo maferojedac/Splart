@@ -7,6 +7,10 @@ public class Multicolor : MonoBehaviour
     public Material _multicolorMaterial;
     public Material _defaultMaterial;
 
+    public bool _affectAll;
+
+    public float _duration;
+
     private List<LevelObject> _furthestSprites;
 
     private float _timer;
@@ -25,7 +29,7 @@ public class Multicolor : MonoBehaviour
         {
             foreach (Transform item in terrainSprites)
             {
-                if(item.gameObject.CompareTag("Far Background"))
+                if(item.gameObject.CompareTag("Far Background") || _affectAll)
                 {
                     _furthestSprites.Add(item.GetComponent<LevelObject>());
                     item.GetComponent<LevelObject>().SetMaterial(_multicolorMaterial);
@@ -37,7 +41,7 @@ public class Multicolor : MonoBehaviour
 
     IEnumerator DoEffect()
     {
-        yield return new WaitForSeconds(4f);
+        yield return new WaitForSeconds(_duration);
 
         while (_strength > 0f)
         {

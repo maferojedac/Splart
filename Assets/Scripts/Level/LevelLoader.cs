@@ -36,6 +36,14 @@ public class LevelLoader : MonoBehaviour, IGameState
 
     void IGameState.UnloadLevel()
     {
+        List<GameObject> enemies = Entity.GetAll();
+        foreach (GameObject enemy in enemies)
+        {
+            if(enemy.CompareTag("ScreenSplat"))
+                enemy.GetComponent<Splat>().Remove();
+            else
+                enemy.GetComponent<IEnemy>()?.OnDie();
+        }
         if (_lastCoroutine == null)
         {
             SlideOutSpritesQueue = new List<LevelObject>(AllLevelSprites);

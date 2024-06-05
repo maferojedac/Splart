@@ -16,6 +16,9 @@ public class EnemyMage : MonoBehaviour, IEnemy
     private BoxCollider _boxCollider;
     private Rigidbody _rigidBody;
 
+    public GameObject _damageExplosion;
+    public GameObject _deathExplosion;
+
     public float _life;
     public bool _depleteLife;
     private bool _isDespawning;
@@ -24,6 +27,7 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     private IEnumerator _actionCoroutine;
 
+    private Vector3 _startScale;
     private float _timer;
 
     private Vector3 SizeOffset;
@@ -32,7 +36,14 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     public void OnDie()
     {
-        Destroy(gameObject);
+        /*if (playerData.Booster_ScoreUpgrade >= 0)
+        {
+            int scoreMultiplier = playerData.Booster_ScoreUpgrade +1;
+            _levelData.SumScore(100 * scoreMultiplier);
+        }
+        else*/
+        _levelData.SumScore(50);
+        StartCoroutine(DeathByDefeat());
     }
 
     Color IEnemy.GetColor()
@@ -47,18 +58,26 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     void IEnemy.TakeDamage(GameColor color)
     {
-        Debug.Log("Ouch!");
+        if (_colors.Contains(color))
+        {
+            Debug.Log("Ouch!");
+            _levelData.SumScore(10);
 
-        _colors.Remove(color);
-        spriteRenderer.color = _colors.toRGB();
+            _colors.Remove(color);
+            spriteRenderer.color = _colors.toRGB();
 
-        StopCoroutine(_actionCoroutine);
+            GameObject exp = Instantiate(_damageExplosion, transform.position, Quaternion.identity);
+            ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
+            colorAdjuster.startColor = ArrayColor.makeRGB(color);
 
-        _isDoingNothing = false;
-        _depleteLife = true;
+            StopCoroutine(_actionCoroutine);
 
-        _actionCoroutine = PenalizedWait(8);
-        StartCoroutine(_actionCoroutine);
+            _isDoingNothing = true;
+            _life -= 7f;
+
+            _actionCoroutine = PenalizedWait(1);
+            StartCoroutine(_actionCoroutine);
+        }
     }
 
     void IEnemy.SetColor(ArrayColor startColor)
@@ -81,7 +100,7 @@ public class EnemyMage : MonoBehaviour, IEnemy
         _nodeTeleport = Random.Range(2, 4);
         _isDoingNothing = true;
         _isDespawning = false;
-        SizeOffset = new Vector3(0, 1f, 0);
+        SizeOffset = new Vector3(0, 3f, 0);
 
         // color related
         _colors = new ArrayColor(GenerateColor());
@@ -129,7 +148,7 @@ public class EnemyMage : MonoBehaviour, IEnemy
         }
         else
         {
-            if (!_isDespawning)
+            if (!_isDespawning && _isDoingNothing)
             {
                 _isDespawning = true;
 
@@ -178,7 +197,7 @@ public class EnemyMage : MonoBehaviour, IEnemy
         Attack();
 
         _nodeTeleport = Random.Range(2, 4);
-        _isDoingNothing = true;
+        // _isDoingNothing = true;
         _depleteLife = false;
 
         _actionCoroutine = Wait(1);
@@ -239,6 +258,21 @@ public class EnemyMage : MonoBehaviour, IEnemy
             yield return null;
         }
 
+        Destroy(gameObject);
+    }
+
+    IEnumerator DeathByDefeat()
+    {
+        _timer = 0f;
+        _startScale = transform.localScale;
+
+        while (_timer < 1f)
+        {
+            _timer += Time.deltaTime * 5f;
+            transform.localScale = Vector3.Lerp(_startScale, Vector3.zero, _timer);
+            yield return null;
+        }
+        Instantiate(_deathExplosion, transform.position, Quaternion.identity);
         Destroy(gameObject);
     }
 

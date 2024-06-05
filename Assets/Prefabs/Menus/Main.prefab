@@ -523,4 +523,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4d638336a9d36548a9ae3a7fdd89ea2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _exitOffset: {x: 0, y: 1000, z: 0}
+  _exitOffset: {x: 0, y: 2000, z: 0}
