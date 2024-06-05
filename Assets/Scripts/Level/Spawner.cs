@@ -53,13 +53,13 @@ public class Spawner : MonoBehaviour
         }
     }
 
-    private ArrayColor GenerateColor(int complexity, bool addKey)
+    private ArrayColor GenerateColor(int complexity, bool allowedKey)
     {
         ArrayColor finalColor = new ArrayColor();
-        for (int i = 0; i < complexity; i++)
+        for (int i = 0; i < Random.Range(1, complexity); i++)
         {
             GameColor newColor;
-            if (finalColor.Count() > 1)
+            if (finalColor.Count() > 2)
             {
                 newColor = finalColor[Random.Range(0, 1)];
             }
@@ -69,7 +69,7 @@ public class Spawner : MonoBehaviour
             }
             finalColor.Add(newColor);
         }
-        if (addKey)
+        if (allowedKey && Random.value > 0.5f)
         {
             if(Random.value > 0.5)
             {
@@ -96,9 +96,9 @@ public class Spawner : MonoBehaviour
 
     public void SetComplexity(int complexity)
     {
-        _allowedKey = (complexity + 2) % 2 == 0;
+        _allowedKey = complexity > 3;
         _complexity = (complexity / 2) + 1;
-        if (_complexity > 3)
-            _complexity = 3;
+        if (_complexity > 5)
+            _complexity = 5;
     }
 }

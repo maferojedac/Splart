@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d46e9bb3b3f0bf84994f60fe72b61078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _multicolorMaterial: {fileID: -876546973899608171, guid: 4777255189180874fbb544b06d7cf7ed,
-    type: 3}
+  _multicolorMaterial: {fileID: 2100000, guid: 9cc8e2660fda6b14b8632e7180f4a0ea, type: 2}
   _defaultMaterial: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  _affectAll: 1
+  _duration: 5

@@ -7,9 +7,11 @@ public class EnemyMovement : MonoBehaviour
 {
     public LevelData NodeMap; // Mapa de nodos
 
-    // Características que cambian el movimiento del enemigo
+    // Caracteristicas que cambian el movimiento del enemigo
     [Header("Enemy traits")]
     public float RunSpeed;
+
+    public float SpeedMultiplier = 1;
     public float TurnSpeed;
     public int Focus;
     public float PathDistraction;
@@ -40,7 +42,7 @@ public class EnemyMovement : MonoBehaviour
 
         // Apuntar y mover enemigo 
         transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((_targetNode.Position - transform.position).normalized), Time.fixedDeltaTime * TurnSpeed);
-        _rigidBody.velocity = transform.rotation * Vector3.forward * RunSpeed;
+        _rigidBody.velocity = transform.rotation * Vector3.forward * RunSpeed * SpeedMultiplier;
         _rigidBody.velocity = new Vector3(_rigidBody.velocity.x, SpeedY, _rigidBody.velocity.z);
 
         // Al alcanzar el nodo, decidir que hacer en base al estado del enemigo
@@ -90,4 +92,9 @@ public class EnemyMovement : MonoBehaviour
 
         return Chosen;
     }
+
+    public void SetSpeedMultiplier(float SpeedMultiplierValue)
+    {
+        SpeedMultiplier = SpeedMultiplierValue;
+    } 
 }

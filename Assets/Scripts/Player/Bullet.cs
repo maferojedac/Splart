@@ -55,8 +55,8 @@ public class Bullet : MonoBehaviour
         if (_deathTimer > -10 && _deathTimer < 0)
         {
             GameObject exp = Instantiate(_explosion, transform.position, Quaternion.identity);
-            ParticleSystem.MainModule retard = exp.GetComponent<ParticleSystem>().main;
-            retard.startColor = _originalColor;
+            ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
+            colorAdjuster.startColor = _originalColor;
             Destroy(gameObject);
         }
     }

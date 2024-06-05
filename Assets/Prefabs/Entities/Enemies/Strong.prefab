@@ -71,6 +71,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NodeMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   RunSpeed: 3
+  SpeedMultiplier: 1
   TurnSpeed: 10
   Focus: 1
   PathDistraction: 20
@@ -89,7 +90,12 @@ MonoBehaviour:
   flashbang: {fileID: 8332001297077376764, guid: ed270689db12d6747b8f94bcf2efff06,
     type: 3}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
+  _damageExplosion: {fileID: 5213833512123402065, guid: 5573cf0b84bd4654cbf933e595e31078,
+    type: 3}
+  _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
+    type: 3}
   spriteRenderer: {fileID: 6956683243872593262}
+  playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
 --- !u!54 &-5486837788763860719
 Rigidbody:
   m_ObjectHideFlags: 0

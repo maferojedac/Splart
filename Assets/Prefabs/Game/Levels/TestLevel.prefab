@@ -1490,7 +1490,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ColorDelay: 5
-  ExitDirection: 0
+  ExitDirection: 2
 --- !u!1 &4446194360168821444
 GameObject:
   m_ObjectHideFlags: 0
@@ -2922,7 +2922,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ColorDelay: 5
-  ExitDirection: 0
+  ExitDirection: 2
 --- !u!1 &7166241566416314494
 GameObject:
   m_ObjectHideFlags: 0

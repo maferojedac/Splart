@@ -10,6 +10,10 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     [SerializeField] private GameObject flashbang;
     [SerializeField] private LevelData _levelData;
 
+    public GameObject _damageExplosion;
+    public GameObject _deathExplosion;
+
+
     private ArrayColor _colors = new();
 
     private bool _canBeDamaged;
@@ -18,10 +22,21 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     private Rigidbody _rigidBody;
     public SpriteRenderer spriteRenderer;
 
+    public PlayerData playerData;
+
+    private Vector3 _startScale;
+    private float _timer;
+
     public void OnDie()
     {
-        _levelData.SumScore(100);
-        Destroy(gameObject);
+        /*if (playerData.Booster_ScoreUpgrade >= 0)
+        {
+            int scoreMultiplier = playerData.Booster_ScoreUpgrade +1;
+            _levelData.SumScore(100 * scoreMultiplier);
+        }
+        else*/
+        _levelData.SumScore(10);
+        StartCoroutine(DeathByDefeat());
     }
 
     Color IEnemy.GetColor()
@@ -31,7 +46,6 @@ public class EnemyStrong : MonoBehaviour, IEnemy
 
     void IEnemy.OnReach(Vector3 dir)
     {
-        Debug.Log("Robot punch");
         _canBeDamaged = false;
         dir.y = 0f;
         dir = dir.normalized * 25f;
@@ -43,6 +57,13 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     {
         if(_canBeDamaged)
         {
+            if (_colors.Contains(color))
+            {
+                GameObject exp = Instantiate(_damageExplosion, transform.position, Quaternion.identity);
+                ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
+                colorAdjuster.startColor = ArrayColor.makeRGB(color);
+            }
+
             _colors.Remove(color);
             spriteRenderer.color = _colors.toRGB();
 
@@ -81,14 +102,31 @@ public class EnemyStrong : MonoBehaviour, IEnemy
             }
         }
     }
+    IEnumerator DeathByDefeat()
+    {
+        _timer = 0f;
+        _startScale = transform.localScale;
+
+        while (_timer < 1f)
+        {
+            _timer += Time.deltaTime * 10f;
+            transform.localScale = Vector3.Lerp(_startScale, Vector3.zero, _timer);
+            yield return null;
+        }
+        Instantiate(_deathExplosion, transform.position, Quaternion.identity);
+        Destroy(gameObject);
+    }
 
     void SelfDestruct()
     {
         if (_levelData._gameRunning)
         {
-            GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
-            GameObject fb = Instantiate(flashbang);
-            fb.transform.parent = transform.parent;
+            if (playerData.BoosterLife <= 0)
+            {
+                GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage();
+                GameObject fb = Instantiate(flashbang);
+                fb.transform.parent = transform.parent;
+            }else    playerData.BoosterLife--;
         }
         Destroy(gameObject);
     }

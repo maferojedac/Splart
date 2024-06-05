@@ -73,7 +73,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -1871234961, guid: 2e843e9cebc921243956dd50ceef443f, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 1720e405f7b68bb46b0869059a6c0dab, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -97,7 +97,6 @@ GameObject:
   - component: {fileID: 4283331648329994947}
   - component: {fileID: -1312349736579301831}
   - component: {fileID: 5232177867496499023}
-  - component: {fileID: 7853104495521156543}
   m_Layer: 3
   m_Name: Fast
   m_TagString: Untagged
@@ -140,8 +139,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4, y: 6, z: 2}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 2, y: 4, z: 2}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &4283331648329994947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -156,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NodeMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   RunSpeed: 4
+  SpeedMultiplier: 1
   TurnSpeed: 50
   Focus: 1
   PathDistraction: 20
@@ -174,6 +174,11 @@ MonoBehaviour:
   spriteRenderer: {fileID: 6956683243872593262}
   splat: {fileID: 7448143773666677230, guid: fd9c14ef50f872b41bdf099b85f376a2, type: 3}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
+  _damageExplosion: {fileID: 5213833512123402065, guid: 5573cf0b84bd4654cbf933e595e31078,
+    type: 3}
+  _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
+    type: 3}
+  playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
 --- !u!54 &5232177867496499023
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -201,27 +206,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 0
---- !u!95 &7853104495521156543
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5852056623976522717}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6738ebacc913fbc41b2e31f75e76301e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6295448740902358407
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,8 +233,8 @@ Transform:
   m_GameObject: {fileID: 6295448740902358407}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.54, y: 0, z: -0.0063744}
-  m_LocalScale: {x: 0.58882153, y: 0.58882153, z: 0.58882153}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2837755134578151054}
@@ -297,7 +281,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 286879801, guid: 678326a6d620d164880849863a5ca1fc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b4409bbe2c0287b4e8d9079b5ce6bc50, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
