@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, IPlayer
     public float BulletSpeed;
 
     public LevelData _levelData;
+    public PlayerData _playerData;
 
     public GameObject _bulletPrefab;
     private Bullet _heldBullet;
@@ -19,23 +20,37 @@ public class Player : MonoBehaviour, IPlayer
 
     // public float CooldownTime;
     public int _HP;
+    public int _Shields;
 
     public bool _isActive;
 
     public void NewGame()
     {
         _HP = 3;
+        _Shields = _playerData.BoosterLife;
+        if (_Shields > 2)
+            _Shields = 2;
+        _playerData.BoosterLife -= _Shields;
         _held = false;
         _isActive = true;
     }
 
-    void IPlayer.TakeDamage()
+    bool IPlayer.TakeDamage()
     {
-        _HP -= 1;
-        if(_HP < 1 && _isActive)
+        if(_Shields <= 0)
         {
-            _isActive = false;
-            _levelData.EndGame();
+            _HP--;
+            if (_HP < 1 && _isActive)
+            {
+                _isActive = false;
+                _levelData.GameOver();
+            }
+            return true;
+        }
+        else
+        {
+            _Shields--;
+            return false;
         }
     }
 

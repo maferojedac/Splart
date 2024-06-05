@@ -70,7 +70,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  RunSpeed: 3
+  RunSpeed: 3.5
   SpeedMultiplier: 1
   TurnSpeed: 10
   Focus: 1

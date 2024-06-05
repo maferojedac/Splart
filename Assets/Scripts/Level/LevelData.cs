@@ -52,6 +52,15 @@ public class LevelData : ScriptableObject
         _baseGameInstance = baseGameInstance;
     }
 
+    public void GameOver()
+    {
+        _gameRunning = false;
+        Time.timeScale = 1f;
+        _levelInstance.GetComponent<IGameState>().GameOver();
+        _menusInstance.GetComponent<IGameState>().GameOver();
+        _baseGameInstance.GetComponent<IGameState>().GameOver();
+    }
+
     public void EndGame()
     {
         _gameRunning = false;

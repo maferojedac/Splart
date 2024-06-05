@@ -8,6 +8,8 @@ public class PlayerManager : MonoBehaviour, IGameState
     public Player player;
     public SimpleMenuAnimation GameCanvas;
     public PauseMenu pauseMenu;
+    public HeartDisplay heartDisplay;
+    public GameOverScreen gameOverScreen;
 
     public TextMeshProUGUI _scoreText;
 
@@ -18,11 +20,21 @@ public class PlayerManager : MonoBehaviour, IGameState
         _levelData.SetBaseGameInstance(gameObject);
         pauseMenu.Vanish();
         GameCanvas.Vanish();
+        gameOverScreen.Vanish();
+    }
+
+    void IGameState.GameOver()
+    {
+        gameOverScreen.Invoke();
+        pauseMenu.SlideOut();
+        GameCanvas.SlideOut();
     }
 
     void IGameState.StartGame()
     {
+        gameOverScreen.Vanish();
         player.NewGame();
+        heartDisplay.NewGame();
         pauseMenu.Vanish();
         GameCanvas.SlideIn();
     }

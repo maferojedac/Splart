@@ -189,7 +189,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 15, y: 755.0011}
+  m_AnchoredPosition: {x: 15, y: 1269.1002}
   m_SizeDelta: {x: -30, y: 1920}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &261278670078294133
@@ -563,7 +563,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.85
+  m_fontSize: 10.95
   m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -909,7 +909,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.9
+  m_fontSize: 25.7
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1044,7 +1044,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.6
+  m_fontSize: 50.6
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1398,7 +1398,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.6
+  m_fontSize: 33
   m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -1823,7 +1823,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.85
+  m_fontSize: 10.95
   m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2033,7 +2033,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.6
+  m_fontSize: 33
   m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2168,7 +2168,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.85
+  m_fontSize: 10.95
   m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2378,7 +2378,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.6
+  m_fontSize: 33
   m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2454,7 +2454,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0.3, y: 1}
-  m_AnchoredPosition: {x: 5.0000076, y: 0}
+  m_AnchoredPosition: {x: 5.0000153, y: 0}
   m_SizeDelta: {x: -30, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &267547715400330166
@@ -2636,7 +2636,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Protege contra un error (Puedes equipar hasta 3)
+  m_text: Protege contra un error (Puedes equipar hasta 2 por partida)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 07ae4946432bcc3449865dc32e4d9314, type: 2}
   m_sharedMaterial: {fileID: -7639303090198783404, guid: 07ae4946432bcc3449865dc32e4d9314,
@@ -2664,7 +2664,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 33.1
+  m_fontSize: 23.4
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -2984,7 +2984,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 20.85
+  m_fontSize: 10.95
   m_fontSizeBase: 13
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3039,7 +3039,7 @@ GameObject:
   - component: {fileID: 6736616647610272381}
   - component: {fileID: 7736111352890359577}
   m_Layer: 5
-  m_Name: Comprar
+  m_Name: Comprar rayo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3148,7 +3148,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6736616647610272381}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2282208665272327180}
+        m_TargetAssemblyTypeName: StoreBuy, Assembly-CSharp
+        m_MethodName: BoosterThunderBuy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2885784090062291439
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,7 +3533,7 @@ GameObject:
   - component: {fileID: 1523832256708087648}
   - component: {fileID: 8855376783267665861}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Jabon precio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3602,7 +3614,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.65
+  m_fontSize: 18.2
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4052,12 +4064,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e2082d4b390fcd9479e2aad4989e40e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BoosterSlow: {fileID: 2810374004683414861}
-  BoosterThunder: {fileID: 7736111352890359577}
-  BoosterClean: {fileID: 2204289415580505801}
-  BoosterLife: {fileID: 2427025812852469902}
-  Booster_AnyUpgrade: {fileID: 9116659623035691076}
-  Booster_ScoreUpgrade: {fileID: 4824349785062991691}
+  BoosterSlowPrice: 500
+  BoosterThunderPrice: 300
+  BoosterCleanPrice: 1000
+  BoosterLifePrice: 200
+  Booster_AnyUpgradePrice: 1
+  Booster_ScoreUpgradePrice: 1
+  BoosterSlow: {fileID: 6066966381633630924}
+  BoosterThunder: {fileID: 5619464232502048409}
+  BoosterClean: {fileID: 8855376783267665861}
+  BoosterLife: {fileID: 4312169500263433608}
+  Booster_AnyUpgrade: {fileID: 7075256053395108807}
+  Booster_ScoreUpgrade: {fileID: 9164781047654369644}
   playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
 --- !u!1 &3601129646157897606
 GameObject:
@@ -4227,7 +4245,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.6
+  m_fontSize: 48.95
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4514,7 +4532,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 56.45
+  m_fontSize: 32.75
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4568,7 +4586,7 @@ GameObject:
   - component: {fileID: 2021319542030373361}
   - component: {fileID: 6066966381633630924}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Reloj Precio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4649,7 +4667,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.65
+  m_fontSize: 18.2
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4780,7 +4798,7 @@ GameObject:
   - component: {fileID: 6735724429558538816}
   - component: {fileID: 2427025812852469902}
   m_Layer: 5
-  m_Name: Comprar
+  m_Name: Comprar salvavidas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4889,7 +4907,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6735724429558538816}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2282208665272327180}
+        m_TargetAssemblyTypeName: StoreBuy, Assembly-CSharp
+        m_MethodName: BoosterLifeBuy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5220146488495110711
 GameObject:
   m_ObjectHideFlags: 0
@@ -5033,7 +5063,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.35
+  m_fontSize: 25.4
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5796,7 +5826,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 57.6
+  m_fontSize: 33
   m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6076,7 +6106,7 @@ GameObject:
   - component: {fileID: 6836759191333905936}
   - component: {fileID: 2810374004683414861}
   m_Layer: 5
-  m_Name: Comprar
+  m_Name: Comprar reloj
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6185,7 +6215,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6836759191333905936}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2282208665272327180}
+        m_TargetAssemblyTypeName: StoreBuy, Assembly-CSharp
+        m_MethodName: BoosterSlowBuy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6638669709247811969
 GameObject:
   m_ObjectHideFlags: 0
@@ -6351,7 +6393,7 @@ GameObject:
   - component: {fileID: 8336393499985435011}
   - component: {fileID: 2204289415580505801}
   m_Layer: 5
-  m_Name: Comprar
+  m_Name: Comprar jabon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6460,7 +6502,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8336393499985435011}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2282208665272327180}
+        m_TargetAssemblyTypeName: StoreBuy, Assembly-CSharp
+        m_MethodName: BoosterCleanBuy
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &6954705328402258665
 GameObject:
   m_ObjectHideFlags: 0
@@ -7489,7 +7543,7 @@ GameObject:
   - component: {fileID: 1586181449289175749}
   - component: {fileID: 5619464232502048409}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Rayo precio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7570,7 +7624,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.65
+  m_fontSize: 18.2
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7750,7 +7804,7 @@ GameObject:
   - component: {fileID: 299465578064407341}
   - component: {fileID: 4312169500263433608}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Salvavidas precio
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7831,7 +7885,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 34.65
+  m_fontSize: 18.2
   m_fontSizeBase: 25
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7966,7 +8020,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 63.25
+  m_fontSize: 32.75
   m_fontSizeBase: 30
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8355,8 +8409,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 6001102540378918815}
   m_HandleRect: {fileID: 8819620126594854156}
   m_Direction: 2
-  m_Value: -0.0000012934603
-  m_Size: 0.6067708
+  m_Value: -0.00000009618652
+  m_Size: 0.3390104
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8589,7 +8643,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.75
+  m_fontSize: 28.2
   m_fontSizeBase: 20
   m_fontWeight: 400
   m_enableAutoSizing: 1

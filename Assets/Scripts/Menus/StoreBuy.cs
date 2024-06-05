@@ -6,76 +6,85 @@ using TMPro;
 
 public class StoreBuy : MonoBehaviour
 {
-    public Button BoosterSlow;
-    public Button BoosterThunder;
-    public Button BoosterClean;
-    public Button BoosterLife;
-    public Button Booster_AnyUpgrade;
-    public Button Booster_ScoreUpgrade;
+    [Header("Precios")]
+    public int BoosterSlowPrice;
+    public int BoosterThunderPrice;
+    public int BoosterCleanPrice;
+    public int BoosterLifePrice;
+    public int Booster_AnyUpgradePrice;
+    public int Booster_ScoreUpgradePrice;
+
+    [Header("Botones de compra")]
+    public TextMeshProUGUI BoosterSlow;
+    public TextMeshProUGUI BoosterThunder;
+    public TextMeshProUGUI BoosterClean;
+    public TextMeshProUGUI BoosterLife;
+    public TextMeshProUGUI Booster_AnyUpgrade;
+    public TextMeshProUGUI Booster_ScoreUpgrade;
 
     public PlayerData playerData;
 
     void Start()
     {
-        BoosterSlow.onClick.AddListener(BoosterSlowChanged);
-        BoosterThunder.onClick.AddListener(BoosterThunderChanged);
-        BoosterClean.onClick.AddListener(BoosterCleanChanged);
-        BoosterLife.onClick.AddListener(BoosterLifeChanged);
-        Booster_AnyUpgrade.onClick.AddListener(Booster_AnyUpgradeChanged);
-        Booster_ScoreUpgrade.onClick.AddListener(Booster_ScoreUpgradeChanged);
+        BoosterSlow.text = BoosterSlowPrice.ToString();
+        BoosterThunder.text = BoosterThunderPrice.ToString();
+        BoosterClean.text = BoosterCleanPrice.ToString();
+        BoosterLife.text = BoosterLifePrice.ToString();
+        Booster_AnyUpgrade.text = Booster_AnyUpgradePrice.ToString();
+        Booster_ScoreUpgrade.text = Booster_ScoreUpgradePrice.ToString();
     }
 
-    public void BoosterSlowChanged()
+    public void BoosterSlowBuy()
     {
-        if (playerData.Money > 0)
+        if (playerData.Money >= BoosterSlowPrice)
         {
             playerData.BoosterSlow++;
-            playerData.Money -= 100;
+            playerData.Money -= BoosterSlowPrice;
         }
     }
 
-    public void BoosterThunderChanged()
+    public void BoosterThunderBuy()
     {
-        if (playerData.Money > 0)
+        if (playerData.Money >= BoosterThunderPrice)
         {
             playerData.BoosterThunder++;
-            playerData.Money -= 100;
+            playerData.Money -= BoosterThunderPrice;
         }
     }
 
-    public void BoosterCleanChanged()
+    public void BoosterCleanBuy()
     {
-        if (playerData.Money > 0)
+        if (playerData.Money >= BoosterCleanPrice)
         {
             playerData.BoosterClean++;
-            playerData.Money -= 100;
+            playerData.Money -= BoosterCleanPrice;
         }
     }
 
-    public void BoosterLifeChanged()
+    public void BoosterLifeBuy()
     {
-        if (playerData.Money > 0)
+        if (playerData.Money >= BoosterLifePrice)
         {
             playerData.BoosterLife++;
-            playerData.Money -= 100;
+            playerData.Money -= BoosterLifePrice;
         }
     }
-
-    public void Booster_AnyUpgradeChanged()
+    
+    public void Booster_AnyUpgradeBuy()
     {
-        if (playerData.Money > 0)
+        if (playerData.Money >= Booster_AnyUpgradePrice)
         {
             playerData.Booster_AnyUpgrade++;
-            playerData.Money -= 100;
+            playerData.Money -= Booster_AnyUpgradePrice;
         }
     }
 
-    public void Booster_ScoreUpgradeChanged()
+    public void Booster_ScoreUpgradeBuy()
     {
-        if (playerData.Money > 0)
+        if (playerData.Money >= Booster_ScoreUpgradePrice)
         {
             playerData.Booster_ScoreUpgrade++;
-            playerData.Money -= 100;
+            playerData.Money -= Booster_ScoreUpgradePrice;
         }
     }
 }
