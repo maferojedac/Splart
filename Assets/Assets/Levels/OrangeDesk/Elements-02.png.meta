@@ -1,0 +1,646 @@
+fileFormatVersion: 2
+guid: 8f21e5893981f3d409ac2d3edd4a64e0
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 50
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: V pencil
+      rect:
+        serializedVersion: 2
+        x: 2181
+        y: 2811
+        width: 52
+        height: 408
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 34724647b401c034e90652f3fc9556a2
+      internalID: -491224715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Plant
+      rect:
+        serializedVersion: 2
+        x: 1418
+        y: 2396
+        width: 474
+        height: 636
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1938c2899a853f49ba6a286d199e79a
+      internalID: 1968042933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Far book
+      rect:
+        serializedVersion: 2
+        x: 614
+        y: 2714
+        width: 370
+        height: 516
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3c3eaac18876e1b479152cf740f01d21
+      internalID: 1307326112
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Case
+      rect:
+        serializedVersion: 2
+        x: 2202
+        y: 2490
+        width: 166
+        height: 234
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c2136e5ecf90ec44ab9490bfa9b5d72
+      internalID: -2041807394
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Book tilt
+      rect:
+        serializedVersion: 2
+        x: 547
+        y: 2228
+        width: 345
+        height: 335
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e4b5303a82d6dc84582860d6f47f95f1
+      internalID: -2100698840
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Sheet
+      rect:
+        serializedVersion: 2
+        x: 2624
+        y: 2351
+        width: 692
+        height: 236
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f25cc3b66e68a384c9a12e9c0e931e3c
+      internalID: 508287449
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pot
+      rect:
+        serializedVersion: 2
+        x: 1566
+        y: 1880
+        width: 363
+        height: 415
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 90a712519792d764a98f51a2f0c19488
+      internalID: -690417983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pencil 3
+      rect:
+        serializedVersion: 2
+        x: 2048
+        y: 1913
+        width: 302
+        height: 333
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2a10d1d2bca76534a89d46827433ea81
+      internalID: -1613647860
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pencil 2
+      rect:
+        serializedVersion: 2
+        x: 2422
+        y: 2034
+        width: 120
+        height: 248
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ae1fb4e85894b2d4191c68e2df1effe0
+      internalID: -1954855713
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pencil 1
+      rect:
+        serializedVersion: 2
+        x: 2674
+        y: 2070
+        width: 188
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3e2ad5434fda57f42b59843c7bdf55cb
+      internalID: 178128662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eraser top
+      rect:
+        serializedVersion: 2
+        x: 2978
+        y: 2040
+        width: 216
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ebabfe39df5b7664883854fc97f29549
+      internalID: 2057966674
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eraser cardboard
+      rect:
+        serializedVersion: 2
+        x: 3226
+        y: 2006
+        width: 219
+        height: 133
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d83856614b799c24585c6917b1171412
+      internalID: -100961705
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lamp
+      rect:
+        serializedVersion: 2
+        x: 186
+        y: 1494
+        width: 346
+        height: 593
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a501a79c112a26344b96c4b56a083894
+      internalID: 1720625233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Eraser bottom
+      rect:
+        serializedVersion: 2
+        x: 3488
+        y: 2002
+        width: 149
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e54058c0e1201e84caf69bcf6ea940bd
+      internalID: -1306080606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Lamp circle
+      rect:
+        serializedVersion: 2
+        x: 635
+        y: 1788
+        width: 221
+        height: 117
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a5b842753cb2c441af470c1141b9910
+      internalID: 718808861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Book stack cover
+      rect:
+        serializedVersion: 2
+        x: 986
+        y: 1474
+        width: 480
+        height: 322
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 165db630e3924a8439d5ffcde5fa68c5
+      internalID: 698534282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Book stack fill
+      rect:
+        serializedVersion: 2
+        x: 1496
+        y: 1512
+        width: 444
+        height: 280
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0cda50d0751a0d548a63d5f56f8e4622
+      internalID: -494952751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadow left 2
+      rect:
+        serializedVersion: 2
+        x: 2232
+        y: 1423
+        width: 568
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ff9db2a4f3f0135438de5875fd0d230b
+      internalID: -674438004
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadow left
+      rect:
+        serializedVersion: 2
+        x: 2025
+        y: 899
+        width: 886
+        height: 373
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7d62b74441edf3e428dbf4a1153219aa
+      internalID: 1246757996
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Shadow right
+      rect:
+        serializedVersion: 2
+        x: 2945
+        y: 1170
+        width: 560
+        height: 213
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a2900ea4bbb488c4c9b11639edb108e6
+      internalID: -1774906789
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Floor
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 85
+        width: 1792
+        height: 1066
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b57f4c01c04809442bf8634f183d145b
+      internalID: -1568691200
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Book stack cover: 698534282
+      Book stack fill: -494952751
+      Book tilt: -2100698840
+      Case: -2041807394
+      Elements-02_1: -1016470750
+      Elements-02_10: -44472459
+      Elements-02_11: -13259749
+      Elements-02_12: -2043816483
+      Elements-02_13: -744966537
+      Elements-02_15: -554541159
+      Elements-02_16: 392580888
+      Elements-02_17: -678911903
+      Elements-02_18: -861783099
+      Elements-02_2: 821819508
+      Elements-02_20: -272685671
+      Elements-02_22: -13247233
+      Elements-02_24: 1763413212
+      Elements-02_25: 938741353
+      Elements-02_26: -1428338390
+      Elements-02_27: 1161577936
+      Elements-02_28: 567581257
+      Elements-02_29: -1716000127
+      Elements-02_3: -1170447862
+      Elements-02_30: -537788026
+      Elements-02_31: 1852140501
+      Elements-02_33: -260182959
+      Elements-02_34: 1015751375
+      Elements-02_35: 1571172536
+      Elements-02_39: 1990140782
+      Elements-02_4: -374535915
+      Elements-02_40: -333404494
+      Elements-02_41: -673578729
+      Elements-02_42: -542342087
+      Elements-02_44: -792939754
+      Elements-02_45: 499181746
+      Elements-02_48: 1541975395
+      Elements-02_5: -1195807776
+      Elements-02_50: 1403574999
+      Elements-02_51: 1836022076
+      Elements-02_52: 744394752
+      Elements-02_53: -1334368906
+      Elements-02_54: 352681387
+      Elements-02_55: 2111026074
+      Elements-02_56: 541590822
+      Elements-02_57: 514075377
+      Elements-02_58: -955485975
+      Elements-02_60: 1521772295
+      Elements-02_61: -1748391264
+      Elements-02_62: -686303158
+      Elements-02_63: 450691055
+      Elements-02_66: 265094910
+      Elements-02_67: 1918010103
+      Elements-02_68: 2046344049
+      Elements-02_7: -599706065
+      Elements-02_70: 1984903810
+      Elements-02_71: 2131981548
+      Elements-02_72: 1016030109
+      Elements-02_73: 453551409
+      Elements-02_74: 765204251
+      Elements-02_8: -389681755
+      Elements-02_9: 1107975768
+      Eraser bottom: -1306080606
+      Eraser cardboard: -100961705
+      Eraser top: 2057966674
+      Far book: 1307326112
+      Floor: -1568691200
+      Lamp: 1720625233
+      Lamp circle: 718808861
+      Pencil 1: 178128662
+      Pencil 2: -1954855713
+      Pencil 3: -1613647860
+      Plant: 1968042933
+      Pot: -690417983
+      Shadow left: 1246757996
+      Shadow left 2: -674438004
+      Shadow right: -1774906789
+      Sheet: 508287449
+      V pencil: -491224715
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

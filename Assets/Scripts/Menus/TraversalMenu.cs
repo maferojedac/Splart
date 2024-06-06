@@ -16,6 +16,13 @@ public class TraversalMenu : MonoBehaviour
         GoToMain();    
     }
 
+    public void HideAllMenu()
+    {
+        MainMenu.SlideOut();
+        ConfigMenu.SlideOut();
+        StoreMenu.SlideOut();
+    }
+
     public void StartGame()
     {
         MainMenu.SlideOut();

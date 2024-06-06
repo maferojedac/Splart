@@ -1699,7 +1699,7 @@ GameObject:
   - component: {fileID: 643752822173957043}
   - component: {fileID: 598213703563156372}
   m_Layer: 0
-  m_Name: TestLevel
+  m_Name: GoldStairway
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -16,6 +16,7 @@ public class WaveManager : MonoBehaviour
     private int _timeScore;
     private int _complexityScore;
     private int _waveScore;
+    private int _speedScore;
 
     private bool _allowBoss;
 
@@ -26,6 +27,7 @@ public class WaveManager : MonoBehaviour
         _complexityScore = 1;
         _timeScore = 1;
         _waveScore = 0;
+        _speedScore = 0;
 
         GenerateWave(1);
     }
@@ -37,8 +39,12 @@ public class WaveManager : MonoBehaviour
             _wave++;
             _complexityScore++;
             _timeScore++;
-            if (_timeScore % 2 == 0 && _waveScore < 5)
-                _waveScore++;
+            _waveScore++;
+            if(_speedScore < 1)
+            {
+                _speedScore++;
+                _levelData.SetGlobalSpeedMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));
+            }
             _allowBoss = Random.value > 0.5;
             _levelData.NextWave();
             GenerateWave(_wave);
@@ -88,10 +94,18 @@ public class WaveManager : MonoBehaviour
         if (QueueElement < _spawners.Length)
             return 5f;
         float newTime;
-        newTime = 20f / (Mathf.Sqrt(Score + 5)) + 4f;
+        newTime = 20f / (Mathf.Sqrt(Score + 10f));
         newTime += Random.value * 2f;
         if (Random.value > 0.8f)
             newTime /= 2f;
         return newTime;
+    }
+
+    public void DisableSpawners()
+    {
+        foreach (Spawner spawner in _spawners)
+        {
+            spawner.Disable();
+        }
     }
 }

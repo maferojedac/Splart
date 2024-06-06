@@ -158,7 +158,7 @@ MonoBehaviour:
   SpeedMultiplier: 1
   TurnSpeed: 50
   Focus: 1
-  PathDistraction: 20
+  PathDistraction: 30
 --- !u!114 &-1312349736579301831
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,7 +178,6 @@ MonoBehaviour:
     type: 3}
   _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
     type: 3}
-  playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
 --- !u!54 &5232177867496499023
 Rigidbody:
   m_ObjectHideFlags: 0

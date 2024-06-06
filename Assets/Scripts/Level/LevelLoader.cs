@@ -28,7 +28,16 @@ public class LevelLoader : MonoBehaviour, IGameState
 
     void IGameState.EndGame()
     {
-        foreach(LevelObject current in ColorSpritesQueue)
+        GameObject.Find("WaveManager").GetComponent<WaveManager>().DisableSpawners();
+        List<GameObject> enemies = Entity.GetAll();
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy.CompareTag("ScreenSplat"))
+                enemy.GetComponent<Splat>().Remove();
+            else
+                enemy.GetComponent<IEnemy>()?.OnDie();
+        }
+        foreach (LevelObject current in ColorSpritesQueue)
         {
             current.Paint();
         }
