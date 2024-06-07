@@ -9,6 +9,8 @@ public class Bullet : MonoBehaviour
 
     public float _speed;
 
+    public PlayerData _playerData;
+
     // componentes de gameobject
     public SpriteRenderer _spriteRenderer;
     public GameObject _explosion;
@@ -21,8 +23,13 @@ public class Bullet : MonoBehaviour
     private Color _originalColor;
     private float _alpha;
 
+    private AudioSource _audioSource;
+
     void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = _playerData.SoundeffectsVolume;
+
         _alpha = 1f;
         _originalColor = ArrayColor.makeRGB(_color);
 
@@ -74,6 +81,7 @@ public class Bullet : MonoBehaviour
     {
         _timer = 0f;
         _released = true;
+        _audioSource.Play();
         if (_target == null)
         {
             Kill();

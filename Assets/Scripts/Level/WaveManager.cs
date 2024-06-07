@@ -40,7 +40,7 @@ public class WaveManager : MonoBehaviour
             _complexityScore++;
             _timeScore++;
             _waveScore++;
-            if(_speedScore < 1)
+            if(_speedScore < 10 && _waveScore % 2 == 0)
             {
                 _speedScore++;
                 _levelData.SetGlobalSpeedMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));

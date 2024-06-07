@@ -24,8 +24,14 @@ public class StoreBuy : MonoBehaviour
 
     public PlayerData playerData;
 
+    public AudioClip purchaseSound;
+
+    private AudioSource _audioSource;
+
     void Start()
     {
+        _audioSource = GetComponent<AudioSource>();
+
         BoosterSlow.text = BoosterSlowPrice.ToString();
         BoosterThunder.text = BoosterThunderPrice.ToString();
         BoosterClean.text = BoosterCleanPrice.ToString();
@@ -38,6 +44,9 @@ public class StoreBuy : MonoBehaviour
     {
         if (playerData.Money >= BoosterSlowPrice)
         {
+            _audioSource.volume = playerData.SoundeffectsVolume;
+            _audioSource.PlayOneShot(purchaseSound);
+
             playerData.BoosterSlow++;
             playerData.Money -= BoosterSlowPrice;
         }
@@ -47,6 +56,9 @@ public class StoreBuy : MonoBehaviour
     {
         if (playerData.Money >= BoosterThunderPrice)
         {
+            _audioSource.volume = playerData.SoundeffectsVolume;
+            _audioSource.PlayOneShot(purchaseSound);
+
             playerData.BoosterThunder++;
             playerData.Money -= BoosterThunderPrice;
         }
@@ -56,6 +68,9 @@ public class StoreBuy : MonoBehaviour
     {
         if (playerData.Money >= BoosterCleanPrice)
         {
+            _audioSource.volume = playerData.SoundeffectsVolume;
+            _audioSource.PlayOneShot(purchaseSound);
+
             playerData.BoosterClean++;
             playerData.Money -= BoosterCleanPrice;
         }
@@ -65,6 +80,9 @@ public class StoreBuy : MonoBehaviour
     {
         if (playerData.Money >= BoosterLifePrice)
         {
+            _audioSource.volume = playerData.SoundeffectsVolume;
+            _audioSource.PlayOneShot(purchaseSound);
+
             playerData.BoosterLife++;
             playerData.Money -= BoosterLifePrice;
         }
@@ -74,6 +92,9 @@ public class StoreBuy : MonoBehaviour
     {
         if (playerData.Money >= Booster_AnyUpgradePrice)
         {
+            _audioSource.volume = playerData.SoundeffectsVolume;
+            _audioSource.PlayOneShot(purchaseSound);
+
             playerData.Booster_AnyUpgrade++;
             playerData.Money -= Booster_AnyUpgradePrice;
         }
@@ -83,6 +104,9 @@ public class StoreBuy : MonoBehaviour
     {
         if (playerData.Money >= Booster_ScoreUpgradePrice)
         {
+            _audioSource.volume = playerData.SoundeffectsVolume;
+            _audioSource.PlayOneShot(purchaseSound);
+
             playerData.Booster_ScoreUpgrade++;
             playerData.Money -= Booster_ScoreUpgradePrice;
         }

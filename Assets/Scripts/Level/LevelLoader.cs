@@ -13,9 +13,15 @@ public class LevelLoader : MonoBehaviour, IGameState
     private float _timer;
     private IEnumerator _lastCoroutine;
 
+    public PlayerData _playerData;
+    private AudioSource _audioSource;
+
     void Start()
     {
-        if(AllLevelSprites.Count == 0)
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = _playerData.MusicVolume;
+
+        if (AllLevelSprites.Count == 0)
         {
             foreach (Transform levelsprite in transform.Find("Map").Find("TerrainSprites"))
             {
@@ -24,6 +30,12 @@ public class LevelLoader : MonoBehaviour, IGameState
         }
         ColorSpritesQueue = new List<LevelObject>(AllLevelSprites);
         StartGame();
+    }
+
+    void IGameState.GameOver()
+    {
+        GameObject.Find("WaveManager").GetComponent<TutorialManager>()?.EndTutorial();
+        StartCoroutine(MusicFadeOut());
     }
 
     void IGameState.EndGame()
@@ -85,6 +97,18 @@ public class LevelLoader : MonoBehaviour, IGameState
     void Update()
     {
          
+    }
+
+    IEnumerator MusicFadeOut()
+    {
+        _timer = 1f;
+        while (_timer > 0)
+        {
+            _timer -= Time.deltaTime;
+            _audioSource.volume = _timer;
+            yield return null;
+        }
+        _audioSource.volume = 0f;
     }
 
     IEnumerator SlideAllObjectsIn()

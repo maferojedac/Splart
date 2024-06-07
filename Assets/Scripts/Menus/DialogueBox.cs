@@ -13,11 +13,20 @@ public class DialogueBox : MonoBehaviour
     public Image _portrait;
     public Transform _continue;
 
+    public PlayerData _playerData;
+
     private Vector3 _originalContinuePosition;
+
+    private AudioSource _audioSource;
+    private AudioClip _nextClip;
 
     void Start()
     {
-        gameObject.SetActive(false);
+        _audioSource = GetComponent<AudioSource>();
+
+        // gameObject.SetActive(false);
+        transform.rotation = Quaternion.Euler(0, 90f, 0);
+
         _message.text = "";
         _portrait.sprite = null;
         _originalContinuePosition = _continue.localPosition;
@@ -28,10 +37,16 @@ public class DialogueBox : MonoBehaviour
         _continue.localPosition = _originalContinuePosition + (Vector3.right * 20f * Mathf.Cos(Time.realtimeSinceStartup * 8f));
     }
 
-    public void MakeDialogue(string msg, Sprite sprite)
+    public void MakeDialogue(string msg, Sprite sprite, AudioClip clip)
     {
         Time.timeScale = 0f;
-        gameObject.SetActive(true);
+
+        _audioSource.volume = _playerData.SoundeffectsVolume;
+        _audioSource.PlayOneShot(clip);
+
+
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+
         _message.text = msg;
         _portrait.sprite = sprite;
         _continue.gameObject.SetActive(true);
@@ -46,18 +61,37 @@ public class DialogueBox : MonoBehaviour
             if (Input.GetMouseButton(0))
             {
                 Time.timeScale = 1f;
-                gameObject.SetActive(false);
+
+                transform.rotation = Quaternion.Euler(0, 90f, 0);
                 break;
             }
             yield return null;
         }
     }
 
-    public void BackgroundDialogue(string msg, Sprite sprite)
+    public void PlaySound(AudioClip clip)
     {
-        gameObject.SetActive(true);
+        _audioSource.volume = _playerData.SoundeffectsVolume;
+        _audioSource.PlayOneShot(clip);
+    }
+
+    public void BackgroundDialogue(string msg, Sprite sprite, AudioClip clip)
+    {
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        _audioSource.volume = _playerData.SoundeffectsVolume;
+        _audioSource.PlayOneShot(clip);
+
         _continue.gameObject.SetActive(false);
         _message.text = msg;
         _portrait.sprite = sprite;
+    }
+
+    public void CancelDialogue()
+    {
+        StopAllCoroutines();
+        transform.rotation = Quaternion.Euler(0, 90f, 0);
+        _message.text = "";
+        _portrait.sprite = null;
     }
 }

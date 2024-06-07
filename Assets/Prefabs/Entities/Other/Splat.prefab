@@ -74,7 +74,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 1
   m_Sprite: {fileID: 21300000, guid: 76f9fea7ce71e7f41bc1e970c2f2bb74, type: 3}
-  m_Color: {r: 1, g: 0.6, b: 0.2, a: 0.7}
+  m_Color: {r: 1, g: 0, b: 0.2, a: 0.7}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 6271385489871039699}
-  playerData: {fileID: 11400000, guid: 9806dea7c665bbb48bd95ba911894543, type: 2}
+  playerData: {fileID: 0}
 --- !u!61 &3923280099951021546
 BoxCollider2D:
   m_ObjectHideFlags: 0

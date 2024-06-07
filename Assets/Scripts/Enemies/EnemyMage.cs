@@ -5,22 +5,40 @@ using UnityEngine;
 public class EnemyMage : MonoBehaviour, IEnemy
 {
 
-    [SerializeField] GameObject Effect;
-    [SerializeField] LevelData _levelData;
+    [Header("Effects")]
+    public GameObject _damageExplosion;
+    public GameObject _deathExplosion;
 
-    private ArrayColor _colors = new();
+    public GameObject Effect;
 
+    [Header("Components")]
     public SpriteRenderer spriteRenderer;
     public GameObject particleRenderer;
+
+    public Transform leftEye;
+    public Transform rightEye;
+
+    [Header("Level communication")]
+    public LevelData _levelData;
+
+    [Header("Sound clips")]
+    public AudioClip _spawn;
+    public AudioClip _damage;
+    public AudioClip _die;
+    public AudioClip _charge;
+    public AudioClip _attack;
+    public AudioClip _disappear;
+    public AudioClip _appear;
+
+    // priv
+
+    private ArrayColor _colors = new();
 
     private BoxCollider _boxCollider;
     private Rigidbody _rigidBody;
 
-    public GameObject _damageExplosion;
-    public GameObject _deathExplosion;
-
-    public float _life;
-    public bool _depleteLife;
+    private float _life;
+    private bool _depleteLife;
     private bool _isDespawning;
     private int _nodeTeleport;
     private bool _isDoingNothing;
@@ -32,16 +50,14 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     private Vector3 SizeOffset;
 
+    private Animator _animator;
+
     private MapNode _nextNode;
+    private EnemySoundManager _soundManager;
 
     public void OnDie()
     {
-        /*if (playerData.Booster_ScoreUpgrade >= 0)
-        {
-            int scoreMultiplier = playerData.Booster_ScoreUpgrade +1;
-            _levelData.SumScore(100 * scoreMultiplier);
-        }
-        else*/
+        _soundManager.PlaySound(_die);
         _levelData.SumScore(50);
         StartCoroutine(DeathByDefeat());
     }
@@ -60,7 +76,6 @@ public class EnemyMage : MonoBehaviour, IEnemy
     {
         if (_colors.Contains(color))
         {
-            Debug.Log("Ouch!");
             _levelData.SumScore(10);
 
             _colors.Remove(color);
@@ -70,12 +85,14 @@ public class EnemyMage : MonoBehaviour, IEnemy
             ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
             colorAdjuster.startColor = ArrayColor.makeRGB(color);
 
+            _soundManager.PlaySound(_damage, 2f);
+
             StopCoroutine(_actionCoroutine);
 
             _isDoingNothing = true;
-            _life -= 7f;
+            _life -= 4f;
 
-            _actionCoroutine = PenalizedWait(1);
+            _actionCoroutine = PenalizedWait(3);
             StartCoroutine(_actionCoroutine);
         }
     }
@@ -93,10 +110,12 @@ public class EnemyMage : MonoBehaviour, IEnemy
             Destroy(gameObject);
         }
 
-        _life = 25f;
+        _life = 15f;
         _depleteLife = false;
 
-        
+        _soundManager = transform.parent.GetComponent<EnemySoundManager>();
+        _soundManager.PlaySound(_spawn);
+
         _nodeTeleport = Random.Range(2, 4);
         _isDoingNothing = true;
         _isDespawning = false;
@@ -109,6 +128,7 @@ public class EnemyMage : MonoBehaviour, IEnemy
         // component related
         _boxCollider = GetComponent<BoxCollider>();
         _rigidBody = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
 
         particleRenderer.SetActive(false);
 
@@ -117,6 +137,11 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     void Update()
     {
+        rightEye.Rotate(0, 0, 180f * Time.deltaTime);
+        rightEye.localScale = new Vector3(1.5f + Mathf.Cos(Time.time * 5f), 1.5f - Mathf.Cos(Time.time * 5f) * 0.5f, 0);
+        leftEye.Rotate(0, 0, 180f * Time.deltaTime);
+        leftEye.localScale = new Vector3(1.5f - Mathf.Cos(Time.time * 5f), 1.5f + Mathf.Cos(Time.time * 5f) * 0.5f, 0);
+
         _rigidBody.velocity = Vector3.zero;
         if(_life > 0)
         {
@@ -162,6 +187,8 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     IEnumerator PenalizedWait(float seconds)
     {
+        _animator.SetTrigger("StaffDown");
+
         particleRenderer.SetActive(false);
         _boxCollider.enabled = false;    // can be hit when waiting
         _isDoingNothing = false;
@@ -176,6 +203,8 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     IEnumerator Wait(float seconds)
     {
+        _animator.SetTrigger("StaffDown");
+
         particleRenderer.SetActive(false);
         particleRenderer.SetActive(false);
         _boxCollider.enabled = true;    // can be hit when waiting
@@ -188,10 +217,14 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     IEnumerator ChargeAttack()
     {
+        _animator.SetTrigger("StaffUp");
+
         particleRenderer.SetActive(true);
         _boxCollider.enabled = true;    // can be hit when charging
 
         _isDoingNothing = false;
+
+        _soundManager.PlaySound(_charge);
 
         yield return new WaitForSeconds(5f);
         Attack();
@@ -206,10 +239,14 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     IEnumerator Teleport()
     {
+        _animator.SetTrigger("StaffDown");
+
         particleRenderer.SetActive(false);
         _boxCollider.enabled = false;   // can't be hit when teleporting
         _isDoingNothing = false;
         _nodeTeleport--;
+
+        _soundManager.PlaySound(_appear);
 
         _timer = 0;
         while (_timer < 2)
@@ -224,6 +261,7 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
         _colors = new ArrayColor(GenerateColor());
         spriteRenderer.color = _colors.toRGB();
+
 
         _timer = 0;
         while (_timer < 2)
@@ -245,9 +283,13 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     IEnumerator Disappear()
     {
+        _animator.SetTrigger("StaffDown");
+
         particleRenderer.SetActive(false);
         _boxCollider.enabled = false;   // can't be hit when despawning
         _isDoingNothing = false;
+
+        _soundManager.PlaySound(_disappear);
 
         _timer = 0;
         while (_timer < 5)
@@ -278,12 +320,14 @@ public class EnemyMage : MonoBehaviour, IEnemy
 
     private void Attack()
     {
+        _soundManager.PlaySound(_attack);
+
         GameObject fb = Instantiate(Effect);
         fb.transform.parent = transform.parent;
     }
 
     private GameColor GenerateColor()
     {
-        return (GameColor)Random.Range(0, 5);
+        return (GameColor)Random.Range(0, 3);
     }
 }

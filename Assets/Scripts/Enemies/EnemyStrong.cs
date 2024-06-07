@@ -6,13 +6,26 @@ using UnityEngine;
 
 public class EnemyStrong : MonoBehaviour, IEnemy
 {
-    
-    [SerializeField] private GameObject flashbang;
-    [SerializeField] private LevelData _levelData;
+    [Header("Components")]
+    public SpriteRenderer spriteRenderer;
 
+    [Header("Effects")]
     public GameObject _damageExplosion;
     public GameObject _deathExplosion;
 
+    public GameObject flashbang;
+
+    [Header("Level communication")]
+    public LevelData _levelData;
+
+    [Header("Sound clips")]
+    public AudioClip _spawn;
+    public AudioClip _damage;
+    public AudioClip _die;
+    public AudioClip _reach;
+    public AudioClip _resist;
+
+    // priv
 
     private ArrayColor _colors = new();
 
@@ -20,10 +33,13 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     private float _punchDuration;
 
     private Rigidbody _rigidBody;
-    public SpriteRenderer spriteRenderer;
 
     private Vector3 _startScale;
     private float _timer;
+
+    private int _originalColorCount;
+
+    private EnemySoundManager _soundManager;
 
     public void OnDie()
     {
@@ -49,7 +65,9 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     {
         if(_canBeDamaged)
         {
-            if (_colors.Contains(color))
+            bool didHit = _colors.Contains(color);
+
+            if (didHit)
             {
                 GameObject exp = Instantiate(_damageExplosion, transform.position, Quaternion.identity);
                 ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
@@ -59,6 +77,14 @@ public class EnemyStrong : MonoBehaviour, IEnemy
             _colors.Remove(color);
             spriteRenderer.color = _colors.toRGB();
 
+            if (didHit)
+                if (_colors.Count() == 0)
+                    _soundManager.PlaySound(_die);
+                else
+                    _soundManager.PlaySound(_damage, 2f - (_colors.Count() * 1f / _originalColorCount));
+            else
+                _soundManager.PlaySound(_resist);
+
             if (_colors.Count() == 0)
                 OnDie();
         }
@@ -67,6 +93,7 @@ public class EnemyStrong : MonoBehaviour, IEnemy
     void IEnemy.SetColor(ArrayColor startColor)
     {
         _colors = startColor;
+        _originalColorCount = _colors.Count();
     }
 
     void Start()
@@ -76,6 +103,10 @@ public class EnemyStrong : MonoBehaviour, IEnemy
             Debug.Log("Sprite not found!");
             Destroy(gameObject);
         }
+
+        _soundManager = transform.parent.GetComponent<EnemySoundManager>();
+
+        _soundManager.PlaySound(_spawn);
 
         spriteRenderer.color = _colors.toRGB();
         _rigidBody = GetComponent<Rigidbody>();
@@ -115,6 +146,8 @@ public class EnemyStrong : MonoBehaviour, IEnemy
         {
             if (GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage())
             {
+                _soundManager.PlaySound(_reach);
+
                 GameObject fb = Instantiate(flashbang);
                 fb.transform.parent = transform.parent;
             }

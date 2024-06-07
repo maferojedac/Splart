@@ -91,10 +91,7 @@ public class Player : MonoBehaviour, IPlayer
                 {
                     EnableLine();
 
-                    Vector3 lineGoal = Input.mousePosition;
-                    lineGoal = Camera.main.ScreenToWorldPoint(lineGoal);
-
-                    UpdateLine(pos, lineGoal, ArrayColor.makeRGB(_heldBullet._color), hit.collider.gameObject.GetComponent<IEnemy>().GetColor());
+                    UpdateLine(transform.position - new Vector3(0, 5f, 0), hit.transform.position, ArrayColor.makeRGB(_heldBullet._color), hit.collider.gameObject.GetComponent<IEnemy>().GetColor());
                     _heldBullet._target = hit.collider.gameObject;
                 }
                 else

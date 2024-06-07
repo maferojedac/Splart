@@ -7,22 +7,71 @@ public class EnemyFast : MonoBehaviour, IEnemy
 {
 
     private ArrayColor _colors = new();
+
+    [Header("Components")]
     public SpriteRenderer spriteRenderer;
+
+    [Header("Effects")]
+    public GameObject _damageExplosion;
+    public GameObject _deathExplosion;
+
+    public Splat splat;
+
+    [Header("Level communication")]
+    public LevelData _levelData;
+
+    [Header("Sound clips")]
+    public AudioClip _spawn;
+    public AudioClip _damage;
+    public AudioClip _die;
+    public AudioClip _reach;
+    public AudioClip _resist;
+
+    // priv
 
     private Transform _mainCam;
 
     private bool _canBeDamaged;
 
-    [SerializeField] Splat splat;
-    [SerializeField] LevelData _levelData;
-
-    public GameObject _damageExplosion;
-    public GameObject _deathExplosion;
-
     private Rigidbody _rigidBody;
 
     private Vector3 _startScale;
     private float _timer;
+
+    private int _originalColorCount;
+
+    private EnemySoundManager _soundManager;
+
+    void Start()
+    {
+        if (spriteRenderer == null)
+        {
+            Debug.Log("Sprite not found!");
+            Destroy(gameObject);
+        }
+
+        _soundManager = transform.parent.GetComponent<EnemySoundManager>();
+
+        _soundManager.PlaySound(_spawn);
+
+        spriteRenderer.color = _colors.toRGB();
+        _mainCam = Camera.main.transform;
+
+        _rigidBody = GetComponent<Rigidbody>();
+
+        _canBeDamaged = true;
+    }
+
+    void Update()
+    {
+        if (!_canBeDamaged)
+        {
+            if (_rigidBody.velocity.y < 0)
+            {
+                SelfDestruct();
+            }
+        }
+    }
 
     public void OnDie()
     {
@@ -38,9 +87,11 @@ public class EnemyFast : MonoBehaviour, IEnemy
     void IEnemy.OnReach(Vector3 dir)
     {
         _canBeDamaged = false;
+
         dir.y = 0f;
         dir = dir.normalized * 20f;
         dir.y = 10f;
+
         _rigidBody.AddForce(dir, ForceMode.Impulse);
     }
 
@@ -48,7 +99,8 @@ public class EnemyFast : MonoBehaviour, IEnemy
     {
         if(_canBeDamaged)
         {
-            if (_colors.Contains(color))
+            bool didHit = _colors.Contains(color);
+            if (didHit)
             {
                 GameObject exp = Instantiate(_damageExplosion, transform.position, Quaternion.identity);
                 ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
@@ -58,6 +110,14 @@ public class EnemyFast : MonoBehaviour, IEnemy
             _colors.Remove(color);
             spriteRenderer.color = _colors.toRGB();
 
+            if(didHit)
+                if(_colors.Count() == 0)
+                    _soundManager.PlaySound(_die);
+                else
+                    _soundManager.PlaySound(_damage, 2f - (_colors.Count() * 1f/ _originalColorCount));
+            else
+                _soundManager.PlaySound(_resist);
+
             if (_colors.Count() == 0)
                 OnDie();
         }
@@ -66,31 +126,7 @@ public class EnemyFast : MonoBehaviour, IEnemy
     void IEnemy.SetColor(ArrayColor startColor)
     {
         _colors = startColor;
-    }
-
-    void Start()
-    {
-        if (spriteRenderer == null)
-        {
-            Debug.Log("Sprite not found!");
-            Destroy(gameObject);
-        }
-
-        spriteRenderer.color = _colors.toRGB();
-        _mainCam = Camera.main.transform;
-        _rigidBody = GetComponent<Rigidbody>();
-        _canBeDamaged = true;
-    }
-
-    void Update()
-    {
-        if (!_canBeDamaged)
-        {
-            if(_rigidBody.velocity.y < 0)
-            {
-                SelfDestruct();
-            }
-        }
+        _originalColorCount = _colors.Count();
     }
 
     void SelfDestruct()
@@ -121,10 +157,14 @@ public class EnemyFast : MonoBehaviour, IEnemy
     {
         if (_levelData._gameRunning)
         {
+            _soundManager.PlaySound(_reach);
+
             Color splat_color = _colors.toRGB();
+
             splat_color.a = 0.7f;
             splat.ChangeColor(splat_color);
             Splat splatobj = Instantiate(splat);
+
             splatobj.transform.parent = _mainCam;
             splatobj.transform.localPosition = new Vector3(Random.Range(-0.8f, 0.8f), Random.Range(-1, 1.3f), 2.5f);
             splatobj.transform.parent = transform.parent;
