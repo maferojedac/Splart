@@ -12,6 +12,8 @@ public class LevelData : ScriptableObject
 
     public int _currentScore;
 
+    public float _globalEnemySpeedMultiplier;
+
     private GameObject _menusInstance;
     private GameObject _baseGameInstance;
 
@@ -25,6 +27,16 @@ public class LevelData : ScriptableObject
         _levelInstance.GetComponent<IGameState>().NextWave();
         _menusInstance.GetComponent<IGameState>().NextWave();
         _baseGameInstance.GetComponent<IGameState>().NextWave();
+    }
+
+    public void SetGlobalSpeedMultiplier(float val)
+    {
+        _globalEnemySpeedMultiplier = val;
+    }
+
+    public float GetGlobalSpeedMultiplier()
+    {
+        return _globalEnemySpeedMultiplier;
     }
 
     public void SumScore(int score)
@@ -72,7 +84,9 @@ public class LevelData : ScriptableObject
 
     public void StartGame()
     {
+        _nodes.Clear();
         _currentScore = 0;
+        _globalEnemySpeedMultiplier = 1f;
         _gameRunning = true;
         _levelInstance.GetComponent<IGameState>().StartGame();
         _menusInstance.GetComponent<IGameState>().StartGame();

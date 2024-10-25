@@ -5,8 +5,8 @@ using UnityEngine;
 public class LevelObject : MonoBehaviour
 {
 
-    [SerializeField] private float ColorDelay;
     [SerializeField] private Direction ExitDirection;
+    [SerializeField] private bool Decolor = true;
 
     private SpriteRenderer _spriteRenderer;
     private Vector3 _originalHSV;
@@ -26,14 +26,17 @@ public class LevelObject : MonoBehaviour
         _painting = false;
         _time = 0f;
 
-        Vector3 hsv = Vector3.zero;
-        Color.RGBToHSV(_spriteRenderer.color, out hsv.x, out hsv.y, out hsv.z) ;
-        _originalHSV = hsv;
-        hsv.y = 0;
-        hsv.z = 1f;
-        _grayscaleHSV = hsv;
-        _spriteRenderer.color = Color.HSVToRGB(hsv.x, hsv.y, hsv.z);
-
+        if (Decolor)
+        {
+            Vector3 hsv = Vector3.zero;
+            Color.RGBToHSV(_spriteRenderer.color, out hsv.x, out hsv.y, out hsv.z);
+            _originalHSV = hsv;
+            hsv.y = 0;
+            hsv.z = 1f;
+            _grayscaleHSV = hsv;
+            _spriteRenderer.color = Color.HSVToRGB(hsv.x, hsv.y, hsv.z);
+        }
+        
         _state = LevelObjectState.None;
 
         _atLevelPosition = transform.position;

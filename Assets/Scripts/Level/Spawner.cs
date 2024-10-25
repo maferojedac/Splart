@@ -16,39 +16,55 @@ public class Spawner : MonoBehaviour
     private int _complexity;
     private bool _allowedKey;
 
+    private bool _enableSpawning;
+    private ArrayColor _forcedColor;
+
     void Start()
     {
-        if(_enemyParent == null)
+        _enableSpawning = true;
+
+        if (_enemyParent == null)
             _enemyParent = GameObject.Find("Enemies").transform;
     }
 
     void Update()
     {
         // Generar enemigos
-        _timer += Time.deltaTime;
-        if(_spawnableQueue.Count > 0)
+        if (_enableSpawning)
         {
-            _generating = true;
-            if (_timer > _spawnableQueue[0].Delay)
+            _timer += Time.deltaTime;
+            if (_spawnableQueue.Count > 0)
             {
-                _timer = 0f;
-                GameObject enemy = Instantiate(_spawnableQueue[0].SpawnObject, transform.position, Quaternion.identity);
-                enemy.GetComponent<IEnemy>().SetColor(GenerateColor(_complexity, _allowedKey));
-                enemy.transform.parent = _enemyParent;
-                _lastGenerated = enemy;
-                _spawnableQueue.RemoveAt(0);
-            }
-        }
-        else
-        {
-            if(_lastGenerated == null)  // dont end sequence until enemy is dead
-            {
-                _generating = false;
-                _timer = 0f;
+                _generating = true;
+                if (_timer > _spawnableQueue[0].Delay)
+                {
+                    _timer = 0f;
+                    GameObject enemy = Instantiate(_spawnableQueue[0].SpawnObject, transform.position, Quaternion.identity);
+                    if(_forcedColor != null)
+                    {
+                        enemy.GetComponent<IEnemy>().SetColor(_forcedColor);
+                        _forcedColor = null;
+                    }
+                    else
+                    {
+                        enemy.GetComponent<IEnemy>().SetColor(GenerateColor(_complexity, _allowedKey));
+                    }
+                    enemy.transform.parent = _enemyParent;
+                    _lastGenerated = enemy;
+                    _spawnableQueue.RemoveAt(0);
+                }
             }
             else
             {
-                _generating = true;
+                if (_lastGenerated == null)  // dont end sequence until enemy is dead
+                {
+                    _generating = false;
+                    _timer = 0f;
+                }
+                else
+                {
+                    _generating = true;
+                }
             }
         }
     }
@@ -92,6 +108,16 @@ public class Spawner : MonoBehaviour
     public bool IsStillGenerating()
     {
         return _generating;
+    }
+
+    public void Disable()
+    {
+        _enableSpawning = false;
+    }
+
+    public void ForceColor(ArrayColor color)
+    {
+        _forcedColor = color;
     }
 
     public void SetComplexity(int complexity)

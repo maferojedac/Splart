@@ -21,9 +21,6 @@ public class BoostersShowing : MonoBehaviour
     public GameObject _darkenEffect;
     public GameObject _thunderObject;
 
-
-    private bool _isSlowBooted = false;
-
     private float _counterTimer;
     private float _counterGoal;
 

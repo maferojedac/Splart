@@ -13,9 +13,15 @@ public class LevelLoader : MonoBehaviour, IGameState
     private float _timer;
     private IEnumerator _lastCoroutine;
 
+    public PlayerData _playerData;
+    private AudioSource _audioSource;
+
     void Start()
     {
-        if(AllLevelSprites.Count == 0)
+        _audioSource = GetComponent<AudioSource>();
+        _audioSource.volume = _playerData.MusicVolume;
+
+        if (AllLevelSprites.Count == 0)
         {
             foreach (Transform levelsprite in transform.Find("Map").Find("TerrainSprites"))
             {
@@ -26,9 +32,24 @@ public class LevelLoader : MonoBehaviour, IGameState
         StartGame();
     }
 
+    void IGameState.GameOver()
+    {
+        GameObject.Find("WaveManager").GetComponent<TutorialManager>()?.EndTutorial();
+        StartCoroutine(MusicFadeOut());
+    }
+
     void IGameState.EndGame()
     {
-        foreach(LevelObject current in ColorSpritesQueue)
+        GameObject.Find("WaveManager").GetComponent<WaveManager>().DisableSpawners();
+        List<GameObject> enemies = Entity.GetAll();
+        foreach (GameObject enemy in enemies)
+        {
+            if (enemy.CompareTag("ScreenSplat"))
+                enemy.GetComponent<Splat>().Remove();
+            else
+                enemy.GetComponent<IEnemy>()?.OnDie();
+        }
+        foreach (LevelObject current in ColorSpritesQueue)
         {
             current.Paint();
         }
@@ -76,6 +97,18 @@ public class LevelLoader : MonoBehaviour, IGameState
     void Update()
     {
          
+    }
+
+    IEnumerator MusicFadeOut()
+    {
+        _timer = 1f;
+        while (_timer > 0)
+        {
+            _timer -= Time.deltaTime;
+            _audioSource.volume = _timer;
+            yield return null;
+        }
+        _audioSource.volume = 0f;
     }
 
     IEnumerator SlideAllObjectsIn()

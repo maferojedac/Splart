@@ -1,4 +1,5 @@
 using System;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 
 public class Player : MonoBehaviour, IPlayer
@@ -10,6 +11,7 @@ public class Player : MonoBehaviour, IPlayer
     public PlayerData _playerData;
 
     public GameObject _bulletPrefab;
+    public Transform _bulletYRefTransform;
     private Bullet _heldBullet;
     private float _canRegretBullet;
     private bool _held;
@@ -17,6 +19,8 @@ public class Player : MonoBehaviour, IPlayer
     private LayerMask _entityMask;
     private LineRenderer _lineRenderer;
     private Vector3 _cameraPos;
+
+    private float _bulletYRef;
 
     // public float CooldownTime;
     public int _HP;
@@ -60,6 +64,9 @@ public class Player : MonoBehaviour, IPlayer
 
         _lineRenderer = GetComponent<LineRenderer>();   
         _cameraPos = Camera.main.transform.position;
+
+        _bulletYRef = _bulletYRefTransform.position.y;
+
         NewGame();
     }
 
@@ -72,7 +79,7 @@ public class Player : MonoBehaviour, IPlayer
             {
                 Vector3 pos = Input.mousePosition;
                 pos.z = transform.position.z + 2f;
-                pos.y = 150f;
+                pos.y = _bulletYRefTransform.position.y;
                 pos = Camera.main.ScreenToWorldPoint(pos);
 
                 Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -82,23 +89,20 @@ public class Player : MonoBehaviour, IPlayer
                 
                 if (Physics.Raycast(ray, out hit, 500f, _entityMask))
                 {
-                    _lineRenderer.SetPosition(0, _cameraPos - new Vector3(0, 1, 0));
-                    _lineRenderer.SetPosition(1, hit.point);
-                    _lineRenderer.endColor = hit.collider.gameObject.GetComponent<IEnemy>().GetColor();
-                    _lineRenderer.startColor = ArrayColor.makeRGB(_heldBullet._color);
+                    EnableLine();
+
+                    UpdateLine(transform.position - new Vector3(0, 5f, 0), hit.transform.position, ArrayColor.makeRGB(_heldBullet._color), hit.collider.gameObject.GetComponent<IEnemy>().GetColor());
                     _heldBullet._target = hit.collider.gameObject;
                 }
                 else
                 {
-                    _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
-                    _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
+                    DisableLine();
                     _heldBullet._target = null;
                 }
             }
             else
             {
-                _lineRenderer.SetPosition(0, new Vector3(0, 0, 1));
-                _lineRenderer.SetPosition(1, new Vector3(0, 0, 1));
+                DisableLine();
                 _heldBullet.Release();
                 _heldBullet = null;
             }
@@ -108,6 +112,24 @@ public class Player : MonoBehaviour, IPlayer
         else
             _held = false;
         
+    }
+
+    private void UpdateLine(Vector3 from,  Vector3 to, Color start, Color end)
+    {
+        _lineRenderer.SetPosition(0, from);
+        _lineRenderer.SetPosition(1, to);
+        _lineRenderer.endColor = end;
+        _lineRenderer.startColor = start;
+    }
+
+    private void EnableLine()
+    {
+        _lineRenderer.enabled = true;
+    }
+
+    private void DisableLine()
+    {
+        _lineRenderer.enabled = false;
     }
 
     public void SelectRed()
@@ -139,6 +161,8 @@ public class Player : MonoBehaviour, IPlayer
     {
         if (_isActive)
         {
+            if(_heldBullet != null)
+                _heldBullet.Release();
             _heldBullet = Instantiate(_bulletPrefab).GetComponent<Bullet>();
             _heldBullet._color = color;
             _canRegretBullet = 0.2f;
