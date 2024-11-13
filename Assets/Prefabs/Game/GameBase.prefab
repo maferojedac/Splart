@@ -1011,6 +1011,7 @@ MonoBehaviour:
   BoostLifeShield: {fileID: 6685506580513010827}
   BoostScore: {fileID: 8610672042237044081}
   _playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
+  _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   _visualTimer: {fileID: 8444941500659979389}
   _pressedSparkles: {fileID: 5860245416878262815}
   _darkenEffect: {fileID: 7474230272610645831, guid: 0d07fe13b754f4c45aed4ee76653310e,

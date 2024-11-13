@@ -43,7 +43,7 @@ public class WaveManager : MonoBehaviour
             if(_speedScore < 10 && _waveScore % 2 == 0)
             {
                 _speedScore++;
-                _levelData.SetGlobalSpeedMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));
+                _levelData.SetGlobalSpeedWaveMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));
             }
             _allowBoss = Random.value > 0.5;
             _levelData.NextWave();

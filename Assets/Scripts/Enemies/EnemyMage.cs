@@ -2,13 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyMage : MonoBehaviour, IEnemy
+public class EnemyMage : Enemy
 {
-
-    [Header("Effects")]
-    public GameObject _damageExplosion;
-    public GameObject _deathExplosion;
-
+    /*
     public GameObject Effect;
 
     [Header("Components")]
@@ -18,13 +14,8 @@ public class EnemyMage : MonoBehaviour, IEnemy
     public Transform leftEye;
     public Transform rightEye;
 
-    [Header("Level communication")]
-    public LevelData _levelData;
-
     [Header("Sound clips")]
     public AudioClip _spawn;
-    public AudioClip _damage;
-    public AudioClip _die;
     public AudioClip _charge;
     public AudioClip _attack;
     public AudioClip _disappear;
@@ -330,4 +321,5 @@ public class EnemyMage : MonoBehaviour, IEnemy
     {
         return (GameColor)Random.Range(0, 3);
     }
+    */
 }

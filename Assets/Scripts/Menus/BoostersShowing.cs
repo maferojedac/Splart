@@ -14,6 +14,7 @@ public class BoostersShowing : MonoBehaviour
 
     [Header("Data")]
     public PlayerData _playerData;
+    public LevelData _levelData;
 
     [Header("Visuals and effects")]
     public Image _visualTimer;
@@ -84,11 +85,7 @@ public class BoostersShowing : MonoBehaviour
 
         List<GameObject> enemies = Entity.GetAll();
 
-        foreach (GameObject enemy in enemies)
-        {
-            if (enemy != null)
-                enemy.GetComponent<EnemyMovement>()?.SetSpeedMultiplier(0.2f);
-        }
+        _levelData.SetGlobalSpeedMultiplier(0.2f);
 
         while( _counterTimer < _counterGoal)
         {
@@ -101,11 +98,7 @@ public class BoostersShowing : MonoBehaviour
 
         // yield return new WaitForSeconds(10.0f);
 
-        foreach (GameObject enemy in enemies)
-        {
-            if(enemy != null)
-                enemy.GetComponent<EnemyMovement>()?.SetSpeedMultiplier(1.0f);
-        }
+        _levelData.SetGlobalSpeedMultiplier(1f);
 
         _visualTimer.fillAmount = 0f;
         _activeBooster = false;
@@ -146,11 +139,8 @@ public class BoostersShowing : MonoBehaviour
 
         foreach (GameObject enemy in enemies)
         {
-            if (enemy.CompareTag("MageEnemy"))
-            {
-                GameObject newThunder = Instantiate(_thunderObject);
-                newThunder.GetComponent<Thunder>()._target = enemy;
-            }
+            GameObject newThunder = Instantiate(_thunderObject);
+            newThunder.GetComponent<Thunder>()._target = enemy;
         }
     }
 

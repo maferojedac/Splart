@@ -1,32 +1,36 @@
-using System.Collections;
+// Class that provides communication for all objects in game. Update states, keep track of nodes, etc.
+// Created by Javier Soto
+
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Custom/MovementMap")]
 public class LevelData : ScriptableObject
 {
-    public List<MapNode> _nodes = new List<MapNode>();
-    public GameObject _levelInstance;
-    public bool _gameRunning;
+    public List<MapNode> _nodes = new();    //  Publicly accesible nodes taht can be called at random
 
-    public int _currentScore;
+    public IGameState _levelInstance;       // Reference to current loaded level
 
-    public float _globalEnemySpeedMultiplier;
+    public bool _gameRunning;   // Control boolean
 
-    private GameObject _menusInstance;
-    private GameObject _baseGameInstance;
+    public int _currentScore;   // Game Score
+
+    public float _globalEnemySpeedMultiplier;   // Self explanatory
+    public float _globalEnemyWaveSpeedMultiplier;   // For wave speed managing
+
+    private IGameState _menusInstance;      // Reference to menu instance
+    private IGameState _baseGameInstance;   // Reference to base game instance
 
     private void OnEnable()
     {
         _nodes.Clear();
     }
 
-    public void NextWave()
+    public void NextWave()  // Communicate next wave to all that apply
     {
-        _levelInstance.GetComponent<IGameState>().NextWave();
-        _menusInstance.GetComponent<IGameState>().NextWave();
-        _baseGameInstance.GetComponent<IGameState>().NextWave();
+        _levelInstance.NextWave();
+        _menusInstance.NextWave();
+        _baseGameInstance.NextWave();
     }
 
     public void SetGlobalSpeedMultiplier(float val)
@@ -34,9 +38,18 @@ public class LevelData : ScriptableObject
         _globalEnemySpeedMultiplier = val;
     }
 
+    public void SetGlobalSpeedWaveMultiplier(float val)
+    {
+        _globalEnemyWaveSpeedMultiplier = val;
+    }
+
     public float GetGlobalSpeedMultiplier()
     {
         return _globalEnemySpeedMultiplier;
+    }
+    public float GetGlobalSpeedWaveMultiplier()
+    {
+        return _globalEnemyWaveSpeedMultiplier;
     }
 
     public void SumScore(int score)
@@ -49,66 +62,70 @@ public class LevelData : ScriptableObject
         return _currentScore;
     }
 
-    public void UnloadPreviousLevel()
+    public void UnloadPreviousLevel()   // Ask level to unload
     {
-        _levelInstance.GetComponent<IGameState>().UnloadLevel();
+        _levelInstance.UnloadLevel();
     }
 
-    public void SetMenuInstance(GameObject menuInstance)
+    public void SetMenuInstance(IGameState menuInstance)
     {
         _menusInstance = menuInstance;
     }
 
-    public void SetBaseGameInstance(GameObject baseGameInstance)
+    public void SetBaseGameInstance(IGameState baseGameInstance)
     {
         _baseGameInstance = baseGameInstance;
     }
 
-    public void GameOver()
+    public void GameOver()  // Game End by death
     {
         _gameRunning = false;
         Time.timeScale = 1f;
-        _levelInstance.GetComponent<IGameState>().GameOver();
-        _menusInstance.GetComponent<IGameState>().GameOver();
-        _baseGameInstance.GetComponent<IGameState>().GameOver();
+        _levelInstance.GameOver();
+        _menusInstance.GameOver();
+        _baseGameInstance.GameOver();
     }
 
-    public void EndGame()
+    public void EndGame()   // Force Game End
     {
         _gameRunning = false;
-        Time.timeScale = 1.0f;
-        _levelInstance.GetComponent<IGameState>().EndGame();
-        _menusInstance.GetComponent<IGameState>().EndGame();    
-        _baseGameInstance.GetComponent<IGameState>().EndGame(); 
+        Time.timeScale = 1f;
+        _levelInstance.EndGame();
+        _menusInstance.EndGame();    
+        _baseGameInstance.EndGame(); 
     }
 
-    public void StartGame()
+    public void StartGame() // Start new game
     {
+        // reset variables
         _nodes.Clear();
         _currentScore = 0;
         _globalEnemySpeedMultiplier = 1f;
         _gameRunning = true;
-        _levelInstance.GetComponent<IGameState>().StartGame();
-        _menusInstance.GetComponent<IGameState>().StartGame();
-        _baseGameInstance.GetComponent<IGameState>().StartGame();
+
+        // start game events
+        _levelInstance.StartGame();
+        _menusInstance.StartGame();
+        _baseGameInstance.StartGame();
     }
 
-    public void SetInstance(GameObject p_object)
+    public void SetLevelInstance(IGameState p_object)
     {
         _levelInstance = p_object;
     }
 
     public void SetPlayerPosition(Vector3 p_position)
     {
-        _levelInstance.transform.position = -p_position;
+        // Let's try and assume that all levels have player at 0,0 and see how that works :P
+        //_levelInstance.transform.position = -p_position;
     }
 
-    public void RegisterNode(Vector3 p_position, bool p_hasWall)
+    public void RegisterNode(MapNode node)
     {
-        _nodes.Add(new MapNode(_nodes.Count, p_position, p_hasWall));
+        _nodes.Add(node);
     }
 
-    public List<MapNode> MakePathFromNodes(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
+    /*public List<MapNode> MakePathFromNodes(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
         List<MapNode> pathNodes = new List<MapNode>();
         foreach (MapNode node in _nodes)
@@ -147,14 +164,14 @@ public class LevelData : ScriptableObject
         }
 
         return closestNode;
-    }
+    } */
 
     public MapNode RandomNode()
     {
         return _nodes[Random.Range(0, _nodes.Count - 1)];
     }
 
-    public bool AnyNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
+    /*public bool AnyNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
     {
         foreach (MapNode node in _nodes)
         {
@@ -173,6 +190,6 @@ public class LevelData : ScriptableObject
         if (diffAngle < p_FOVdegrees)
             return true;
         return false;
-    }
+    }*/
 
 }

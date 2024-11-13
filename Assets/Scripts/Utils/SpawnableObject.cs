@@ -5,11 +5,11 @@ using UnityEngine;
 public struct SpawnableObject
 {
     public float Delay;
-    public GameObject SpawnObject;
+    public EnemyType enemyType;
 
-    public SpawnableObject(float p_delay,  GameObject p_spawnObject)
+    public SpawnableObject(float p_delay,  EnemyType p_enemyType)
     {
         this.Delay = p_delay;
-        this.SpawnObject = p_spawnObject;
+        this.enemyType = p_enemyType;
     }
 }

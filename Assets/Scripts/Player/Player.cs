@@ -39,7 +39,7 @@ public class Player : MonoBehaviour, IPlayer
         _isActive = true;
     }
 
-    bool IPlayer.TakeDamage()
+    public bool TakeDamage()
     {
         if(_Shields <= 0)
         {
@@ -91,7 +91,7 @@ public class Player : MonoBehaviour, IPlayer
                 {
                     EnableLine();
 
-                    UpdateLine(transform.position - new Vector3(0, 5f, 0), hit.transform.position, ArrayColor.makeRGB(_heldBullet._color), hit.collider.gameObject.GetComponent<IEnemy>().GetColor());
+                    UpdateLine(transform.position - new Vector3(0, 5f, 0), hit.transform.position, ArrayColor.makeRGB(_heldBullet._color), hit.collider.gameObject.GetComponent<Enemy>().GetColor());
                     _heldBullet._target = hit.collider.gameObject;
                 }
                 else

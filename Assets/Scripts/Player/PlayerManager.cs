@@ -17,7 +17,7 @@ public class PlayerManager : MonoBehaviour, IGameState
 
     void Start()
     {
-        _levelData.SetBaseGameInstance(gameObject);
+        _levelData.SetBaseGameInstance(this);
         pauseMenu.Vanish();
         GameCanvas.Vanish();
         gameOverScreen.Vanish();
@@ -48,7 +48,7 @@ public class PlayerManager : MonoBehaviour, IGameState
 
     void Update()
     {
-        if (_levelData._gameRunning)
+        if (_levelData._gameRunning)    // weed eater
             _scoreText.text = $"{_levelData.GetScore()}";
         else
             _scoreText.text = "0";

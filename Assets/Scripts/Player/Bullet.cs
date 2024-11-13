@@ -72,7 +72,7 @@ public class Bullet : MonoBehaviour
     {
         if(other.gameObject == _target)
         {
-            other.GetComponent<IEnemy>()?.TakeDamage(_color);
+            other.GetComponent<Enemy>()?.TakeDamage(_color);
             Kill();
         }
     }

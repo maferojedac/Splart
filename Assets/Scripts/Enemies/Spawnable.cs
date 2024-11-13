@@ -6,5 +6,5 @@ using UnityEngine;
 
 public class Spawnable : ScriptableObject
 {
-    public GameObject[] Spawnables;
+    public EnemyType[] Spawnables;
 }

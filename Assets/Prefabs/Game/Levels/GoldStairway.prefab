@@ -442,7 +442,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d9a467cbe8a1d449b93b8537e278d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyParent: {fileID: 1608596817315576495}
+  _enemyPooler: {fileID: 1063059904664086912}
+  _startingNode: {fileID: 2601804659278615464}
 --- !u!212 &8132631002215278379
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -558,7 +559,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2080746734892745368}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -606,7 +607,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode:
+  - {fileID: 6204597391794692149}
+  isSource: 0
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &2405838633060716110
 GameObject:
   m_ObjectHideFlags: 0
@@ -656,7 +660,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2405838633060716110}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -704,7 +708,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode:
+  - {fileID: 6537016159995413514}
+  isSource: 1
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &2866576844552805194
 GameObject:
   m_ObjectHideFlags: 0
@@ -888,7 +895,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3313723288956752243}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -936,7 +943,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode:
+  - {fileID: 106012194670775729}
+  isSource: 0
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &3421440385580094131
 GameObject:
   m_ObjectHideFlags: 0
@@ -986,7 +996,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3421440385580094131}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1034,7 +1044,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode:
+  - {fileID: 106012194670775729}
+  isSource: 0
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &3688667972455939250
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,7 +1553,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4446194360168821444}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1588,7 +1601,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode:
+  - {fileID: 0}
+  isSource: 0
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &4580291724596635245
 GameObject:
   m_ObjectHideFlags: 0
@@ -1715,7 +1731,7 @@ Transform:
   m_GameObject: {fileID: 4974613194237610866}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 2.62, z: 70}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1880,7 +1896,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36d9a467cbe8a1d449b93b8537e278d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyParent: {fileID: 1608596817315576495}
+  _enemyPooler: {fileID: 1063059904664086912}
+  _startingNode: {fileID: 324167550698109347}
 --- !u!212 &6219161561190945095
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1996,7 +2013,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5331501807519379866}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -2044,7 +2061,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode:
+  - {fileID: 512255301167156695}
+  isSource: 1
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &5790807223874924859
 GameObject:
   m_ObjectHideFlags: 0
@@ -3299,7 +3319,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7285281982966043414}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3347,7 +3367,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode:
+  - {fileID: 8443766328648890003}
+  isSource: 0
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &7349100625448277165
 GameObject:
   m_ObjectHideFlags: 0
@@ -3931,7 +3954,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8571166605906592907}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -3979,7 +4002,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   movementMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  hasWall: 0
+  nextNode: []
+  isSource: 0
+  Position: {x: 0, y: 0, z: 0}
 --- !u!1 &8798020934278360666
 GameObject:
   m_ObjectHideFlags: 0
@@ -4351,6 +4376,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 15bef00ba2c12d049891f252c360ffbf, type: 3}
+--- !u!114 &1063059904664086912 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8456012382773654313, guid: 15bef00ba2c12d049891f252c360ffbf,
+    type: 3}
+  m_PrefabInstance: {fileID: 8906278570141260457}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2ac0aae5b3633b4f9c4a18ba60ea671, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1608596817315576495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7911583627519631366, guid: 15bef00ba2c12d049891f252c360ffbf,

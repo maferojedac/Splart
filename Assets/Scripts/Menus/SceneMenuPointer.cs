@@ -1,3 +1,5 @@
+// Debugging class
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -23,7 +25,7 @@ public class SceneMenuPointer : MonoBehaviour, IGameState
     void Start()
     {
         _menu = GetComponent<TraversalMenu>();
-        _levelData.SetMenuInstance(gameObject);
+        _levelData.SetMenuInstance(this);
 
         StartCoroutine(StartGameSequenceCoroutine());
     }
@@ -47,7 +49,7 @@ public class SceneMenuPointer : MonoBehaviour, IGameState
         Destroy(_lastLevel);
         _lastLevel = Instantiate(Levels[0]);
         _lastLevel.SetActive(true);
-        _levelData.SetInstance(_lastLevel);
+        _levelData.SetLevelInstance(_lastLevel.GetComponent<IGameState>());
         _levelData.StartGame();
     }
 
