@@ -1,5 +1,9 @@
-using System;
-using System.Collections;
+// ArrayColor lets you build a color out of GameColors
+// ArrayColor allows you to convert said color to RGB through proccess through RYB space
+// ArrayColor allows you to edit the array at free
+
+// Created by Javier Soto
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -74,7 +78,10 @@ public class ArrayColor
 
     public Color toRGB()
     {
-        if (_colors.Count == 0) return Color.white;
+        GameColor[] tempArray = _colors.ToArray();
+        return CalculateRGB(tempArray);
+
+        /*if (_colors.Count == 0) return Color.white;
         int Yellow = 0, Blue = 0, Red = 0, White = 0, Max;
         foreach (var gcolor in _colors)
         {
@@ -111,16 +118,39 @@ public class ArrayColor
         else    // if color is any other combination
             color = new RYBColor(rybRed, rybYellow, rybBlue, 1.0f);
 
-        return color.toRGB();
+        return color.toRGB();*/
     }
 
     public static Color makeRGB(GameColor[] p_colors)
     {
-        List<GameColor> Colors = new List<GameColor>(p_colors);
+        return CalculateRGB(p_colors);
+    }
 
-        if (Colors.Count == 0) return Color.white;
+    public static Color makeRGB(GameColor p_color)
+    {
+        /*RYBColor color;
+        switch (p_color)
+            {
+                case GameColor.Yellow:  color = new RYBColor(0f, 1f, 0f, 1f); break;
+                case GameColor.Blue:    color = new RYBColor(0f, 0f, 1f, 1f); ; break;
+                case GameColor.Red:     color = new RYBColor(1f, 0f, 0f, 1f); ; break;
+                case GameColor.White:   color = new RYBColor(1f, 1f, 1f, 1f); ; break;
+                default:                color = new RYBColor(0f, 0f, 0f, 1f); ; break;
+            }*/
+        GameColor[] tempArray = { p_color };
+
+        return CalculateRGB(tempArray);
+    }
+
+    static Color CalculateRGB(GameColor[] p_colors)
+    {
+        if (p_colors.Length == 0) return Color.white;   // Cancel if color is null
+
+        // Color counters
         int Yellow = 0, Blue = 0, Red = 0, White = 0, Max;
-        foreach (var gcolor in Colors)
+
+        // Count colors
+        foreach (var gcolor in p_colors)
         {
             switch (gcolor)
             {
@@ -132,15 +162,20 @@ public class ArrayColor
                 default: break;
             }
         }
+
+        // Get max color
         Max = Mathf.Max(Yellow, Blue, Red);
         float rybRed, rybYellow, rybBlue;
 
+        // Calculate white addition
         float WhiteBalance = (White * 1f / p_colors.Length);
 
+        // Get RYB components of colors
         rybRed = Mathf.Clamp((Red * 1.0f / Max) + WhiteBalance, 0, 1f);
         rybYellow = Mathf.Clamp((Yellow * 1.0f / Max) + WhiteBalance, 0, 1f);
         rybBlue = Mathf.Clamp((Blue * 1.0f / Max) + WhiteBalance, 0, 1f);
 
+        // Make RYB color
         RYBColor color;
         if (Yellow == Red && Red == Blue)
         {
@@ -154,21 +189,6 @@ public class ArrayColor
         }
         else    // if color is any other combination
             color = new RYBColor(rybRed, rybYellow, rybBlue, 1.0f);
-
-        return color.toRGB();
-    }
-
-    public static Color makeRGB(GameColor p_color)
-    {
-        RYBColor color;
-        switch (p_color)
-            {
-                case GameColor.Yellow:  color = new RYBColor(0f, 1f, 0f, 1f); break;
-                case GameColor.Blue:    color = new RYBColor(0f, 0f, 1f, 1f); ; break;
-                case GameColor.Red:     color = new RYBColor(1f, 0f, 0f, 1f); ; break;
-                case GameColor.White:   color = new RYBColor(1f, 1f, 1f, 1f); ; break;
-                default:                color = new RYBColor(0f, 0f, 0f, 1f); ; break;
-            }
 
         return color.toRGB();
     }

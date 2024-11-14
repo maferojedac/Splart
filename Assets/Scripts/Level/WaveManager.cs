@@ -1,15 +1,18 @@
+// WaveManager expects to be attached to a child of Level's Master Prefab. Preferably to an object of the same name as script.
+// WaveManager is one way to define objectives and goals for each level
+// WaveManager currently generates waves infinitely until player loses all lives.
+
+// Created by Javier Soto
+
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class WaveManager : MonoBehaviour
 {
-
-    public Spawnable spawnableEnemies;
-    public Spawnable spawnableBosses;
-    public LevelData _levelData;
-    public Spawner[] _spawners;
+    [Header("Initialization configuration")]
+    [Tooltip("Provide level communication!")] public LevelData _levelData;
+    [Tooltip("Attach spawner objects here!")] public Spawner[] _spawners;
 
     private int _wave;
 
@@ -20,35 +23,28 @@ public class WaveManager : MonoBehaviour
 
     private bool _allowBoss;
 
-    void Start()
+    private GameObject[] SpawnablesCommon;
+    private GameObject[] SpawnablesMinibosses;
+
+    void Awake()
+    {
+        // Get from level settings
+        Debug.Log(transform.parent.name);
+        SpawnablesCommon = transform.parent.GetComponent<LevelSettings>().SpawnablesCommon;
+        SpawnablesMinibosses = transform.parent.GetComponent<LevelSettings>().SpawnablesMinibosses;
+    }
+
+    void OnEnable()
     {
         _wave = 1;
 
+        // Initialize variables
         _complexityScore = 1;
         _timeScore = 1;
         _waveScore = 0;
         _speedScore = 0;
 
         GenerateWave(1);
-    }
-
-    void Update()
-    {
-        if (AllDone())
-        {
-            _wave++;
-            _complexityScore++;
-            _timeScore++;
-            _waveScore++;
-            if(_speedScore < 10 && _waveScore % 2 == 0)
-            {
-                _speedScore++;
-                _levelData.SetGlobalSpeedWaveMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));
-            }
-            _allowBoss = Random.value > 0.5;
-            _levelData.NextWave();
-            GenerateWave(_wave);
-        }
     }
 
     public bool AllDone()
@@ -66,18 +62,20 @@ public class WaveManager : MonoBehaviour
         Debug.Log("Generating new wave!");
         int Length = Random.Range(4 + _waveScore, 5 + _waveScore);
         List<SpawnableObject> GeneratedWave = new();
+
+        Debug.Log(SpawnablesCommon);
         for(int i = 0; i < Length; i++)
         {
-            if(_allowBoss)
+            if(_allowBoss && i == Length - 1)
             {
-                _allowBoss = false;
-                GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore, i), spawnableBosses.Spawnables[Random.Range(0, spawnableBosses.Spawnables.Length)]));
+                GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore, i), SpawnablesMinibosses[Random.Range(0, SpawnablesMinibosses.Length)]));
             }
             else
             {
-                GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore, i), spawnableEnemies.Spawnables[Random.Range(0, spawnableEnemies.Spawnables.Length)]));
+                GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore, i), SpawnablesCommon[Random.Range(0, SpawnablesCommon.Length)]));
             }
         }
+
         int Count = 0;
         foreach (SpawnableObject spawnableObject in GeneratedWave)
         {
@@ -85,6 +83,9 @@ public class WaveManager : MonoBehaviour
             _spawners[Count % _spawners.Length].AddToQueue(spawnableObject);
             Count++;
         }
+
+        StartSpawners();
+        StartCoroutine(WaitForWaveEnd());
     }
 
     private float GenerateTime(int Score, int QueueElement)
@@ -106,6 +107,39 @@ public class WaveManager : MonoBehaviour
         foreach (Spawner spawner in _spawners)
         {
             spawner.Disable();
+        }
+    }
+
+    public void StartSpawners()
+    {
+        foreach (Spawner spawner in _spawners)
+        {
+            spawner.StartGeneration();
+        }
+    }
+
+    IEnumerator WaitForWaveEnd()
+    {
+        bool condition = true;
+        while (condition)
+        {
+            if (AllDone())
+            {
+                _wave++;
+                _complexityScore++;
+                _timeScore++;
+                _waveScore++;
+                if (_speedScore < 10 && _waveScore % 2 == 0)
+                {
+                    _speedScore++;
+                    _levelData.SetGlobalSpeedWaveMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));
+                }
+                _allowBoss = Random.value > 0.5;
+                _levelData.NextWave();
+                GenerateWave(_wave);
+            }
+
+            yield return new WaitForSeconds(0.1f);  // Check for wave end 10 times per second (We don't need it to be *that* precise)
         }
     }
 }

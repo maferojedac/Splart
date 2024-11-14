@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using TMPro;
 using UnityEngine;
 
-public class PlayerManager : MonoBehaviour, IGameState
+public class PlayerManager : MonoBehaviour, IGameState, ILevelEvent
 {
     public Player player;
     public SimpleMenuAnimation GameCanvas;
@@ -13,14 +12,23 @@ public class PlayerManager : MonoBehaviour, IGameState
 
     public TextMeshProUGUI _scoreText;
 
-    public LevelData _levelData;
+    [NonSerialized] public LevelData _levelData;
+    [NonSerialized] public GameState _gameState;    // Game communication
+    [NonSerialized] public PlayerData _playerData;    
 
-    void Start()
+    void Awake()
     {
-        _levelData.SetBaseGameInstance(this);
-        pauseMenu.Vanish();
-        GameCanvas.Vanish();
-        gameOverScreen.Vanish();
+        CommunicationPrefabScript communicator = GameObject.Find("CommunicationPrefab").GetComponent<CommunicationPrefabScript>();
+        _levelData = communicator._levelData;
+        _gameState = communicator._gameState;
+        _playerData = communicator._playerData;
+
+        _gameState.SetBaseGameInstance(this);
+        _levelData.SubscribeToEvents(this);
+
+        pauseMenu.Vanish(); // ram eater
+        GameCanvas.Vanish();    // weed eater
+        gameOverScreen.Vanish();    // ouch eater
     }
 
     void IGameState.GameOver()
@@ -46,9 +54,9 @@ public class PlayerManager : MonoBehaviour, IGameState
         GameCanvas.SlideOut();
     }
 
-    void Update()
+    void ILevelEvent.UpdateScore()
     {
-        if (_levelData._gameRunning)    // weed eater
+        if (_levelData._gameRunning)
             _scoreText.text = $"{_levelData.GetScore()}";
         else
             _scoreText.text = "0";

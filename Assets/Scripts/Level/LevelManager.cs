@@ -3,7 +3,7 @@
 
 // Created by Javier Soto
 
-
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -16,7 +16,9 @@ public class LevelManager : MonoBehaviour, IGameState
 
     public float ExitTime;  // Time that should be waited for level unloading
 
-    public LevelData _levelData;    // Level communication
+    [NonSerialized] public LevelData _levelData;    // Level communication
+    [NonSerialized] public GameState _gameState;    // Game communication
+    [NonSerialized] public PlayerData _playerData;
 
     private GameObject _lastLevel;  // Last level reference
 
@@ -24,10 +26,15 @@ public class LevelManager : MonoBehaviour, IGameState
 
     private TraversalMenu _menu;    // Menu component
 
-    void Start()
+    void Awake()
     {
+        CommunicationPrefabScript communicator = GameObject.Find("CommunicationPrefab").GetComponent<CommunicationPrefabScript>();
+        _levelData = communicator._levelData;
+        _gameState = communicator._gameState;
+        _playerData = communicator._playerData;
+
         _menu = GetComponent<TraversalMenu>();
-        _levelData.SetMenuInstance(this);
+        _gameState.SetMenuInstance(this);
     }
 
     public void ButtonStartGameAction()
@@ -71,7 +78,7 @@ public class LevelManager : MonoBehaviour, IGameState
     {
         if (_lastLevel != null) // Do not unload level if level wasn't loaded previously
         {
-            _levelData.UnloadPreviousLevel();
+            _gameState.UnloadPreviousLevel();
 
             yield return new WaitForSeconds(ExitTime);  // Wait for unloading animation to end
 
@@ -82,7 +89,7 @@ public class LevelManager : MonoBehaviour, IGameState
         _lastLevel = SpawnLevel(newLevelName);  // Get reference for loading level
 
         _lastLevel.SetActive(true);
-        _levelData.SetLevelInstance(_lastLevel.GetComponent<IGameState>());     // Set levelData's reference to the loaded level
+        _gameState.SetLevelInstance(_lastLevel.GetComponent<IGameState>());     // Set levelData's reference to the loaded level
         _levelData.StartGame();         // Start game
     }
 
@@ -90,18 +97,18 @@ public class LevelManager : MonoBehaviour, IGameState
     {
         if (_lastLevel != null)  // Do not unload level if level wasn't loaded previously
         {
-            _levelData.UnloadPreviousLevel();
+            _gameState.UnloadPreviousLevel();
 
             yield return new WaitForSeconds(ExitTime);  // Wait for unloading animation to end
 
             _lastLevel.SetActive(false);    // Deactivate unloaded level
         }
 
-        string newLevelName = Levels[Random.Range(0, Levels.Length)].name;  // Get new level name
+        string newLevelName = Levels[UnityEngine.Random.Range(0, Levels.Length)].name;  // Get new level name
         _lastLevel = SpawnLevel(newLevelName);  // Get reference for loading level
 
         _lastLevel.SetActive(true);
-        _levelData.SetLevelInstance(_lastLevel.GetComponent<IGameState>());         // Set levelData's reference to the loaded level
+        _gameState.SetLevelInstance(_lastLevel.GetComponent<IGameState>());         // Set levelData's reference to the loaded level
         _levelData.StartGame();                 // Start game
     }
 

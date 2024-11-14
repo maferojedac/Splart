@@ -44,7 +44,7 @@ public class EnemyStrong : Enemy, IRusherEnemy
     {
         if (_levelData._gameRunning)
         {
-            if (GameObject.Find("Player").GetComponent<IPlayer>().TakeDamage())
+            if (GameObject.Find("Player").GetComponent<Player>().TakeDamage())
             {
                 _soundManager.PlaySound(_reach);
 

@@ -28,7 +28,8 @@ public class EnemyBlot : Enemy, IRusherEnemy
 
     public override void OnAttack()
     {
-        CreateSplat();
+        if(GameObject.Find("Player").GetComponent<Player>().TakeDamage())
+            CreateSplat();
     }
 
     public void OnReach(Vector3 dir)    // Update for precision PLEASE

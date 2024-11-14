@@ -1,4 +1,4 @@
-// Debugging class
+// Debugging class - Should probably be deleted
 
 using System.Collections;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ public class SceneMenuPointer : MonoBehaviour, IGameState
     public float ExitTime;
 
     public LevelData _levelData;
+    public GameState _gameState;    // Game communication
 
     private float _timer;
     private IEnumerator _currentCoroutine;
@@ -25,7 +26,7 @@ public class SceneMenuPointer : MonoBehaviour, IGameState
     void Start()
     {
         _menu = GetComponent<TraversalMenu>();
-        _levelData.SetMenuInstance(this);
+        _gameState.SetMenuInstance(this);
 
         StartCoroutine(StartGameSequenceCoroutine());
     }
@@ -38,7 +39,7 @@ public class SceneMenuPointer : MonoBehaviour, IGameState
     private IEnumerator StartGameSequenceCoroutine()
     {
         if (_lastLevel != null)
-            _levelData.UnloadPreviousLevel();
+            _gameState.UnloadPreviousLevel();
         _timer = 0;
         while (_timer < ExitTime)
         {
@@ -49,7 +50,7 @@ public class SceneMenuPointer : MonoBehaviour, IGameState
         Destroy(_lastLevel);
         _lastLevel = Instantiate(Levels[0]);
         _lastLevel.SetActive(true);
-        _levelData.SetLevelInstance(_lastLevel.GetComponent<IGameState>());
+        _gameState.SetLevelInstance(_lastLevel.GetComponent<IGameState>());
         _levelData.StartGame();
     }
 

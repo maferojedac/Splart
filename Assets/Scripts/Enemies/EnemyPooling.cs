@@ -7,11 +7,11 @@ public class EnemyPooling : MonoBehaviour
 
     [Tooltip("Add in order of enum")] public GameObject[] EnemyPrefabs;
 
-    private Dictionary<EnemyType, List<Enemy>> enemies = new Dictionary<EnemyType, List<Enemy>>();    // Dynamic pooling
+    private Dictionary<GameObject, List<Enemy>> enemies = new Dictionary<GameObject, List<Enemy>>();    // Dynamic pooling
 
     private EnemySoundManager soundManager;
 
-    public Enemy Spawn(EnemyType type)
+    public Enemy Spawn(GameObject type)
     {
         if(!enemies.ContainsKey(type))   // Initialize pool if no key
             enemies[type] = new List<Enemy>();
@@ -26,7 +26,8 @@ public class EnemyPooling : MonoBehaviour
             }
         }
 
-        GameObject newEnemyObj = Instantiate(EnemyPrefabs[(int) type]);
+        Debug.Log("Spawning > "+ type);
+        GameObject newEnemyObj = Instantiate(type);
         newEnemyObj.transform.parent = transform;
         newEnemyObj.SetActive(false);
 
@@ -42,7 +43,6 @@ public class EnemyPooling : MonoBehaviour
         return soundManager;
     }
 
-
     public void PoolReset()
     {
         
@@ -52,14 +52,4 @@ public class EnemyPooling : MonoBehaviour
     {
         soundManager = GetComponent<EnemySoundManager>();
     }
-}
-
-public enum EnemyType
-{
-    Blot,
-    Sumo,
-    Mage,
-    Pen,
-    Coin,
-    Piggy,
 }

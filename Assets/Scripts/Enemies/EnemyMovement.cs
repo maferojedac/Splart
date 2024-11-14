@@ -24,22 +24,21 @@ public class EnemyMovement : MonoBehaviour
 
     private GameObject _target;    // A quien sigue el enemigo
     private MapNode _targetNode;     // Siguiente nodo del mapa
-    private bool _isApproaching;     // Estado del enemigo
 
     private Rigidbody _rigidBody;
 
-    void OnEnable()
+    void Awake()
     {
         _target = GameObject.Find("Player");
         _rigidBody = GetComponent<Rigidbody>();
 
         Entity.DisableCollision(GetComponent<BoxCollider>());
-        _isApproaching = true;
+    }
 
-        transform.rotation = Quaternion.LookRotation((_target.transform.position - transform.position).normalized);
-
+    void OnEnable()
+    {
         if (_targetNode == null) // If no node was assigned at spawner, emergency script to avoid null references
-        { 
+        {
             _targetNode = NodeMap.RandomNode();
             Debug.Log("Node at spawner not assigned!");
         }

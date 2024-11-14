@@ -2,44 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bullet : MonoBehaviour
+public class Bullet : Ally
 {
-    public GameColor _color;
-    public GameObject _target;
-
-    public float _speed;
-
-    public PlayerData _playerData;
-
-    // componentes de gameobject
     public SpriteRenderer _spriteRenderer;
-    public GameObject _explosion;
-    private Rigidbody _rigidBody;
-    private bool _released;
-    private Animator _animator;
+    public GameObject _explosion;   // FX pooling
+
+    public AudioClip _release;
+
     private float _deathTimer;
     private float _timer;
 
-    private Color _originalColor;
-    private float _alpha;
-
-    private AudioSource _audioSource;
-
-    void Start()
+    public override void Awake()
     {
-        _audioSource = GetComponent<AudioSource>();
-        _audioSource.volume = _playerData.SoundeffectsVolume;
+        base.Awake();
+    }
 
-        _alpha = 1f;
-        _originalColor = ArrayColor.makeRGB(_color);
+    public override void OnEnable()
+    {
+        base.OnEnable();
+        _spriteRenderer.color = _originalColor;
 
-        Color newColor = _originalColor;
-        newColor.a = _alpha;
-        _spriteRenderer.color = newColor;
-
-
-        _rigidBody = GetComponent<Rigidbody>();
-        _animator = GetComponent<Animator>();
         _released = false;
         _deathTimer = -10f;
     }
@@ -51,7 +33,6 @@ public class Bullet : MonoBehaviour
         if (_released)
         {
             Color newColor = _originalColor;
-            newColor.a = Mathf.Lerp(_alpha, 1f, _timer);
             _spriteRenderer.color = newColor;
 
             if (_target == null)
@@ -61,10 +42,10 @@ public class Bullet : MonoBehaviour
         }
         if (_deathTimer > -10 && _deathTimer < 0)
         {
-            GameObject exp = Instantiate(_explosion, transform.position, Quaternion.identity);
-            ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
-            colorAdjuster.startColor = _originalColor;
-            Destroy(gameObject);
+            // GameObject exp = Instantiate(_explosion, transform.position, Quaternion.identity);
+            // ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
+            // colorAdjuster.startColor = _originalColor;
+            gameObject.SetActive(false);
         }
     }
 
@@ -77,11 +58,13 @@ public class Bullet : MonoBehaviour
         }
     }
 
-    public void Release()
+    public override void Release()
     {
+        base.Release();
         _timer = 0f;
-        _released = true;
-        _audioSource.Play();
+
+        _soundManager.PlaySound(_release);
+
         if (_target == null)
         {
             Kill();

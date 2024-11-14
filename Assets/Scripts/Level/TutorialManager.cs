@@ -12,7 +12,7 @@ public class TutorialManager : MonoBehaviour
 
     [SerializeField] private Spawner _spawner;
 
-    [SerializeField] private Spawnable _spawnable;
+    [SerializeField] private string _spawnable; // GARBAGE!!
 
     [SerializeField] private LevelData _levelData;
 
@@ -49,7 +49,7 @@ public class TutorialManager : MonoBehaviour
 
         // Spawn blue droplet
         _spawner.ForceColor(new ArrayColor(GameColor.Blue));
-        _spawner.AddToQueue(new SpawnableObject(0f, _spawnable.Spawnables[0]));
+        // _spawner.AddToQueue(new SpawnableObject(0f, _spawnable.Spawnables[0])); // FIX FIX 
 
         yield return new WaitForSeconds(1f);
         _dialogueBox.MakeDialogue("Te mostraré como lidiar con ellos", _sprites[0], _dialogueContinue);
@@ -81,7 +81,7 @@ public class TutorialManager : MonoBehaviour
         GameColor[] colors = { GameColor.Red, GameColor.Yellow};
         _spawner.ForceColor(new ArrayColor(colors));
         _levelData.SetGlobalSpeedMultiplier(1f);
-        _spawner.AddToQueue(new SpawnableObject(0f, _spawnable.Spawnables[1]));
+        // _spawner.AddToQueue(new SpawnableObject(0f, _spawnable.Spawnables[1])); // FIX FIX
 
         _dialogueBox.BackgroundDialogue("Cuando viene un color compuesto, debes descomponerlo para derrotarlo", _sprites[0], _dialogueContinue);
 
@@ -110,7 +110,7 @@ public class TutorialManager : MonoBehaviour
         // Generate mage
         _levelData.SetGlobalSpeedMultiplier(1f);
         _dialogueBox.BackgroundDialogue("¡Ahí viene uno!", _sprites[2], _dialogueSplartin);
-        _spawner.AddToQueue(new SpawnableObject(0f, _spawnable.Spawnables[2]));
+        //  _spawner.AddToQueue(new SpawnableObject(0f, _spawnable.Spawnables[2])); // FIX FIX 
 
         StartCoroutine(PointWithHand(left, right));
 

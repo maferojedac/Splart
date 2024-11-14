@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemySoundManager : MonoBehaviour
+public class AllySoundManager : MonoBehaviour
 {
     private AudioSource _audioSource;
 
@@ -11,6 +11,8 @@ public class EnemySoundManager : MonoBehaviour
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
+
+        _playerData = GameObject.Find("CommunicationPrefab").GetComponent<CommunicationPrefabScript>()._playerData;
         _audioSource.volume = _playerData.SoundeffectsVolume;
     }
 

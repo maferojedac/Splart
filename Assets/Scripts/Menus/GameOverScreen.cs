@@ -70,7 +70,7 @@ public class GameOverScreen : MonoBehaviour
         {
             _timer += Time.deltaTime;
 
-            _scoreText.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(_oldScore, 0f, _timer))}";
+            _scoreText.text = $"{_oldScore}";
             _moneyText.text = $"+{Mathf.RoundToInt(Mathf.SmoothStep(0f, _oldScore, _timer))}";
             _totalMoneyText.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(_playerData.Money - _oldScore, _playerData.Money, _timer))}";
 
