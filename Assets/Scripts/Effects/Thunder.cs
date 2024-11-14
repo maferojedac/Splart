@@ -18,7 +18,7 @@ public class Thunder : MonoBehaviour
         if( _target != null)
         {
             transform.position = _target.transform.position;
-            _target.GetComponent<IEnemy>().OnDie();
+            _target.GetComponent<Enemy>().OnDie();
         }
     }
 

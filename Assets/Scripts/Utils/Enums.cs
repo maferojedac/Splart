@@ -7,12 +7,6 @@ public enum GameColor
     Black
 }
 
-public enum EnemyState
-{
-    Approaching,
-    Attacking,
-}
-
 public enum Direction
 {
     Up,

@@ -47,7 +47,7 @@ public class LevelLoader : MonoBehaviour, IGameState
             if (enemy.CompareTag("ScreenSplat"))
                 enemy.GetComponent<Splat>().Remove();
             else
-                enemy.GetComponent<IEnemy>()?.OnDie();
+                enemy.GetComponent<Enemy>()?.OnDie();
         }
         foreach (LevelObject current in ColorSpritesQueue)
         {
@@ -63,7 +63,7 @@ public class LevelLoader : MonoBehaviour, IGameState
             if(enemy.CompareTag("ScreenSplat"))
                 enemy.GetComponent<Splat>().Remove();
             else
-                enemy.GetComponent<IEnemy>()?.OnDie();
+                enemy.GetComponent<Enemy>()?.OnDie();
         }
         if (_lastCoroutine == null)
         {

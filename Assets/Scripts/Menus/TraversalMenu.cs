@@ -28,7 +28,7 @@ public class TraversalMenu : MonoBehaviour
 
     void Update()
     {
-        _audioSource.volume = _playerData.MusicVolume;
+        _audioSource.volume = _playerData.MusicVolume; // ram eater
     }
 
     public void VanishAllMenu()

@@ -1,24 +1,27 @@
-using System;
-using Unity.Burst.CompilerServices;
+// Script for player
+
 using UnityEngine;
 
-public class Player : MonoBehaviour, IPlayer
+public class Player : MonoBehaviour
 {
 
     public float BulletSpeed;
 
-    public LevelData _levelData;
-    public PlayerData _playerData;
+    private LevelData _levelData;
+    private PlayerData _playerData;
 
     public GameObject _bulletPrefab;
+
     public Transform _bulletYRefTransform;
-    private Bullet _heldBullet;
+    private Ally _heldBullet;
     private float _canRegretBullet;
     private bool _held;
 
     private LayerMask _entityMask;
     private LineRenderer _lineRenderer;
     private Vector3 _cameraPos;
+
+    private AllyPooling _allyPooler;
 
     private float _bulletYRef;
 
@@ -39,7 +42,7 @@ public class Player : MonoBehaviour, IPlayer
         _isActive = true;
     }
 
-    bool IPlayer.TakeDamage()
+    public bool TakeDamage()
     {
         if(_Shields <= 0)
         {
@@ -58,8 +61,13 @@ public class Player : MonoBehaviour, IPlayer
         }
     }
 
-    void Start()
+    void Awake()
     {
+        _levelData = transform.parent.GetComponent<PlayerManager>()._levelData;
+        _playerData = transform.parent.GetComponent<PlayerManager>()._playerData;
+
+        _allyPooler = GameObject.Find("Allies").GetComponent<AllyPooling>();
+
         _entityMask = LayerMask.GetMask("Entity");
 
         _lineRenderer = GetComponent<LineRenderer>();   
@@ -89,24 +97,20 @@ public class Player : MonoBehaviour, IPlayer
                 
                 if (Physics.Raycast(ray, out hit, 500f, _entityMask))
                 {
-                    EnableLine();
-
-                    UpdateLine(transform.position - new Vector3(0, 5f, 0), hit.transform.position, ArrayColor.makeRGB(_heldBullet._color), hit.collider.gameObject.GetComponent<IEnemy>().GetColor());
-                    _heldBullet._target = hit.collider.gameObject;
+                    _heldBullet.SetTarget(hit.collider.gameObject);
                 }
                 else
                 {
-                    DisableLine();
-                    _heldBullet._target = null;
+                    _heldBullet.SetTarget(null);
                 }
             }
             else
             {
-                DisableLine();
                 _heldBullet.Release();
                 _heldBullet = null;
             }
         }
+
         if(Input.GetMouseButton(0))
             _held = true;
         else
@@ -120,16 +124,6 @@ public class Player : MonoBehaviour, IPlayer
         _lineRenderer.SetPosition(1, to);
         _lineRenderer.endColor = end;
         _lineRenderer.startColor = start;
-    }
-
-    private void EnableLine()
-    {
-        _lineRenderer.enabled = true;
-    }
-
-    private void DisableLine()
-    {
-        _lineRenderer.enabled = false;
     }
 
     public void SelectRed()
@@ -163,8 +157,10 @@ public class Player : MonoBehaviour, IPlayer
         {
             if(_heldBullet != null)
                 _heldBullet.Release();
-            _heldBullet = Instantiate(_bulletPrefab).GetComponent<Bullet>();
-            _heldBullet._color = color;
+
+            _heldBullet = _allyPooler.Spawn(_bulletPrefab);
+            _heldBullet.SetColor(color);
+            _heldBullet.gameObject.SetActive(true);
             _canRegretBullet = 0.2f;
             _held = true;
         }

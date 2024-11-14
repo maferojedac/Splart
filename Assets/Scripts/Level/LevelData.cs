@@ -1,32 +1,28 @@
-using System.Collections;
+// Class that provides communication for all objects in game. Update states, keep track of nodes, etc.
+// Created by Javier Soto
+
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Custom/MovementMap")]
+[CreateAssetMenu(menuName = "Communication/Level Data Asset")]
 public class LevelData : ScriptableObject
 {
-    public List<MapNode> _nodes = new List<MapNode>();
-    public GameObject _levelInstance;
-    public bool _gameRunning;
+    public List<MapNode> _nodes = new();    //  Publicly accesible nodes taht can be called at random
 
-    public int _currentScore;
+    public GameState _gameState;    // Communication with other game systems
 
-    public float _globalEnemySpeedMultiplier;
+    public bool _gameRunning;   // Control boolean
 
-    private GameObject _menusInstance;
-    private GameObject _baseGameInstance;
+    public int _currentScore;   // Game Score
+
+    public float _globalEnemySpeedMultiplier;   // Self explanatory
+    public float _globalEnemyWaveSpeedMultiplier;   // For wave speed managing
+
+    private List<ILevelEvent> _listenerObjects = new(); // Listeners to levle events
 
     private void OnEnable()
     {
         _nodes.Clear();
-    }
-
-    public void NextWave()
-    {
-        _levelInstance.GetComponent<IGameState>().NextWave();
-        _menusInstance.GetComponent<IGameState>().NextWave();
-        _baseGameInstance.GetComponent<IGameState>().NextWave();
     }
 
     public void SetGlobalSpeedMultiplier(float val)
@@ -34,14 +30,32 @@ public class LevelData : ScriptableObject
         _globalEnemySpeedMultiplier = val;
     }
 
+    public void SetGlobalSpeedWaveMultiplier(float val)
+    {
+        _globalEnemyWaveSpeedMultiplier = val;
+    }
+
     public float GetGlobalSpeedMultiplier()
     {
         return _globalEnemySpeedMultiplier;
+    }
+    public float GetGlobalSpeedWaveMultiplier()
+    {
+        return _globalEnemyWaveSpeedMultiplier;
+    }
+
+    public void SubscribeToEvents(ILevelEvent listener)
+    {
+        _listenerObjects.Add(listener);
     }
 
     public void SumScore(int score)
     {
         _currentScore += score;
+        foreach (ILevelEvent listener in _listenerObjects)
+        {
+            listener.UpdateScore();
+        }
     }
 
     public int GetScore()
@@ -49,130 +63,46 @@ public class LevelData : ScriptableObject
         return _currentScore;
     }
 
-    public void UnloadPreviousLevel()
-    {
-        _levelInstance.GetComponent<IGameState>().UnloadLevel();
-    }
-
-    public void SetMenuInstance(GameObject menuInstance)
-    {
-        _menusInstance = menuInstance;
-    }
-
-    public void SetBaseGameInstance(GameObject baseGameInstance)
-    {
-        _baseGameInstance = baseGameInstance;
-    }
-
-    public void GameOver()
+    public void GameOver()  // Game End by death
     {
         _gameRunning = false;
         Time.timeScale = 1f;
-        _levelInstance.GetComponent<IGameState>().GameOver();
-        _menusInstance.GetComponent<IGameState>().GameOver();
-        _baseGameInstance.GetComponent<IGameState>().GameOver();
+
+        _gameState.GameOver();
     }
 
-    public void EndGame()
+    public void EndGame()   // Force Game End
     {
         _gameRunning = false;
-        Time.timeScale = 1.0f;
-        _levelInstance.GetComponent<IGameState>().EndGame();
-        _menusInstance.GetComponent<IGameState>().EndGame();    
-        _baseGameInstance.GetComponent<IGameState>().EndGame(); 
+        Time.timeScale = 1f;
+
+        _gameState.EndGame();
     }
 
-    public void StartGame()
+    public void NextWave()  // Communicate next wave to all that apply
     {
+        _gameState.NextWave();
+    }
+
+    public void StartGame() // Start new game
+    {
+        // reset variables
         _nodes.Clear();
         _currentScore = 0;
         _globalEnemySpeedMultiplier = 1f;
         _gameRunning = true;
-        _levelInstance.GetComponent<IGameState>().StartGame();
-        _menusInstance.GetComponent<IGameState>().StartGame();
-        _baseGameInstance.GetComponent<IGameState>().StartGame();
+
+        // start game events
+        _gameState.StartGame();
     }
 
-    public void SetInstance(GameObject p_object)
+    public void RegisterNode(MapNode node)
     {
-        _levelInstance = p_object;
-    }
-
-    public void SetPlayerPosition(Vector3 p_position)
-    {
-        _levelInstance.transform.position = -p_position;
-    }
-
-    public void RegisterNode(Vector3 p_position, bool p_hasWall)
-    {
-        _nodes.Add(new MapNode(_nodes.Count, p_position, p_hasWall));
-    }
-
-    public List<MapNode> MakePathFromNodes(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
-    {
-        List<MapNode> pathNodes = new List<MapNode>();
-        foreach (MapNode node in _nodes)
-        {
-            if (nodeInArea(p_atDirection, p_FOVdegrees, p_fromPosition, node))
-                pathNodes.Add(node);
-        }
-
-        if(pathNodes.Count > 1)
-            for (int i = 0; i < pathNodes.Count - 1; i++)
-            {
-                for (int j = 0; j < pathNodes.Count - i - 1; j++)
-                {
-                    float DistanceCurrent = (pathNodes[j].Position - p_fromPosition).magnitude;
-                    float DistanceNext = (pathNodes[j + 1].Position - p_fromPosition).magnitude;
-                    if (DistanceCurrent > DistanceNext)
-                    {
-                        MapNode temp = pathNodes[j];
-                        pathNodes[j] = pathNodes[j + 1];
-                        pathNodes[j + 1] = temp;
-                    }
-                }
-            }
-
-        return pathNodes;
-    }
-
-    public MapNode ClosestNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
-    {
-        MapNode closestNode = new MapNode(0, new Vector3(float.MaxValue, float.MaxValue, float.MaxValue), false);
-        foreach (MapNode node in _nodes)
-        {
-            if (nodeInArea(p_atDirection, p_FOVdegrees, p_fromPosition, node))
-                if ((node.Position - p_fromPosition).magnitude < (closestNode.Position - p_fromPosition).magnitude)
-                    closestNode = (node);
-        }
-
-        return closestNode;
+        _nodes.Add(node);
     }
 
     public MapNode RandomNode()
     {
         return _nodes[Random.Range(0, _nodes.Count - 1)];
     }
-
-    public bool AnyNodeInPath(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition)
-    {
-        foreach (MapNode node in _nodes)
-        {
-            if (nodeInArea(p_atDirection, p_FOVdegrees, p_fromPosition, node))
-                return true;
-        }
-        return false;
-    }
-
-    private bool nodeInArea(Quaternion p_atDirection, float p_FOVdegrees, Vector3 p_fromPosition, MapNode p_node)
-    {
-        // Ignore vertical offset in nodes
-        p_fromPosition.y = p_node.Position.y;
-        Quaternion transformAngle = Quaternion.FromToRotation(p_atDirection * Vector3.forward, (p_node.Position - p_fromPosition).normalized);
-        float diffAngle = Quaternion.Angle(Quaternion.Euler(0, 0, 0), transformAngle);
-        if (diffAngle < p_FOVdegrees)
-            return true;
-        return false;
-    }
-
 }

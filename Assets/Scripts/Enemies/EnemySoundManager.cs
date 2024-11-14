@@ -14,11 +14,6 @@ public class EnemySoundManager : MonoBehaviour
         _audioSource.volume = _playerData.SoundeffectsVolume;
     }
 
-    void Update()
-    {
-        
-    }
-
     public void PlaySound(AudioClip clip, float pitch = 1f)
     {
         _audioSource.pitch = pitch;

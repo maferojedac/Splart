@@ -1,7 +1,15 @@
+// Script that moves an enemy through a set path of nodes and calls OnReach enemy towards player upon reach
+
+// Expected is a class that implements IRusherEnemy on its OnReach method
+// Expected is a Rigidbody2D
+
+// Movement should not be modified upon attaching this class, as this script manages it.
+
+// Created by Javier Soto
+
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class EnemyMovement : MonoBehaviour
 {
@@ -9,92 +17,90 @@ public class EnemyMovement : MonoBehaviour
 
     // Caracteristicas que cambian el movimiento del enemigo
     [Header("Enemy traits")]
-    public float RunSpeed;
-
-    public float SpeedMultiplier = 1;
+    public /*static*/ float RunSpeed;   // Upon discussion, it was decided that all enemies should share the same speed
+    public /*static*/ float NodeReachRadius = 0.5f;   // At what distance from node should it be counted as reached
+    public /*static*/ float PlayerReachRadius = 10f;   // At what distance from player should it be counted as reached
     public float TurnSpeed;
-    public int Focus;
-    public float PathDistraction;
 
     private GameObject _target;    // A quien sigue el enemigo
-    private List<MapNode> _nodes;    // Copia de los nodos del mapa
-    private MapNode _targetNode;     // Siguiente nodo
-    private EnemyState _state;     // Estado del enemigo
+    private MapNode _targetNode;     // Siguiente nodo del mapa
 
     private Rigidbody _rigidBody;
-    void Start()
+
+    void Awake()
     {
         _target = GameObject.Find("Player");
         _rigidBody = GetComponent<Rigidbody>();
 
         Entity.DisableCollision(GetComponent<BoxCollider>());
-        _state = EnemyState.Approaching;
-
-        transform.rotation = Quaternion.LookRotation((_target.transform.position - transform.position).normalized);
-        _nodes = NodeMap.MakePathFromNodes(transform.rotation, PathDistraction, transform.position);
-        _targetNode = bestNode();
     }
 
-    private void FixedUpdate()
+    void OnEnable()
     {
-        float SpeedY = _rigidBody.velocity.y;
-        _targetNode.Position.y = transform.position.y;
-
-        // Apuntar y mover enemigo 
-        transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((_targetNode.Position - transform.position).normalized), Time.fixedDeltaTime * TurnSpeed);
-        _rigidBody.velocity = transform.rotation * Vector3.forward * RunSpeed * SpeedMultiplier * NodeMap.GetGlobalSpeedMultiplier();
-        _rigidBody.velocity = new Vector3(_rigidBody.velocity.x, SpeedY, _rigidBody.velocity.z);
-
-        // Al alcanzar el nodo, decidir que hacer en base al estado del enemigo
-        if (_state == EnemyState.Approaching)
+        if (_targetNode == null) // If no node was assigned at spawner, emergency script to avoid null references
         {
-            if ((transform.position - _targetNode.Position).magnitude < 0.5f)
-            {
-                _nodes.Remove(_targetNode);
-                _targetNode = bestNode();
-                if (_targetNode.Position == Vector3.zero)
-                {
-                    _state = EnemyState.Attacking;
-                    _targetNode = new MapNode(_target.transform.position);
-                }
-            }
-        }
-        else if (_state == EnemyState.Attacking)
-        {
-            if ((transform.position - _targetNode.Position).magnitude < 10f)
-            {
-                gameObject.GetComponent<IEnemy>()?.OnReach((_targetNode.Position - transform.position));
-                Destroy(this);
-            }
+            _targetNode = NodeMap.RandomNode();
+            Debug.Log("Node at spawner not assigned!");
         }
     }
 
-    MapNode bestNode()
+    IEnumerator FollowNode()
     {
-        // Decidir el mejor nodo dentro de los siguientes Focus nodos
-        MapNode Chosen = new MapNode(0, Vector3.zero, false);
-        float MaxScore = 0;
-        Vector3 TargetDirection = (_target.transform.position - transform.position);
-        
-        Quaternion.LookRotation((_target.transform.position - transform.position).normalized);
-        for (int i = 0; i < Focus && i < _nodes.Count; i++)
+        while((transform.position - _targetNode.Position).magnitude > NodeReachRadius)
         {
-            Vector3 NodeDirection = (_nodes[0].Position - transform.position); ;
-            float TargetAngle = Vector3.Angle(TargetDirection, NodeDirection);
-            float Score = Mathf.Abs(Mathf.Cos(TargetAngle)) * NodeDirection.magnitude;
-            if(Score > MaxScore)
-            {
-                MaxScore = Score;
-                Chosen = _nodes[0];
-            }
-            _nodes.RemoveAt(0);
+            Vector3 newSpeed = _rigidBody.velocity;
+            float SpeedY = _rigidBody.velocity.y;
+            // _targetNode.Position.y = transform.position.y;   // I don't feel comfortable leaving this commented, but also it would change the Y position of the nodes. Make radius more generous?
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((_targetNode.Position - transform.position).normalized), Time.fixedDeltaTime * TurnSpeed);
+
+            newSpeed = transform.rotation * Vector3.forward * RunSpeed * NodeMap.GetGlobalSpeedMultiplier() * NodeMap.GetGlobalSpeedWaveMultiplier();
+            newSpeed.y = SpeedY;
+
+            _rigidBody.velocity = newSpeed;
+
+            yield return null;
         }
 
-        return Chosen;
+        if(_targetNode.IsEnd())
+        {
+            StartCoroutine(FollowPlayer());
+        }
+        else
+        {
+            _targetNode = _targetNode.Next();
+            StartCoroutine(FollowNode());
+        }
     }
 
-    public void SetSpeedMultiplier(float SpeedMultiplierValue)
+    IEnumerator FollowPlayer()
     {
-        SpeedMultiplier = SpeedMultiplierValue;
-    } 
+        while ((transform.position - _target.transform.position).magnitude > PlayerReachRadius)
+        {
+            Vector3 newSpeed = _rigidBody.velocity;
+            float SpeedY = _rigidBody.velocity.y;
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((_target.transform.position - transform.position).normalized), Time.fixedDeltaTime * TurnSpeed);
+
+            newSpeed = transform.rotation * Vector3.forward * RunSpeed * NodeMap.GetGlobalSpeedMultiplier() * NodeMap.GetGlobalSpeedWaveMultiplier();
+            newSpeed.y = SpeedY;
+
+            _rigidBody.velocity = newSpeed;
+
+            yield return null;
+        }
+
+        gameObject.GetComponent<IRusherEnemy>()?.OnReach((_targetNode.Position - transform.position)); // May need update
+    }
+
+    public void SetStartingNode(MapNode node)
+    {
+        _targetNode = node;
+        Debug.Log("Map starting node succesfully assigned!");
+    }
+
+    public void StartRunning()
+    {
+        StartCoroutine(FollowNode());
+    }
 }
