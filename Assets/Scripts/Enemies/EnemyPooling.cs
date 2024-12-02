@@ -4,9 +4,6 @@ using UnityEngine;
 
 public class EnemyPooling : MonoBehaviour
 {
-
-    [Tooltip("Add in order of enum")] public GameObject[] EnemyPrefabs;
-
     private Dictionary<GameObject, List<Enemy>> enemies = new Dictionary<GameObject, List<Enemy>>();    // Dynamic pooling
 
     private EnemySoundManager soundManager;
@@ -41,6 +38,33 @@ public class EnemyPooling : MonoBehaviour
     public EnemySoundManager GetSoundManager()
     {
         return soundManager;
+    }
+
+    public void KillAllEnemies()
+    {
+        foreach (List<Enemy> EnemyList in enemies.Values)
+        {
+            foreach (Enemy enemy in EnemyList)
+            {
+                enemy.Kill(true);
+            }
+        }
+    }
+
+    public List<Enemy> GetAllEnemies()
+    {
+        List<Enemy> All = new List<Enemy>();
+
+        foreach (List<Enemy> EnemyList in enemies.Values)
+        {
+            foreach (Enemy enemy in EnemyList)
+            {
+                if(enemy.gameObject.activeSelf)
+                    All.Add(enemy);
+            }
+        }
+
+        return All;
     }
 
     public void PoolReset()

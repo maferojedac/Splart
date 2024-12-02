@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  RunSpeed: 4
+  RunSpeed: 10
   NodeReachRadius: 4
   PlayerReachRadius: 4
   TurnSpeed: 50
@@ -176,8 +176,14 @@ MonoBehaviour:
   _damage: {fileID: 8300000, guid: bc966cd6b0dfc4b44a8149951159da35, type: 3}
   _resist: {fileID: 8300000, guid: e424fb61ecf41344eba6211b50483ddf, type: 3}
   _die: {fileID: 8300000, guid: 7eb4a091545c29e47b9527dc834656ad, type: 3}
+  _damageExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
+    type: 3}
+  _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
+    type: 3}
   DefeatScore: 10
-  splat: {fileID: 7448143773666677230, guid: fd9c14ef50f872b41bdf099b85f376a2, type: 3}
+  InkBlotPrefab: {fileID: 5529770688874983475, guid: fd9c14ef50f872b41bdf099b85f376a2,
+    type: 3}
+  JumpTime: 0.3
   _spawn: {fileID: 8300000, guid: 0b952325ffbdb804092404c1845cac72, type: 3}
   _reach: {fileID: 8300000, guid: ac25a1c52d0f57245b8182f61dd38f33, type: 3}
 --- !u!54 &5232177867496499023

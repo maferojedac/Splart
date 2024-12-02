@@ -14,6 +14,7 @@ public class Ally : MonoBehaviour
 
     protected PlayerData _playerData;
     protected AllySoundManager _soundManager;
+    protected FXPooling _fxPool;
 
     protected Rigidbody _rigidBody;
     protected Animator _animator;
@@ -22,6 +23,8 @@ public class Ally : MonoBehaviour
     {
         _rigidBody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
+
+        _fxPool = GameObject.Find("FX").GetComponent<FXPooling>();
     }
 
     public virtual void OnEnable()

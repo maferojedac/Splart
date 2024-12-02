@@ -21,11 +21,13 @@ public class BoostersShowing : MonoBehaviour
     private PlayerData _playerData;
     private LevelData _levelData;
 
+    private FXPooling _fxPooling;
+    private EnemyPooling _enemyPooling;
+
     [Header("Visuals and effects")]
     public Image _visualTimer;
-    public GameObject _pressedSparkles;
     public GameObject _darkenEffect;
-    public GameObject _thunderObject;
+    public GameObject _thunderPrefab;
 
     private float _counterTimer;
     private float _counterGoal;
@@ -38,6 +40,9 @@ public class BoostersShowing : MonoBehaviour
     {
         _levelData = transform.parent.parent.GetComponent<PlayerManager>()._levelData;  // Get Scriptable object references from parent to 2
         _playerData = transform.parent.parent.GetComponent<PlayerManager>()._playerData;
+
+        _fxPooling = GameObject.Find("FX").GetComponent<FXPooling>();
+        _enemyPooling = GameObject.Find("Enemies").GetComponent<EnemyPooling>();
     }
 
     void OnEnable()
@@ -46,7 +51,6 @@ public class BoostersShowing : MonoBehaviour
         ActivateButtons();
 
         _visualTimer.fillAmount = 0f;
-        _pressedSparkles.SetActive(false);
     }
 
     public void UsedBoosterSlow()
@@ -65,14 +69,18 @@ public class BoostersShowing : MonoBehaviour
         StartCoroutine(ThunderBoost());
 
         // Booster effect
-        List<GameObject> enemies = Entity.GetAll();
-        // Instantiate(_darkenEffect);  // VFX POOLING!!
 
-        foreach (GameObject enemy in enemies)
+        _fxPooling.Spawn(_darkenEffect);    // Darken screen
+
+        List<Enemy> enemies = _enemyPooling.GetAllEnemies();
+
+        foreach (Enemy enemy in enemies)
         {
-            GameObject newThunder = Instantiate(_thunderObject);    // FUCKKKKK
-            newThunder.GetComponent<Thunder>()._target = enemy;
+            Effect NewThunder = _fxPooling.Spawn(_thunderPrefab);
+            NewThunder.SetPosition(enemy.transform.position);
         }
+
+        _enemyPooling.KillAllEnemies();
     }
 
     public void UsedBoosterClean()
@@ -85,13 +93,7 @@ public class BoostersShowing : MonoBehaviour
         // Booster effect
         List<GameObject> enemies = Entity.GetAll();
 
-        foreach (GameObject enemy in enemies)   // Fix splat ples
-        {
-            if (enemy.CompareTag("ScreenSplat"))
-            {
-                enemy.GetComponent<Splat>().Remove();
-            }
-        }
+        _fxPooling.CancelAllEffects();
     }
 
     IEnumerator SlowBoost()
@@ -187,10 +189,6 @@ public class BoostersShowing : MonoBehaviour
 
         _lastPressedButton.localScale = Vector3.one * 0.5f; // Show button at half size
 
-        // Show sparkles where button was pressed
-        _pressedSparkles.transform.position = _lastPressedButton.transform.position;
-        _pressedSparkles.SetActive(true);
-
         DeactivateButtons(); // Deactivate other buttons
     }
 
@@ -202,8 +200,6 @@ public class BoostersShowing : MonoBehaviour
 
         if (_lastPressedButton != null)
             _lastPressedButton.localScale = Vector3.one;    // Return button to normal size
-
-        _pressedSparkles.SetActive(false);  // Hide sparkles
 
         ActivateButtons(); // Activate other buttons
     }
