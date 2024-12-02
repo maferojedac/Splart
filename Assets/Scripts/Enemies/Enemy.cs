@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class Enemy : MonoBehaviour
@@ -11,7 +13,9 @@ public abstract class Enemy : MonoBehaviour
     [Header("Prefab Settings")]
     // Components
     protected Rigidbody _rigidBody;
+    protected Animator _animator;
     protected EnemySoundManager _soundManager;
+    protected FXPooling _fxPool;
     public SpriteRenderer _spriteRenderer;
 
     [Header("Level Communications")]
@@ -22,14 +26,16 @@ public abstract class Enemy : MonoBehaviour
     public /*static*/ AudioClip _resist;
     public /*static*/ AudioClip _die;
 
-    [Header("FX / SET TO POOLING THINGY !!!!!!!")]
-    public static GameObject _damageExplosion;
-    public static GameObject _deathExplosion;
+    [Header("FX")]
+    public /*static*/ GameObject _damageExplosion;
+    public /*static*/ GameObject _deathExplosion;
 
     [Header("General Enemy Settings")]
     public int DefeatScore = 10;
 
-    protected EnemyState _enemyState;
+    public EnemyState _enemyState;
+
+    protected List<Coroutine> SubscribedCoroutines;
 
     void Awake()
     {
@@ -37,6 +43,9 @@ public abstract class Enemy : MonoBehaviour
             Debug.LogError("Enemy sprite not found!");
 
         _rigidBody = GetComponent<Rigidbody>();
+        _animator = GetComponent<Animator>();
+
+        _fxPool = GameObject.Find("FX").GetComponent<FXPooling>();
 
         _isVulnerable = true;
     }
@@ -55,13 +64,15 @@ public abstract class Enemy : MonoBehaviour
             if (didHit)
             {
                 OnDamageTaken();
-                // GameObject exp = Instantiate(_damageExplosion, transform.position, Quaternion.identity);
-                // ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
-                // colorAdjuster.startColor = ArrayColor.makeRGB(color);
+
+                Effect explosion = _fxPool.Spawn(_damageExplosion);
+                explosion.SetColor(ArrayColor.makeRGB(color));
+                explosion.SetPosition(transform.position);
             }
 
             _colors.Remove(color);
-            _spriteRenderer.color = _colors.toRGB();
+            if(_colors.Count() > 0)
+                _spriteRenderer.color = _colors.toRGB();
 
             if (didHit)
                 if (_colors.Count() == 0)
@@ -72,25 +83,26 @@ public abstract class Enemy : MonoBehaviour
                 _soundManager.PlaySound(_resist);
 
             if (_colors.Count() == 0)
-                OnDie();
+                Kill();
         }
     }
-    public virtual void OnDie()
+    public virtual void Kill(bool ForceKill = false)
     {
         _enemyState = EnemyState.Die;
-        _levelData.SumScore(DefeatScore);
+        _rigidBody.velocity = Vector3.zero;
 
-        gameObject.SetActive(false);
-        Debug.Log("Animations pending");
-        // StartCoroutine(DeathByDefeat()); Changed to animation events!!!
+        if (ForceKill)
+            _levelData.SumScore(DefeatScore);
+
+        _animator.SetTrigger("Death");
     }
-
     #endregion
 
     #region Special Behaving
 
     public virtual void OnDamageTaken() { } // Overridable method to be called when damage is taken
     public virtual void OnAttack() { } // Overridable method to be called when enemy atatcks
+    public virtual void OnDie() { } // Overridable method to be called when enemy atatcks
 
     #endregion
 
@@ -103,14 +115,20 @@ public abstract class Enemy : MonoBehaviour
         _originalColorCount = _colors.Count();
         _originalColor = _colors.toRGB();
     }
+
     public Color GetColor()
     {
         return _colors.toRGB();
     }
+
     public virtual void Spawn(Vector3 position)
     {
         gameObject.SetActive(true);
         _enemyState = EnemyState.Rush;
+
+        _isVulnerable = true;
+
+        _animator.SetTrigger("Reset");
 
         _spriteRenderer.color = _colors.toRGB();
 
@@ -122,7 +140,12 @@ public abstract class Enemy : MonoBehaviour
     #region Animation Event Functions
     public void OnDeathAnimationEnd()
     {
-        //Instantiate(_deathExplosion, transform.position, Quaternion.identity);
+        Effect explosion = _fxPool.Spawn(_damageExplosion);
+        explosion.SetColor(_originalColor);
+        explosion.SetPosition(transform.position);
+
+        OnDie();
+
         gameObject.SetActive(false);    
     }
 
@@ -139,7 +162,6 @@ public abstract class Enemy : MonoBehaviour
 public enum EnemyState
 {
     Rush,
-    Jump,
     Attack,
     Die
 }

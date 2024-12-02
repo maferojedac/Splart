@@ -2,43 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thunder : MonoBehaviour
+public class Thunder : Effect
 {
-
-    public GameObject _target;
-
     public SpriteRenderer _sprite;
 
-    private float _timer;
     private float _lifetime;
-
-    void Start()
+    
+    public override void Execute()
     {
+        base.Execute();
+
         _lifetime = 1f;
-        if( _target != null)
-        {
-            transform.position = _target.transform.position;
-            _target.GetComponent<Enemy>().OnDie();
-        }
+
+        StartCoroutine(ThunderCoroutine());
     }
 
-    void Update()
+    IEnumerator ThunderCoroutine()
     {
-        if( _timer < 0)
+        while(_lifetime > 0)
         {
-            _timer = Random.value / 10f;
+            float Stroke = Random.value / 10f;
+
             _sprite.enabled = Random.value > 0.5f;
             _sprite.flipX = Random.value > 0.5f;
             _sprite.flipY = Random.value > 0.5f;
+
+            _lifetime -= Stroke;
+            yield return new WaitForSeconds(Stroke);
         }
-        else
-        {
-            _timer -= Time.deltaTime;
-        }
-        _lifetime -= Time.deltaTime;
-        if(_lifetime < 0)
-        {
-            Destroy(gameObject);
-        }
+
+        gameObject.SetActive(false);
     }
 }

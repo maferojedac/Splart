@@ -24,6 +24,7 @@ public class EnemyMovement : MonoBehaviour
 
     private GameObject _target;    // A quien sigue el enemigo
     private MapNode _targetNode;     // Siguiente nodo del mapa
+    private Enemy _enemy;          // Who uses the enemy movement script
 
     private Rigidbody _rigidBody;
 
@@ -31,6 +32,7 @@ public class EnemyMovement : MonoBehaviour
     {
         _target = GameObject.Find("Player");
         _rigidBody = GetComponent<Rigidbody>();
+        _enemy = GetComponent<Enemy>();
 
         Entity.DisableCollision(GetComponent<BoxCollider>());
     }
@@ -46,7 +48,7 @@ public class EnemyMovement : MonoBehaviour
 
     IEnumerator FollowNode()
     {
-        while((transform.position - _targetNode.Position).magnitude > NodeReachRadius)
+        while((transform.position - _targetNode.Position).magnitude > NodeReachRadius && _enemy._enemyState == EnemyState.Rush)
         {
             Vector3 newSpeed = _rigidBody.velocity;
             float SpeedY = _rigidBody.velocity.y;
@@ -62,20 +64,23 @@ public class EnemyMovement : MonoBehaviour
             yield return null;
         }
 
-        if(_targetNode.IsEnd())
+        if(_enemy._enemyState == EnemyState.Rush)
         {
-            StartCoroutine(FollowPlayer());
-        }
-        else
-        {
-            _targetNode = _targetNode.Next();
-            StartCoroutine(FollowNode());
+            if (_targetNode.IsEnd())
+            {
+                StartCoroutine(FollowPlayer());
+            }
+            else
+            {
+                _targetNode = _targetNode.Next();
+                StartCoroutine(FollowNode());
+            }
         }
     }
 
     IEnumerator FollowPlayer()
     {
-        while ((transform.position - _target.transform.position).magnitude > PlayerReachRadius)
+        while ((transform.position - _target.transform.position).magnitude > PlayerReachRadius && _enemy._enemyState == EnemyState.Rush)
         {
             Vector3 newSpeed = _rigidBody.velocity;
             float SpeedY = _rigidBody.velocity.y;
@@ -90,7 +95,8 @@ public class EnemyMovement : MonoBehaviour
             yield return null;
         }
 
-        gameObject.GetComponent<IRusherEnemy>()?.OnReach((_targetNode.Position - transform.position)); // May need update
+        if (_enemy._enemyState == EnemyState.Rush)
+            gameObject.GetComponent<IRusherEnemy>()?.OnReach(_target.transform.position);
     }
 
     public void SetStartingNode(MapNode node)

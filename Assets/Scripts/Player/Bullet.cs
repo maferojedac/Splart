@@ -10,7 +10,6 @@ public class Bullet : Ally
     public AudioClip _release;
 
     private float _deathTimer;
-    private float _timer;
 
     public override void Awake()
     {
@@ -29,22 +28,23 @@ public class Bullet : Ally
     void FixedUpdate()
     {
         _deathTimer -= Time.deltaTime;
-        _timer += Time.deltaTime;
         if (_released)
         {
             Color newColor = _originalColor;
             _spriteRenderer.color = newColor;
 
-            if (_target == null)
+            if (!_target.activeSelf)
                 Kill();
             else
                 transform.position += (_target.transform.position - transform.position).normalized * _speed * Time.deltaTime / 2f;
         }
         if (_deathTimer > -10 && _deathTimer < 0)
         {
-            // GameObject exp = Instantiate(_explosion, transform.position, Quaternion.identity);
-            // ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
-            // colorAdjuster.startColor = _originalColor;
+            Effect explosion = _fxPool.Spawn(_explosion);
+
+            explosion.SetColor(ArrayColor.makeRGB(_color));
+            explosion.SetPosition(transform.position);
+
             gameObject.SetActive(false);
         }
     }
@@ -61,7 +61,6 @@ public class Bullet : Ally
     public override void Release()
     {
         base.Release();
-        _timer = 0f;
 
         _soundManager.PlaySound(_release);
 

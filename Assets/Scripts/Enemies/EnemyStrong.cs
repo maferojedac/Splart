@@ -1,9 +1,12 @@
+using TMPro;
 using UnityEngine;
+using System.Collections;
 
 public class EnemyStrong : Enemy, IRusherEnemy
 {
-    [Header("Effects")]
+    [Header("Enemy Setup")]
     public GameObject flashbang;
+    public float JumpTime;
 
     [Header("Sumo Sound Clips")]
     public AudioClip _spawn;
@@ -22,16 +25,23 @@ public class EnemyStrong : Enemy, IRusherEnemy
         _soundManager.PlaySound(_spawn);
     }
 
-    public void OnReach(Vector3 dir)    // Update for precision PLEASE
+    public void OnReach(Vector3 targetPosition)    // Update for precision PLEASE
     {
-        _enemyState = EnemyState.Jump;
+        _enemyState = EnemyState.Attack;
         _isVulnerable = false;
 
-        dir.y = 0f;
-        dir = dir.normalized * 20f;
-        dir.y = 10f;
+        float Speed = (targetPosition - transform.position).magnitude / JumpTime;
+        Vector3 Direction = (targetPosition - transform.position).normalized;
 
-        _rigidBody.AddForce(dir, ForceMode.Impulse);
+        _rigidBody.AddForce(Speed * Direction, ForceMode.Impulse);
+
+        StartCoroutine(OnReachCoroutine(targetPosition));
+    }
+
+    IEnumerator OnReachCoroutine(Vector3 targetPosition)
+    {
+        while (transform.position.z > targetPosition.z) { yield return null; }
+        OnAttackAnimationEnd();
     }
 
     public override void OnAttack()
@@ -48,8 +58,7 @@ public class EnemyStrong : Enemy, IRusherEnemy
             {
                 _soundManager.PlaySound(_reach);
 
-                GameObject fb = Instantiate(flashbang);
-                fb.transform.parent = transform.parent;
+                _fxPool.Spawn(flashbang);
             }
         }
     }

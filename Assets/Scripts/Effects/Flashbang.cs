@@ -1,10 +1,11 @@
+// Script to be used in a Flashbang effect. Attach to Flashbang prefab.
+
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class Flashbang : MonoBehaviour
+public class Flashbang : Effect
 {
 
     public float FadeIn;
@@ -24,39 +25,54 @@ public class Flashbang : MonoBehaviour
 
         // get used volume parts
         if (!postProcessVolume.TryGet(out colorAdjustments)) throw new System.NullReferenceException(nameof(colorAdjustments));
-
-        colorAdjustments.saturation.Override(-100.0f);
     }
 
-
-    void Update()
+    public override void Execute()
     {
-        _timer += Time.deltaTime;
-        if(_timer < FadeIn)
+        base.Execute();
+        StartCoroutine(FlashbangStartCoroutine());
+    }
+
+    public override void Cancel()
+    {
+        StopAllCoroutines();
+        StartCoroutine(FlashbangVanishCoroutine());
+    }
+
+    IEnumerator FlashbangStartCoroutine()
+    {
+        _timer = 0f;
+        while(_timer < FadeIn)
         {
-            colorAdjustments.saturation.Override(
-                Mathf.Lerp(0, -100f, _timer / FadeIn)
-                );
-            colorAdjustments.contrast.Override(
-                Mathf.Lerp(0, MaxContrast, _timer / FadeIn)
-                );
-            colorAdjustments.postExposure.Override(
-                Mathf.Lerp(0, 1f, _timer / FadeIn)
-                );
+            float Progress = _timer / FadeIn;
+
+            colorAdjustments.saturation.Override(   Mathf.Lerp(0, -100f, Progress)       );
+            colorAdjustments.contrast.Override(     Mathf.Lerp(0, MaxContrast, Progress) );
+            colorAdjustments.postExposure.Override( Mathf.Lerp(0, 1f, Progress)          );
+
+            _timer += Time.deltaTime;
+
+            yield return null;
         }
-        else
+        StartCoroutine(FlashbangVanishCoroutine());
+    }
+
+    IEnumerator FlashbangVanishCoroutine()
+    {
+        _timer = 0f;
+        while (_timer < FadeIn)
         {
-            colorAdjustments.saturation.Override(
-                Mathf.SmoothStep(-100f, 0, (_timer / FadeOut) - FadeIn)
-                );
-            colorAdjustments.contrast.Override(
-                Mathf.Lerp(MaxContrast, 0, (_timer / FadeOut) - FadeIn)
-                );
-            colorAdjustments.postExposure.Override(
-                Mathf.SmoothStep(1f, 0, (_timer / FadeOut) - FadeIn)
-                );
-            if (_timer  > FadeOut) 
-                Destroy(gameObject);
+            float Progress = _timer / FadeOut;
+
+            colorAdjustments.saturation.Override(Mathf.Lerp(100f, 0, Progress));
+            colorAdjustments.contrast.Override(Mathf.Lerp(MaxContrast, 0, Progress));
+            colorAdjustments.postExposure.Override(Mathf.Lerp(1f, 0, Progress));
+
+            _timer += Time.deltaTime;
+
+            yield return null;
         }
+
+        gameObject.SetActive(false);
     }
 }

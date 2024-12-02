@@ -16,6 +16,9 @@ public class LevelLoader : MonoBehaviour, IGameState
     public PlayerData _playerData;
     private AudioSource _audioSource;
 
+    private EnemyPooling _enemyPooling;
+    private FXPooling _fxPooling;
+
     void Start()
     {
         _audioSource = GetComponent<AudioSource>();
@@ -41,14 +44,10 @@ public class LevelLoader : MonoBehaviour, IGameState
     void IGameState.EndGame()
     {
         GameObject.Find("WaveManager").GetComponent<WaveManager>().DisableSpawners();
-        List<GameObject> enemies = Entity.GetAll();
-        foreach (GameObject enemy in enemies)
-        {
-            if (enemy.CompareTag("ScreenSplat"))
-                enemy.GetComponent<Splat>().Remove();
-            else
-                enemy.GetComponent<Enemy>()?.OnDie();
-        }
+
+        _enemyPooling.KillAllEnemies();
+        _fxPooling.CancelAllEffects();
+
         foreach (LevelObject current in ColorSpritesQueue)
         {
             current.Paint();
@@ -57,14 +56,9 @@ public class LevelLoader : MonoBehaviour, IGameState
 
     void IGameState.UnloadLevel()
     {
-        List<GameObject> enemies = Entity.GetAll();
-        foreach (GameObject enemy in enemies)
-        {
-            if(enemy.CompareTag("ScreenSplat"))
-                enemy.GetComponent<Splat>().Remove();
-            else
-                enemy.GetComponent<Enemy>()?.OnDie();
-        }
+        _enemyPooling.KillAllEnemies();
+        _fxPooling.CancelAllEffects();
+
         if (_lastCoroutine == null)
         {
             SlideOutSpritesQueue = new List<LevelObject>(AllLevelSprites);
@@ -92,11 +86,6 @@ public class LevelLoader : MonoBehaviour, IGameState
             ColorSpritesQueue[0].Paint();
             ColorSpritesQueue.RemoveAt(0);
         }
-    }
-
-    void Update()
-    {
-         
     }
 
     IEnumerator MusicFadeOut()
