@@ -32,6 +32,7 @@ public abstract class Enemy : MonoBehaviour
 
     [Header("General Enemy Settings")]
     public int DefeatScore = 10;
+    public bool CanDamage = true;
 
     public EnemyState _enemyState;
 
@@ -91,7 +92,7 @@ public abstract class Enemy : MonoBehaviour
         _enemyState = EnemyState.Die;
         _rigidBody.velocity = Vector3.zero;
 
-        if (ForceKill)
+        if (!ForceKill)
             _levelData.SumScore(DefeatScore);
 
         _animator.SetTrigger("Death");
@@ -151,7 +152,11 @@ public abstract class Enemy : MonoBehaviour
 
     public void OnAttackAnimationEnd()
     {
-        if(GameObject.Find("Player").GetComponent<Player>().TakeDamage())
+        if (CanDamage) { 
+            if(GameObject.Find("Player").GetComponent<Player>().TakeDamage())
+                OnAttack();
+        }
+        else
             OnAttack();
 
         gameObject.SetActive(false);

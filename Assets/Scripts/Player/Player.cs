@@ -1,50 +1,59 @@
 // Script for player
 
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
-
-    public float BulletSpeed;
-
+    // Communication objects
     private LevelData _levelData;
     private PlayerData _playerData;
 
-    public GameObject _bulletPrefab;
+    [Header("Player Setup")]
+    public GameObject _bulletPrefab;    // Bullet prefab
+    public float ScreenPercentageError;
 
-    public Transform _bulletYRefTransform;
+    public Transform _bulletYRefTransform;  // Y value at which bullets should be spawned
+
+    // Is bullet held and which bullet is held
     private Ally _heldBullet;
-    private float _canRegretBullet;
     private bool _held;
 
-    private LayerMask _entityMask;
-    private LineRenderer _lineRenderer;
-    private Vector3 _cameraPos;
+    private Camera _mainCam;
 
-    private AllyPooling _allyPooler;
+    private LayerMask _entityMask;  // Layer with which raycasts can interact
 
-    private float _bulletYRef;
+    private AllyPooling _allyPooler;    // Bullet pooling
+    private EnemyPooling _enemyPooler;  // Enemy pooler
 
-    // public float CooldownTime;
+    [Header("Player State")]
     public int _HP;
-    public int _Shields;
+    public bool _ShieldActive;
+    // public int _Shields;     // Shield rework pending!
 
     public bool _isActive;
+    public bool _controlLocked;
 
     public void NewGame()
     {
         _HP = 3;
-        _Shields = _playerData.BoosterLife;
-        if (_Shields > 2)
-            _Shields = 2;
-        _playerData.BoosterLife -= _Shields;
+        // _Shields = _playerData.BoosterLife;
+        // if (_Shields > 2)
+        //     _Shields = 2;
+        // _playerData.BoosterLife -= _Shields;
         _held = false;
         _isActive = true;
+        _controlLocked = false;
     }
 
-    public bool TakeDamage()
+    public bool TakeDamage()    // Function returns a bool value so that the attacker can react accordingly
     {
-        if(_Shields <= 0)
+        if(_ShieldActive)
+        {
+            _ShieldActive = false;
+            return false;
+        }
+        else
         {
             _HP--;
             if (_HP < 1 && _isActive)
@@ -54,11 +63,6 @@ public class Player : MonoBehaviour
             }
             return true;
         }
-        else
-        {
-            _Shields--;
-            return false;
-        }
     }
 
     void Awake()
@@ -67,14 +71,15 @@ public class Player : MonoBehaviour
         _playerData = transform.parent.GetComponent<PlayerManager>()._playerData;
 
         _allyPooler = GameObject.Find("Allies").GetComponent<AllyPooling>();
+        _enemyPooler = GameObject.Find("Enemies").GetComponent<EnemyPooling>();
+
+        _mainCam = Camera.main;
 
         _entityMask = LayerMask.GetMask("Entity");
+    }
 
-        _lineRenderer = GetComponent<LineRenderer>();   
-        _cameraPos = Camera.main.transform.position;
-
-        _bulletYRef = _bulletYRefTransform.position.y;
-
+    void OnEnable() // Reset values for new games
+    {
         NewGame();
     }
 
@@ -82,27 +87,21 @@ public class Player : MonoBehaviour
     {
         if(_heldBullet != null)
         {
-            _canRegretBullet -= Time.deltaTime;
             if (_held)
             {
                 Vector3 pos = Input.mousePosition;
+
+                GameObject closestEnemy = GetClosestEnemy(pos);
+
+                _heldBullet.SetTarget(closestEnemy);
+
+                // Transformations to pointer for proper bullet positioning
                 pos.z = transform.position.z + 2f;
                 pos.y = _bulletYRefTransform.position.y;
+
                 pos = Camera.main.ScreenToWorldPoint(pos);
 
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hit;
-
                 _heldBullet.transform.position = pos;
-                
-                if (Physics.Raycast(ray, out hit, 500f, _entityMask))
-                {
-                    _heldBullet.SetTarget(hit.collider.gameObject);
-                }
-                else
-                {
-                    _heldBullet.SetTarget(null);
-                }
             }
             else
             {
@@ -115,15 +114,36 @@ public class Player : MonoBehaviour
             _held = true;
         else
             _held = false;
-        
     }
 
-    private void UpdateLine(Vector3 from,  Vector3 to, Color start, Color end)
+    private GameObject GetClosestEnemy(Vector2 ScreenPosition)
     {
-        _lineRenderer.SetPosition(0, from);
-        _lineRenderer.SetPosition(1, to);
-        _lineRenderer.endColor = end;
-        _lineRenderer.startColor = start;
+        List<Enemy> enemies = _enemyPooler.GetAllEnemies();
+
+        if (enemies.Count == 0)
+            return null;
+
+        Enemy closestEnemy = null;
+        float closestDistance = float.MaxValue;
+        float Radius = Mathf.Min(Screen.width, Screen.height) * ScreenPercentageError;
+
+        foreach (Enemy enemy in enemies)
+        {
+            Vector2 EnemyPosition = _mainCam.WorldToScreenPoint(enemy.transform.position);
+
+            float CurrentDistance = Vector2.Distance(EnemyPosition, ScreenPosition);
+
+            if(CurrentDistance < closestDistance && CurrentDistance < Radius)
+            {
+                closestDistance = CurrentDistance;
+                closestEnemy = enemy;
+            }
+        }
+
+        if (closestEnemy == null)
+            return null;
+
+        return closestEnemy.gameObject;
     }
 
     public void SelectRed()
@@ -153,7 +173,7 @@ public class Player : MonoBehaviour
 
     private void CreateBullet(GameColor color)
     {
-        if (_isActive)
+        if (_isActive && !_controlLocked)
         {
             if(_heldBullet != null)
                 _heldBullet.Release();
@@ -161,7 +181,6 @@ public class Player : MonoBehaviour
             _heldBullet = _allyPooler.Spawn(_bulletPrefab);
             _heldBullet.SetColor(color);
             _heldBullet.gameObject.SetActive(true);
-            _canRegretBullet = 0.2f;
             _held = true;
         }
     }

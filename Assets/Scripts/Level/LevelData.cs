@@ -18,6 +18,9 @@ public class LevelData : ScriptableObject
     public float _globalEnemySpeedMultiplier;   // Self explanatory
     public float _globalEnemyWaveSpeedMultiplier;   // For wave speed managing
 
+    public int _maxColorCount;
+    public int _currentColorCount;
+
     private List<ILevelEvent> _listenerObjects = new(); // Listeners to levle events
 
     private void OnEnable()
@@ -47,6 +50,21 @@ public class LevelData : ScriptableObject
     public void SubscribeToEvents(ILevelEvent listener)
     {
         _listenerObjects.Add(listener);
+    }
+
+    public void SetMaxPaintableColors(int count)
+    {
+        _currentColorCount = 0;
+        _maxColorCount = count;
+    }
+
+    public void PaintObject()
+    {
+        _currentColorCount++;
+        foreach (ILevelEvent listener in _listenerObjects)
+        {
+            listener.PaintObject();
+        }
     }
 
     public void SumScore(int score)

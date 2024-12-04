@@ -1,38 +1,73 @@
+// Script that manages sprites in game as well as other utilities
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LevelLoader : MonoBehaviour, IGameState
+public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
 {
-    public List<LevelObject> AllLevelSprites;
+    private List<LevelObject> AllLevelSprites = new();
 
-    private List<LevelObject> ColorSpritesQueue;
-    private List<LevelObject> SlideInSpritesQueue;
-    private List<LevelObject> SlideOutSpritesQueue;
+    private Dictionary<Color, List<LevelObject>> ColorSpritesQueue = new();
+    private List<Color> ColorPickQueue = new();
 
     private float _timer;
+    private int DictionaryIndex;
     private IEnumerator _lastCoroutine;
 
-    public PlayerData _playerData;
     private AudioSource _audioSource;
+
+    private LevelSettings _levelSettings;
 
     private EnemyPooling _enemyPooling;
     private FXPooling _fxPooling;
 
-    void Start()
+    public LevelData _levelData;
+    public PlayerData _playerData;
+
+    public Color _nextPaintingColor;
+
+    void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _audioSource.volume = _playerData.MusicVolume;
 
-        if (AllLevelSprites.Count == 0)
+        _levelSettings = GetComponent<LevelSettings>();
+
+        CommunicationPrefabScript communicator = GameObject.Find("CommunicationPrefab").GetComponent<CommunicationPrefabScript>();
+        _levelData = communicator._levelData;
+        _playerData = communicator._playerData;
+
+        _levelData.SubscribeToEvents(this);
+
+        _enemyPooling = GameObject.Find("Enemies").GetComponent<EnemyPooling>();
+        _fxPooling = GameObject.Find("FX").GetComponent<FXPooling>();
+
+        foreach (Transform levelsprite in transform.Find("Map").Find("TerrainSprites"))
         {
-            foreach (Transform levelsprite in transform.Find("Map").Find("TerrainSprites"))
-            {
-                AllLevelSprites.Add(levelsprite.gameObject.GetComponent<LevelObject>());
-            }
+            // Get data relevant for adding and clasification
+            LevelObject currentLevelObject = levelsprite.GetComponent<LevelObject>();
+            SpriteRenderer currentSpriteRenderer = levelsprite.GetComponent<SpriteRenderer>();
+            Color closestPaletteColor = ClosestPaletteColor(currentSpriteRenderer.color);
+
+            if (!ColorSpritesQueue.ContainsKey(closestPaletteColor))  // Initialize dictionary for color key if missing
+                ColorSpritesQueue[closestPaletteColor] = new List<LevelObject>();
+
+            // Save object
+            AllLevelSprites.Add(currentLevelObject);
+            ColorSpritesQueue[closestPaletteColor].Add(currentLevelObject);
         }
-        ColorSpritesQueue = new List<LevelObject>(AllLevelSprites);
+
         StartGame();
+    }
+
+    void OnEnable()
+    {
+        ColorPickQueue = new List<Color>(_levelSettings.LevelPalette);
+
+        _levelData.SetMaxPaintableColors(ColorPickQueue.Count);
+
+        _nextPaintingColor = ColorPickQueue[Random.Range(0, ColorPickQueue.Count)];
     }
 
     void IGameState.GameOver()
@@ -47,11 +82,6 @@ public class LevelLoader : MonoBehaviour, IGameState
 
         _enemyPooling.KillAllEnemies();
         _fxPooling.CancelAllEffects();
-
-        foreach (LevelObject current in ColorSpritesQueue)
-        {
-            current.Paint();
-        }
     }
 
     void IGameState.UnloadLevel()
@@ -61,7 +91,6 @@ public class LevelLoader : MonoBehaviour, IGameState
 
         if (_lastCoroutine == null)
         {
-            SlideOutSpritesQueue = new List<LevelObject>(AllLevelSprites);
             StartCoroutine(SlideAllObjectsOut());
         }
     }
@@ -71,20 +100,22 @@ public class LevelLoader : MonoBehaviour, IGameState
         // Debug.Log("start calling lol");
         if(_lastCoroutine == null)
         {
-            SlideInSpritesQueue = new List<LevelObject>(AllLevelSprites);
             StartCoroutine(SlideAllObjectsIn());
         }
     }
 
-    void IGameState.NextWave() {
-        if(ColorSpritesQueue.Count > 0)
+    public void PaintObject() {
+        if(ColorPickQueue.Count > 0)
         {
-            while(ColorSpritesQueue[0].gameObject.CompareTag("Non Paintable"))
+            foreach(LevelObject levelobj in ColorSpritesQueue[_nextPaintingColor])
             {
-                ColorSpritesQueue.RemoveAt(0);
+                levelobj.Paint();
             }
-            ColorSpritesQueue[0].Paint();
-            ColorSpritesQueue.RemoveAt(0);
+
+            ColorPickQueue.Remove(_nextPaintingColor);
+
+            if(ColorPickQueue.Count > 0)
+                _nextPaintingColor = ColorPickQueue[Random.Range(0, ColorPickQueue.Count)];
         }
     }
 
@@ -103,32 +134,63 @@ public class LevelLoader : MonoBehaviour, IGameState
     IEnumerator SlideAllObjectsIn()
     {
         _timer = 0;
-        while(SlideInSpritesQueue.Count > 0)
+        int Index = 0;
+        while(Index < AllLevelSprites.Count)
         {
-            _timer += Time.deltaTime;
-            if (_timer > 0.05f)
-            {
-                SlideInSpritesQueue[0].SlideIn();
-                SlideInSpritesQueue.RemoveAt(0);
-                _timer = 0;
-            }
-            yield return null;
+            AllLevelSprites[Index].SlideIn();
+            Index++;
+            yield return new WaitForSeconds(0.05f);
         }
     }
 
     IEnumerator SlideAllObjectsOut()
     {
         _timer = 0;
-        while (SlideOutSpritesQueue.Count > 0)
+        int Index = 0;
+        while (Index < AllLevelSprites.Count)
         {
-            _timer += Time.deltaTime;
-            if (_timer > 0.005f)
-            {
-                SlideOutSpritesQueue[0].SlideOut();
-                SlideOutSpritesQueue.RemoveAt(0);
-                _timer = 0;
-            }
-            yield return null;
+            AllLevelSprites[Index].SlideOut();
+            Index++;
+            yield return new WaitForSeconds(0.05f);
         }
+    }
+
+    private Color ClosestPaletteColor(Color inputColor)
+    {
+        float InputHue;
+        Color.RGBToHSV(inputColor, out InputHue, out _, out _);
+
+        Color closestColor = Color.white;
+        float closestDistance = 1f;
+
+        foreach(Color color in _levelSettings.LevelPalette)
+        {
+            float PaletteItemHue;
+            Color.RGBToHSV(color, out PaletteItemHue, out _, out _);
+
+            float currentDistance = CompareHues(InputHue, PaletteItemHue);
+
+            if (currentDistance < closestDistance)
+            {
+                closestDistance = currentDistance;
+                closestColor = color;
+            }
+        }
+
+        return closestColor;
+    }
+
+    private float CompareHues(float hue1, float hue2)
+    {
+        // Calculate the absolute difference
+        float difference = Mathf.Abs(hue1 - hue2);
+
+        // Wrap if there is shorter distance around
+        if (difference > 0.5f)
+        {
+            difference = 1f - difference;
+        }
+
+        return difference;
     }
 }

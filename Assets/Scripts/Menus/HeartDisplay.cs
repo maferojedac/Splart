@@ -60,7 +60,7 @@ public class HeartDisplay : MonoBehaviour
         item = 0;
         foreach (Image shield in Shields)
         {
-            if (_player._Shields <= item)
+            if (_player._ShieldActive)
                 shield.enabled = false;
             item++;
         }

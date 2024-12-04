@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 5232177867496499023}
   - component: {fileID: 8509361328789167617}
   m_Layer: 3
-  m_Name: Fast
+  m_Name: Blot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 5852056623976522717}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.25726545, y: 2.305535, z: -56.7}
+  m_LocalPosition: {x: 0, y: 0, z: -56.7}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -140,8 +140,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.9595232, y: 4.602601, z: 2}
-  m_Center: {x: 0.043453217, y: 0.50077343, z: 0}
+  m_Size: {x: 2, y: 3.25, z: 2}
+  m_Center: {x: -0, y: 0.35, z: -0}
 --- !u!114 &4283331648329994947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   NodeMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  RunSpeed: 10
+  RunSpeed: 4
   NodeReachRadius: 4
   PlayerReachRadius: 4
   TurnSpeed: 50
@@ -181,6 +181,8 @@ MonoBehaviour:
   _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
     type: 3}
   DefeatScore: 10
+  CanDamage: 1
+  _enemyState: 0
   InkBlotPrefab: {fileID: 5529770688874983475, guid: fd9c14ef50f872b41bdf099b85f376a2,
     type: 3}
   JumpTime: 0.3
@@ -262,8 +264,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.71, y: 0.71, z: 0.71}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2837755134578151054}
   m_Father: {fileID: 4090103183048001661}

@@ -1,6 +1,8 @@
-using TMPro;
+// Script for Enemy Sumo
+
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyStrong : Enemy, IRusherEnemy
 {
@@ -12,20 +14,29 @@ public class EnemyStrong : Enemy, IRusherEnemy
     public AudioClip _spawn;
     public AudioClip _reach;
 
-    private bool _canBeDamaged;
-    private float _punchDuration;
-
-
-    private Vector3 _startScale;
-    private float _timer;
-
     public override void Spawn(Vector3 position)
     {
         base.Spawn(position);
         _soundManager.PlaySound(_spawn);
+
+        List<GameColor> duplicated = new List<GameColor>();
+
+        foreach(GameColor color in _colors)
+        {
+            duplicated.Add(color);
+        }
+
+        _colors.Add(duplicated);
+        
     }
 
-    public void OnReach(Vector3 targetPosition)    // Update for precision PLEASE
+    public override void OnDie()
+    {
+        base.OnDie();
+        _levelData.PaintObject();   // Boss enemies paint the background
+    }
+
+    public void OnReach(Vector3 targetPosition)    
     {
         _enemyState = EnemyState.Attack;
         _isVulnerable = false;
@@ -49,17 +60,13 @@ public class EnemyStrong : Enemy, IRusherEnemy
         SelfDestruct();
     }
 
-
     void SelfDestruct()
     {
         if (_levelData._gameRunning)
         {
-            if (GameObject.Find("Player").GetComponent<Player>().TakeDamage())
-            {
-                _soundManager.PlaySound(_reach);
+            _soundManager.PlaySound(_reach);
 
-                _fxPool.Spawn(flashbang);
-            }
+            _fxPool.Spawn(flashbang);
         }
     }
 }

@@ -102,7 +102,6 @@ public class EnemyMovement : MonoBehaviour
     public void SetStartingNode(MapNode node)
     {
         _targetNode = node;
-        Debug.Log("Map starting node succesfully assigned!");
     }
 
     public void StartRunning()

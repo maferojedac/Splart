@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ArrayColor
+public class ArrayColor : IEnumerable<GameColor>
 {
     List<GameColor> _colors;
 
@@ -41,6 +41,19 @@ public class ArrayColor
     {
         _colors.Add(color);
     }
+
+    public void Add(GameColor[] colors)
+    {
+        foreach (GameColor c in colors)
+            _colors.Add(c);
+    }
+
+    public void Add(List<GameColor> colors)
+    {
+        foreach (GameColor c in colors)
+            _colors.Add(c);
+    }
+
 
     public void Remove(GameColor p_color)
     {
@@ -192,4 +205,16 @@ public class ArrayColor
 
         return color.toRGB();
     }
+
+    public IEnumerator<GameColor> GetEnumerator()
+    {
+        return _colors.GetEnumerator();
+    }
+
+    // Explicit implementation of non-generic IEnumerable
+    System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+    {
+        return _colors.GetEnumerator();
+    }
+
 }

@@ -23,15 +23,18 @@ public class WaveManager : MonoBehaviour
 
     private bool _allowBoss;
 
+    private LevelLoader _loader;
+
     private GameObject[] SpawnablesCommon;
     private GameObject[] SpawnablesMinibosses;
 
     void Awake()
     {
         // Get from level settings
-        Debug.Log(transform.parent.name);
         SpawnablesCommon = transform.parent.GetComponent<LevelSettings>().SpawnablesCommon;
         SpawnablesMinibosses = transform.parent.GetComponent<LevelSettings>().SpawnablesMinibosses;
+
+        _loader = transform.parent.GetComponent<LevelLoader>();
     }
 
     void OnEnable()
@@ -43,6 +46,7 @@ public class WaveManager : MonoBehaviour
         _timeScore = 1;
         _waveScore = 0;
         _speedScore = 0;
+        _allowBoss = true;
 
         GenerateWave(1);
     }
@@ -66,9 +70,11 @@ public class WaveManager : MonoBehaviour
         Debug.Log(SpawnablesCommon);
         for(int i = 0; i < Length; i++)
         {
-            if(_allowBoss && i == Length - 1)
+            if (_allowBoss && i == Length - 1)
             {
-                GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore, i), SpawnablesMinibosses[Random.Range(0, SpawnablesMinibosses.Length)]));
+                ArrayColor bossColor = GenerateLevelPaintingColor();
+
+                GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore, i), SpawnablesMinibosses[Random.Range(0, SpawnablesMinibosses.Length)], bossColor));
             }
             else
             {
@@ -88,6 +94,28 @@ public class WaveManager : MonoBehaviour
         StartCoroutine(WaitForWaveEnd());
     }
 
+    private ArrayColor GenerateLevelPaintingColor()
+    {
+        RYBColor paintColor = new RYBColor(_loader._nextPaintingColor);
+
+        paintColor = paintColor * 3f;
+        Debug.Log("Boss Color > "+paintColor);
+        // paintColor = paintColor.floor();
+
+        ArrayColor generatedColor = new ArrayColor();
+
+        for (int reds = 0; reds < paintColor.red; reds++)
+            generatedColor.Add(GameColor.Red);
+
+        for (int yellows = 0; yellows < paintColor.yellow; yellows++)
+            generatedColor.Add(GameColor.Yellow);
+
+        for (int blues = 0; blues < paintColor.blue; blues++)
+            generatedColor.Add(GameColor.Blue);
+
+        return generatedColor;
+    }
+
     private float GenerateTime(int Score, int QueueElement)
     {
         // collapse min time at aprox 4.9 secs
@@ -97,7 +125,7 @@ public class WaveManager : MonoBehaviour
         float newTime;
         newTime = 20f / (Mathf.Sqrt(Score + 10f));
         newTime += Random.value * 2f;
-        if (Random.value > 0.8f)
+        if (Random.value > 0.6f)
             newTime /= 2f;
         return newTime;
     }
@@ -135,6 +163,7 @@ public class WaveManager : MonoBehaviour
                     _levelData.SetGlobalSpeedWaveMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));
                 }
                 _allowBoss = Random.value > 0.5;
+                _allowBoss = true;
                 _levelData.NextWave();
                 GenerateWave(_wave);
             }

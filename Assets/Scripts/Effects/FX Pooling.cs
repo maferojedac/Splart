@@ -40,7 +40,8 @@ public class FXPooling : MonoBehaviour
         {
             foreach (Effect effect in EffectList)
             {
-                effect.Cancel();
+                if(effect.gameObject.activeSelf)
+                    effect.Cancel();
             }
         }
     }
