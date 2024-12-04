@@ -1,108 +1,110 @@
-using System.Collections;
-using System.Collections.Generic;
+// Transformation from RGB to RYB through HSV warping
+
 using UnityEngine;
-using UnityEngine.Windows;
 
 public struct RYBColor
 {
-    public float _red;
-    public float _yellow;
-    public float _blue;
-    public float _alpha;
 
-    // Borrowing code and palette from https://github.com/ProfJski/ArtColors/
+    public float red;
+    public float yellow;
+    public float blue;
+    public float alpha;
 
     public RYBColor(Color input)
     {
-        /*
-        // RGB corners in RYB Values
-        Vector3 CG000 = new( 0.2f, 0.2f, 0.2f ); //Black
-        Vector3 CG100 = new( 0.891f, 0.0f, 0.0f ); //Red
-        Vector3 CG010 = new( 0.0f, 0.714f, 0.374f ); //Green = RYB Yellow + Blue
-        Vector3 CG001 = new( 0.07f, 0.08f, 0.893f ); //Blue:
-        Vector3 CG011 = new( 0.0f, 0.116f, 0.313f ); //Cyan = RYB Green + Blue.  Very dark to make the rest of the function work correctly
-        Vector3 CG110 = new( 0.0f, 0.915f, 0.0f ); //Yellow
-        Vector3 CG101 = new( 0.554f, 0.0f, 0.1f ); //Magenta =RYB Red + Blue.  Likewise dark.
-        Vector3 CG111 = new( 1.0f, 1.0f, 1.0f ); //White
-        */
+        float Hue, Saturation, Value;
+        Color.RGBToHSV(input, out Hue, out Saturation, out Value);
 
-        // Adjusted palette
-        Vector3 CG000 = new Vector3(0.2f, 0.2f, 0.2f);  //Black
-        Vector3 CG100 = new Vector3(1.0f, 0.0f, 0.2f);  //Red
-        Vector3 CG010 = new Vector3(0.9f, 0.9f, 0.2f);  //Yellow = RGB Red+Green.
-        Vector3 CG001 = new Vector3(0.2f, 0.36f, 1.0f); //Blue
-        Vector3 CG011 = new Vector3(0.2f, 0.9f, 0.2f);  //Green
-        Vector3 CG110 = new Vector3(1.0f, 0.6f, 0.2f);  //Orange = RGB full Red, 60% Green
-        Vector3 CG101 = new Vector3(0.6f, 0.2f, 1.0f);  //Purple = 60% Red, full Blue
-        Vector3 CG111 = new Vector3(1.0f, 1.0f, 1.0f);  //White
+        red = 0; yellow = 0; blue = 0; alpha = 0;
 
-        // Test pastel palette
-        /*
-        Vector3 CG000 = new Vector3(0.5f, 0.5f, 0.5f);      //Black
-        Vector3 CG100 = new Vector3(1.0f, 0.5f, 0.5f);      //Red
-        Vector3 CG010 = new Vector3(1f, 1f, 0.5f);          //Yellow = RGB Red + Green.
-        Vector3 CG001 = new Vector3(0.5f, 0.5f, 1.0f);      //Blue
-        Vector3 CG011 = new Vector3(0.5f, 1f, 0.5f);        //Green
-        Vector3 CG110 = new Vector3(1.0f, 0.8f, 0.5f);      //Orange = RGB full Red, 60% Green
-        Vector3 CG101 = new Vector3(0.8f, 0.5f, 1.0f);      //Purple = 60% Red, full Blue
-        Vector3 CG111 = new Vector3(1.0f, 1.0f, 1.0f);      //White
-        */
+        Hue = HueRemapToRYB(Hue);
 
-        // Trilinear interpolation for color
-        Vector3 C00, C01, C10, C11;
-        C00 = ((CG000 *  (1.0f - input.r)) +  (CG100 * input.r));
-        C01 = ((CG001 *  (1.0f - input.r)) +  (CG101 * input.r));
-        C10 = ((CG010 *  (1.0f - input.r)) +  (CG110 * input.r));
-        C11 = ((CG011 *  (1.0f - input.r)) +  (CG111 * input.r));
+        Color newRYB = Color.HSVToRGB(Hue, Saturation, Value);
 
-        Vector3 C0, C1;
-        C0 = ((C00 *( 1.0f - input.g)) + (C10 * input.g));
-        C1 = ((C01 *( 1.0f - input.g)) + (C11 * input.g));
-
-        Vector3 C;
-        C = ((C0 * (1.0f - input.b)) + (C1 * input.b));
-
-        _red = C.x;
-        _yellow = C.y;
-        _blue = C.z;
-        _alpha = input.a;
+        red = newRYB.r;
+        yellow = newRYB.g;
+        blue = newRYB.b;
+        alpha = newRYB.a;
     }
 
     public RYBColor(float p_red, float p_yellow, float p_blue, float p_alpha)
     {
         // Key = 0;
-        this._red = p_red;
-        this._yellow = p_yellow;
-        this._blue = p_blue;
-        this._alpha = p_alpha;
+        this.red = p_red;
+        this.yellow = p_yellow;
+        this.blue = p_blue;
+        this.alpha = p_alpha;
     }
 
     public Color toRGB()
     {
-        Vector3 CG000 = new Vector3(0.2f, 0.2f, 0.2f);  //Black
-        Vector3 CG100 = new Vector3(1.0f, 0.0f, 0.2f);  //Red
-        Vector3 CG010 = new Vector3(0.9f, 0.9f, 0.2f);  //Yellow = RGB Red+Green.
-        Vector3 CG001 = new Vector3(0.2f, 0.36f, 1.0f); //Blue
-        Vector3 CG011 = new Vector3(0.2f, 0.9f, 0.2f);  //Green
-        Vector3 CG110 = new Vector3(1.0f, 0.6f, 0.2f);  //Orange = RGB full Red, 60% Green
-        Vector3 CG101 = new Vector3(0.6f, 0.2f, 1.0f);  //Purple = 60% Red, full Blue
-        Vector3 CG111 = new Vector3(1.0f, 1.0f, 1.0f);  //White
+        Color RybColor = new Color(red, yellow, blue);
 
-        // Trilinear interpolation for color
-        Vector3 C00, C01, C10, C11;
-        C00 = ((CG000 * (1.0f - _red)) + (CG100 * _red));
-        C01 = ((CG001 * (1.0f - _red)) + (CG101 * _red));
-        C10 = ((CG010 * (1.0f - _red)) + (CG110 * _red));
-        C11 = ((CG011 * (1.0f - _red)) + (CG111 * _red));
+        Vector3 HSVColor;
+        Color.RGBToHSV(RybColor, out HSVColor.x, out HSVColor.y, out HSVColor.z);
 
-        Vector3 C0, C1;
-        C0 = ((C00 * (1.0f - _yellow)) + (C10 * _yellow));
-        C1 = ((C01 * (1.0f - _yellow)) + (C11 * _yellow));
-        Vector3 C;
-        C = ((C0 * (1.0f - _blue)) + (C1 * _blue));
+        HSVColor.x = HueRemapToRGB(HSVColor.x);
 
-        Color output = new Color(C.x, C.y, C.z, _alpha);
+        Color newRGB = Color.HSVToRGB(HSVColor.x, HSVColor.y, HSVColor.z);
 
-        return output;
+        return newRGB;
+    }
+
+    private float HueRemapToRGB(float Value)
+    {
+        // This function converts from your RYB space back to your RGB space.
+        // It's the exact reverse of HueRemapToRYB
+
+        // Colors that go through this function will have their values remapped from the representation in RYB to the respective representation in RGB
+
+        // Example: Inputting a Yellow Hue (120° in RYB) should return (60° in RGB)
+        // Example: Inputting a Green Hue (180° in RYB) should return (120° in RGB)
+        if (Value < 240 / 360f)
+        {
+            if (Value < 120 / 360f)
+                return Value / 2f;
+            else
+                if (Value < 180 / 360f)
+                    return Value - (60 / 360f);
+                else
+                    return 2f * (Value - 120 / 360f);
+                // return (Value * 1.5f) - (1f / 3f); old erroneous green remap
+        }
+        return Value;
+    }
+
+    private float HueRemapToRYB(float Value)
+    {
+        // Basically, what this function does is to grab your current Hue and remap it so that if the color were to be yellow, 
+        // the yellow color should now be assigned to 120 in my custom RYB Hue. This is so that I can access the Yellow component
+        // by converting my HSV back to RGB and retrieve what's given in my Green channel.
+
+        // Colors will NOT align if this is translated back to RGB as what'd be displayed in the Green channel will be the Yellow channel's values.
+
+        // Example: Inputting a Yellow Hue (60° in RGB) should return (120° in RYB)
+        // Example: Inputting a Green Hue (120° in RGB) should return (180° RYB)
+        if (Value < 240 / 360f)
+        {
+            if (Value < 60 / 360f)
+                return Value * 2f;
+            else {
+                if (Value < 120 / 360f)
+                    return Value + (60 / 360f);
+                else
+                    return Value / 2f + (120 / 360f);
+            }
+                //return (Value / 1.5f) + (2f / 9f); old erroneous green remap
+        }
+        return Value;
+    }
+
+    public static RYBColor operator +(RYBColor a, RYBColor b) => new RYBColor(a.red + b.red, a.yellow + b.yellow, a.blue + b.blue, a.alpha + b.alpha);
+    public static RYBColor operator -(RYBColor a, RYBColor b) => new RYBColor(a.red - b.red, a.yellow - b.yellow, a.blue - b.blue, a.alpha - b.alpha);
+    public static RYBColor operator *(RYBColor a, float b) => new RYBColor(a.red * b, a.yellow * b, a.blue * b, a.alpha);
+    public static RYBColor operator /(RYBColor a, float b) => new RYBColor(a.red / b, a.yellow / b, a.blue / b, a.alpha);
+    public RYBColor floor () => new RYBColor(Mathf.Floor(red), Mathf.Floor(yellow), Mathf.Floor(blue), alpha);
+    public override string ToString()
+    {
+        return "(" + red + "," + yellow + "," + blue + "," + alpha + ")";
     }
 }

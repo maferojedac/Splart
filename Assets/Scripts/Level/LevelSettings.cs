@@ -9,4 +9,5 @@ public class LevelSettings : MonoBehaviour
 {
     public GameObject[] SpawnablesCommon;
     public GameObject[] SpawnablesMinibosses;
+    public Color[] LevelPalette;
 }

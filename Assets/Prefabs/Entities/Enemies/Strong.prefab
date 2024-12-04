@@ -56,8 +56,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 4.14404, y: 5.304536, z: 1}
-  m_Center: {x: 0.13420749, y: 0.14273703, z: 0}
+  m_Size: {x: 2, y: 3.25, z: 1}
+  m_Center: {x: 0, y: 0.35, z: 0}
 --- !u!114 &4283331648329994947
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72,7 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NodeMap: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
   RunSpeed: 4
-  NodeReachRadius: 0.5
+  NodeReachRadius: 4
   PlayerReachRadius: 10
   TurnSpeed: 10
 --- !u!114 &8050166907611048716
@@ -92,9 +92,16 @@ MonoBehaviour:
   _damage: {fileID: 8300000, guid: bc966cd6b0dfc4b44a8149951159da35, type: 3}
   _resist: {fileID: 8300000, guid: e424fb61ecf41344eba6211b50483ddf, type: 3}
   _die: {fileID: 8300000, guid: 2645eeaa51f29aa4fa6b0cc09f5ac300, type: 3}
-  DefeatScore: 10
+  _damageExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
+    type: 3}
+  _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
+    type: 3}
+  DefeatScore: 20
+  CanDamage: 1
+  _enemyState: 0
   flashbang: {fileID: 8332001297077376764, guid: ed270689db12d6747b8f94bcf2efff06,
     type: 3}
+  JumpTime: 0.3
   _spawn: {fileID: 8300000, guid: 054048ecae69cc843a6f34403ab26b16, type: 3}
   _reach: {fileID: 8300000, guid: 2645eeaa51f29aa4fa6b0cc09f5ac300, type: 3}
 --- !u!54 &-5486837788763860719
@@ -172,8 +179,8 @@ Transform:
   m_GameObject: {fileID: 6295448740902358407}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0}
+  m_LocalScale: {x: 0.6323, y: 0.6323, z: 0.6323}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4090103183048001661}

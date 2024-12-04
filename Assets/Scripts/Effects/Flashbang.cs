@@ -18,7 +18,7 @@ public class Flashbang : Effect
 
     private float _timer;
 
-    void Start()
+    void Awake()
     {
         postProcessVolume = GameObject.Find("PostProcessVolume").GetComponent<Volume>()?.profile;
         if (!postProcessVolume) throw new System.NullReferenceException(nameof(VolumeProfile));
@@ -41,14 +41,16 @@ public class Flashbang : Effect
 
     IEnumerator FlashbangStartCoroutine()
     {
+        Debug.Log("Flashbang start");
+
         _timer = 0f;
         while(_timer < FadeIn)
         {
             float Progress = _timer / FadeIn;
 
             colorAdjustments.saturation.Override(   Mathf.Lerp(0, -100f, Progress)       );
-            colorAdjustments.contrast.Override(     Mathf.Lerp(0, MaxContrast, Progress) );
-            colorAdjustments.postExposure.Override( Mathf.Lerp(0, 1f, Progress)          );
+            // colorAdjustments.contrast.Override(     Mathf.Lerp(0, MaxContrast, Progress) );
+            // colorAdjustments.postExposure.Override( Mathf.Lerp(0, 1f, Progress)          );
 
             _timer += Time.deltaTime;
 
@@ -60,19 +62,20 @@ public class Flashbang : Effect
     IEnumerator FlashbangVanishCoroutine()
     {
         _timer = 0f;
-        while (_timer < FadeIn)
+        while (_timer < FadeOut)
         {
             float Progress = _timer / FadeOut;
 
-            colorAdjustments.saturation.Override(Mathf.Lerp(100f, 0, Progress));
-            colorAdjustments.contrast.Override(Mathf.Lerp(MaxContrast, 0, Progress));
-            colorAdjustments.postExposure.Override(Mathf.Lerp(1f, 0, Progress));
+            colorAdjustments.saturation.Override(Mathf.Lerp(-100f, 0, Progress));
+            // colorAdjustments.contrast.Override(Mathf.Lerp(MaxContrast, 0, Progress));
+            // colorAdjustments.postExposure.Override(Mathf.Lerp(1f, 0, Progress));
 
             _timer += Time.deltaTime;
 
             yield return null;
         }
 
+        Debug.Log("Flashbang end");
         gameObject.SetActive(false);
     }
 }

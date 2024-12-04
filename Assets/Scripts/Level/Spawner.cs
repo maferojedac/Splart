@@ -50,10 +50,10 @@ public class Spawner : MonoBehaviour
             Enemy enemy = _enemyPooler.Spawn(_spawnableQueue[0].enemyType);
             enemy.SetSoundManager(_enemySoundManager);
 
-            if (_forcedColor != null)
+            if (_spawnableQueue[0].forcedColor != null)
             {
-                enemy.SetColor(_forcedColor);
-                _forcedColor = null;
+                enemy.SetColor(_spawnableQueue[0].forcedColor);
+                // _forcedColor = null;
             }
             else
             {
@@ -137,6 +137,8 @@ public class Spawner : MonoBehaviour
 
     public void Disable()   // Disable spawner
     {
+        Debug.Log("Stopping all spawners!");
+        StopAllCoroutines();
         _enableSpawning = false;
     }
 
