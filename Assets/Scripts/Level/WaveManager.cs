@@ -13,6 +13,7 @@ public class WaveManager : MonoBehaviour, ILevelEvent
     [Header("Initialization configuration")]
     [Tooltip("Provide level communication!")] public LevelData _levelData;
     [Tooltip("Attach spawner objects here!")] public Spawner[] _spawners;
+    [Range(0, 1)][Tooltip("Chance of bonus roudn per round!")] public float BonusChance;
 
     [Header("Level Wave Starting Difficulty")]
     public int ColorComplexity = 1;
@@ -80,7 +81,7 @@ public class WaveManager : MonoBehaviour, ILevelEvent
         int Length = Random.Range(4 + _waveScore, 5 + _waveScore);
         List<SpawnableObject> GeneratedWave = new();
 
-        if (Random.value > 0.9)
+        if (Random.value < BonusChance)
             GeneratedWave.Add(new SpawnableObject(0, SpawnablesBonus[Random.Range(0, SpawnablesBonus.Length)]));
 
         for (int i = 0; i < Length; i++)
@@ -177,6 +178,7 @@ public class WaveManager : MonoBehaviour, ILevelEvent
     // If an object was painted, it's time to increase difficulty
     public void PaintObject()
     {
+        if (!gameObject.activeInHierarchy) return;
         _wave++;
         _complexityScore++;
         _timeScore++;

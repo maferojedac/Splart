@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 
-public class PlayerManager : MonoBehaviour, IGameState, ILevelEvent
+public class PlayerManager : MonoBehaviour, IGameState, ILevelEvent, IPlayerDataEvent
 {
     [Header("Setup")]
     public Player player;
@@ -31,6 +31,7 @@ public class PlayerManager : MonoBehaviour, IGameState, ILevelEvent
 
         _gameState.SetBaseGameInstance(this);
         _levelData.SubscribeToEvents(this);
+        _playerData.SubscribeToEvents(this);
 
         pauseMenu.Vanish(); // ram eater
         GameCanvas.Vanish();    // weed eater
@@ -65,7 +66,7 @@ public class PlayerManager : MonoBehaviour, IGameState, ILevelEvent
 
     public void UpdateMoney()
     {
-        _moneyText.text = $"{_playerData.Money + _levelData._currentAccumulatedMoney}";
+        _moneyText.text = $"{_playerData.Money}";
     }
 
     public void UpdateScore()

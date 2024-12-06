@@ -85,7 +85,7 @@ public abstract class Enemy : MonoBehaviour
             else
                 _soundManager.PlaySound(_resist);
 
-            if (_colors.Count() == 0)
+            if (_colors.Count() == 0 && !IgnoreColor)
                 Kill();
         }
     }

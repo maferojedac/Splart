@@ -25,6 +25,8 @@ public class PlayerData : ScriptableObject
     public float SoundeffectsVolume;
     public float MusicVolume;
 
+    private List<IPlayerDataEvent> _listenerObjects = new(); // Listeners to player events
+
     private void OnEnable()
     {
         LoadData();
@@ -42,9 +44,18 @@ public class PlayerData : ScriptableObject
             return 1.55f;
     }
 
+    public void SubscribeToEvents(IPlayerDataEvent listener)
+    {
+        _listenerObjects.Add(listener);
+    }
+
     public void SumMoney(int money)
     {
         this.Money += money;
+        foreach (ILevelEvent listener in _listenerObjects)
+        {
+            listener.UpdateMoney();
+        }
     }
 
     public void SaveData()
