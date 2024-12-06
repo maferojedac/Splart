@@ -22,15 +22,19 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
     private EnemyPooling _enemyPooling;
     private FXPooling _fxPooling;
 
+    [Header("Communication")]
     public LevelData _levelData;
     public PlayerData _playerData;
+
+    [Header("Level Music")]
+    public AudioClip _bossMusic;
+    public AudioClip _levelMusic;
 
     public Color _nextPaintingColor;
 
     void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        _audioSource.volume = _playerData.MusicVolume;
 
         _levelSettings = GetComponent<LevelSettings>();
 
@@ -63,14 +67,21 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
 
     void OnEnable()
     {
+        _audioSource.Stop();
+
+        _audioSource.clip = _levelMusic;
+        _audioSource.volume = _playerData.MusicVolume;
+        _audioSource.Play();
+
         ColorPickQueue = new List<Color>(_levelSettings.LevelPalette);
 
         _levelData.SetMaxPaintableColors(ColorPickQueue.Count);
+        _levelData.SetLevelName(_levelSettings.LevelName);
 
         _nextPaintingColor = ColorPickQueue[Random.Range(0, ColorPickQueue.Count)];
     }
 
-    void IGameState.GameOver()
+    void IGameState.GameOver(bool Victory)
     {
         GameObject.Find("WaveManager").GetComponent<TutorialManager>()?.EndTutorial();
         StartCoroutine(MusicFadeOut());
@@ -114,9 +125,24 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
 
             ColorPickQueue.Remove(_nextPaintingColor);
 
-            if(ColorPickQueue.Count > 0)
+            if (ColorPickQueue.Count > 0)
                 _nextPaintingColor = ColorPickQueue[Random.Range(0, ColorPickQueue.Count)];
+            else
+            {
+                _levelData.SpawnBoss();
+                StartCoroutine(PlayBossMusic());
+            }
         }
+    }
+
+    IEnumerator PlayBossMusic()
+    {
+        yield return StartCoroutine(MusicFadeOut());
+        _audioSource.Stop();
+
+        _audioSource.clip = _bossMusic;
+        _audioSource.volume = _playerData.MusicVolume;
+        _audioSource.Play();
     }
 
     IEnumerator MusicFadeOut()

@@ -23,7 +23,7 @@ public class CantidadItems : MonoBehaviour
         BoosterCleanText.text = playerData.BoosterClean.ToString();
         BoosterLifeText.text = playerData.BoosterLife.ToString();
         Booster_AnyUpgradeText.text = playerData.Booster_AnyUpgrade.ToString();
-        Booster_ScoreUpgradeText.text = playerData.Booster_ScoreUpgrade.ToString();
+        Booster_ScoreUpgradeText.text = playerData.Booster_ScoreMultiplier.ToString();
     }
 
     // Update is called once per frame
@@ -34,6 +34,6 @@ public class CantidadItems : MonoBehaviour
         BoosterCleanText.text = playerData.BoosterClean.ToString();
         BoosterLifeText.text = playerData.BoosterLife.ToString();
         Booster_AnyUpgradeText.text = playerData.Booster_AnyUpgrade.ToString();
-        Booster_ScoreUpgradeText.text = playerData.Booster_ScoreUpgrade.ToString();
+        Booster_ScoreUpgradeText.text = playerData.Booster_ScoreMultiplier.ToString();
     }
 }

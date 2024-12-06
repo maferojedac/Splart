@@ -107,7 +107,7 @@ public class StoreBuy : MonoBehaviour
             _audioSource.volume = playerData.SoundeffectsVolume;
             _audioSource.PlayOneShot(purchaseSound);
 
-            playerData.Booster_ScoreUpgrade++;
+            playerData.Booster_ScoreMultiplier++;
             playerData.Money -= Booster_ScoreUpgradePrice;
         }
     }

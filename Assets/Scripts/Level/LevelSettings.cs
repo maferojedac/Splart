@@ -7,7 +7,14 @@ using UnityEngine;
 
 public class LevelSettings : MonoBehaviour
 {
+    public string LevelName;
+
+    [Header("Spawnables")]
     public GameObject[] SpawnablesCommon;
     public GameObject[] SpawnablesMinibosses;
+    public GameObject SpawnablesStageBoss;
+    public GameObject[] SpawnablesBonus;
+
+    [Header("Stage painting")]
     public Color[] LevelPalette;
 }

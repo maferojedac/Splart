@@ -1,325 +1,186 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemyMage : Enemy
 {
-    /*
-    public GameObject Effect;
+    // public GameObject Effect;
 
-    [Header("Components")]
-    public SpriteRenderer spriteRenderer;
-    public GameObject particleRenderer;
+    [Header("Enemy Setup")]
+    public float ColorCycleSpeed = 1;
+    public float FloatingYAmount = 3;
 
-    public Transform leftEye;
-    public Transform rightEye;
+    public GameObject BossDeathEffect;
+    public GameObject InkBlot;
 
     [Header("Sound clips")]
-    public AudioClip _spawn;
     public AudioClip _charge;
     public AudioClip _attack;
     public AudioClip _disappear;
     public AudioClip _appear;
 
-    // priv
+    public int life;
+    private int teleportsLeft;
 
-    private ArrayColor _colors = new();
+    private bool isCyclingColors;
 
-    private BoxCollider _boxCollider;
-    private Rigidbody _rigidBody;
-
-    private float _life;
-    private bool _depleteLife;
-    private bool _isDespawning;
-    private int _nodeTeleport;
-    private bool _isDoingNothing;
-
-    private IEnumerator _actionCoroutine;
-
-    private Vector3 _startScale;
-    private float _timer;
-
-    private Vector3 SizeOffset;
-
-    private Animator _animator;
+    private Coroutine actionCoroutine;
 
     private MapNode _nextNode;
-    private EnemySoundManager _soundManager;
 
-    public void OnDie()
+    public override void OnDamageTaken()
     {
-        _soundManager.PlaySound(_die);
-        _levelData.SumScore(50);
-        StartCoroutine(DeathByDefeat());
-    }
-
-    Color IEnemy.GetColor()
-    {
-        return _colors.toRGB();
-    }
-
-    void IEnemy.OnReach(Vector3 dir)
-    {
-        Destroy(gameObject);
-    }
-
-    void IEnemy.TakeDamage(GameColor color)
-    {
-        if (_colors.Contains(color))
+        if (_colors.Count() == 1 && life > 0)
         {
-            _levelData.SumScore(10);
+            _colors.Add(GameColor.White);
+            _isVulnerable = false;
 
-            _colors.Remove(color);
-            spriteRenderer.color = _colors.toRGB();
+            life--;
 
-            GameObject exp = Instantiate(_damageExplosion, transform.position, Quaternion.identity);
-            ParticleSystem.MainModule colorAdjuster = exp.GetComponent<ParticleSystem>().main;
-            colorAdjuster.startColor = ArrayColor.makeRGB(color);
+            _soundManager.PlaySound(_die);
 
-            _soundManager.PlaySound(_damage, 2f);
+            StopAllCoroutines();
 
-            StopCoroutine(_actionCoroutine);
-
-            _isDoingNothing = true;
-            _life -= 4f;
-
-            _actionCoroutine = PenalizedWait(3);
-            StartCoroutine(_actionCoroutine);
+            actionCoroutine = StartCoroutine(Recover());
         }
     }
 
-    void IEnemy.SetColor(ArrayColor startColor)
+    public override void OnDie()
     {
-        _colors = startColor;
+        StopCoroutine(actionCoroutine);
+        if(_levelData._gameRunning)
+            _fxPool.Spawn(BossDeathEffect);
     }
 
-    void Start()
+    public override void Spawn(Vector3 position)
     {
-        if (spriteRenderer == null)
-        {
-            Debug.Log("Sprite not found!");
-            Destroy(gameObject);
-        }
-
-        _life = 15f;
-        _depleteLife = false;
-
-        _soundManager = transform.parent.GetComponent<EnemySoundManager>();
-        _soundManager.PlaySound(_spawn);
-
-        _nodeTeleport = Random.Range(2, 4);
-        _isDoingNothing = true;
-        _isDespawning = false;
-        SizeOffset = new Vector3(0, 3f, 0);
-
-        // color related
-        _colors = new ArrayColor(GenerateColor());
-        spriteRenderer.color = _colors.toRGB();
-
-        // component related
-        _boxCollider = GetComponent<BoxCollider>();
-        _rigidBody = GetComponent<Rigidbody>();
-        _animator = GetComponent<Animator>();
-
-        particleRenderer.SetActive(false);
+        base.Spawn(position);
 
         Entity.DisableCollision(GetComponent<Collider>());
+
+        life = 2;
+        _isVulnerable = true;
+
+        GenerateColor();
+        _spriteRenderer.color = _colors.toRGB();
+
+        transform.position = Vector3.one * -1000;   // Disappear from view
+
+        teleportsLeft = GenerateTeleportAmount();
+
+        actionCoroutine = StartCoroutine(Teleport());
     }
 
-    void Update()
+    IEnumerator CycleColors()
     {
-        rightEye.Rotate(0, 0, 180f * Time.deltaTime);
-        rightEye.localScale = new Vector3(1.5f + Mathf.Cos(Time.time * 5f), 1.5f - Mathf.Cos(Time.time * 5f) * 0.5f, 0);
-        leftEye.Rotate(0, 0, 180f * Time.deltaTime);
-        leftEye.localScale = new Vector3(1.5f - Mathf.Cos(Time.time * 5f), 1.5f + Mathf.Cos(Time.time * 5f) * 0.5f, 0);
-
-        _rigidBody.velocity = Vector3.zero;
-        if(_life > 0)
+        float hue = 0;
+        while (isCyclingColors)
         {
-            if (_depleteLife)
-            {
-                _life -= Time.deltaTime;
-                if (_isDoingNothing)
-                {
-                    _actionCoroutine = ChargeAttack();
-                    StartCoroutine(_actionCoroutine);
-                }
-            }
-            else
-            {
-                if (_isDoingNothing)
-                {
-                    if (_nodeTeleport > 0)
-                    {
-                        _nextNode = _levelData.RandomNode();
-                        _actionCoroutine = Teleport();
-                        StartCoroutine(_actionCoroutine);
-                    }
-                    else
-                    {
-                        _depleteLife = true;
-                    }
-                }
-            }
+            hue += Time.deltaTime * ColorCycleSpeed;
+            if (hue >= 1)
+                hue = 0;
+            _spriteRenderer.color = Color.HSVToRGB(hue, 1, 1);
+            yield return null;
         }
-        else
-        {
-            if (!_isDespawning && _isDoingNothing)
-            {
-                _isDespawning = true;
-
-                StopCoroutine(_actionCoroutine);
-
-                _actionCoroutine = Disappear();
-                StartCoroutine(_actionCoroutine);
-            }
-        }
-    }
-
-    IEnumerator PenalizedWait(float seconds)
-    {
-        _animator.SetTrigger("StaffDown");
-
-        particleRenderer.SetActive(false);
-        _boxCollider.enabled = false;    // can be hit when waiting
-        _isDoingNothing = false;
-        _depleteLife = true;
-
-        yield return new WaitForSeconds(seconds);
-
-        _nodeTeleport = Random.Range(2, 4);
-        _depleteLife = false;
-        _isDoingNothing = true;
-    }
-
-    IEnumerator Wait(float seconds)
-    {
-        _animator.SetTrigger("StaffDown");
-
-        particleRenderer.SetActive(false);
-        particleRenderer.SetActive(false);
-        _boxCollider.enabled = true;    // can be hit when waiting
-        _isDoingNothing = false;
-
-        yield return new WaitForSeconds(seconds); 
-
-        _isDoingNothing = true;
     }
 
     IEnumerator ChargeAttack()
     {
         _animator.SetTrigger("StaffUp");
 
-        particleRenderer.SetActive(true);
-        _boxCollider.enabled = true;    // can be hit when charging
+        GenerateColor();
+        _spriteRenderer.color = _colors.toRGB();
 
-        _isDoingNothing = false;
+        _rigidBody.velocity = Vector3.zero;
+
+        isCyclingColors = false;
+
+        _isVulnerable = true;
 
         _soundManager.PlaySound(_charge);
 
-        yield return new WaitForSeconds(5f);
+        yield return new WaitForSeconds(1f);
+        _animator.SetTrigger("Reset");
+
+        yield return new WaitForSeconds(10f);
         Attack();
+        _animator.SetTrigger("StaffDown");
 
-        _nodeTeleport = Random.Range(2, 4);
-        // _isDoingNothing = true;
-        _depleteLife = false;
+        teleportsLeft = GenerateTeleportAmount();
 
-        _actionCoroutine = Wait(1);
-        StartCoroutine(_actionCoroutine);
+        actionCoroutine = StartCoroutine(Teleport());
     }
 
     IEnumerator Teleport()
     {
-        _animator.SetTrigger("StaffDown");
+        _isVulnerable = false;
+        if (!isCyclingColors)
+        {
+            isCyclingColors = true;
+            StartCoroutine(CycleColors());
+        }
 
-        particleRenderer.SetActive(false);
-        _boxCollider.enabled = false;   // can't be hit when teleporting
-        _isDoingNothing = false;
-        _nodeTeleport--;
+        teleportsLeft--;
+
+        _soundManager.PlaySound(_disappear);
+
+        _rigidBody.velocity = Vector3.zero;
+
+        _animator.SetTrigger("TeleportOut");
+        yield return new WaitForSeconds(1);
+
+        _nextNode = _levelData.RandomNode();
+        transform.position = _nextNode.Position + (FloatingYAmount * Vector3.up);
+        yield return new WaitForSeconds(0.5f);
 
         _soundManager.PlaySound(_appear);
-
-        _timer = 0;
-        while (_timer < 2)
-        {
-            _timer += Time.deltaTime * 5f;
-            transform.rotation = Quaternion.Euler(Vector3.Slerp(Vector3.zero,  new Vector3(0, 720, 0), _timer));
-            transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, _timer);
-            yield return null;
-        }
-
-        transform.position = _nextNode.Position + SizeOffset;
-
-        _colors = new ArrayColor(GenerateColor());
-        spriteRenderer.color = _colors.toRGB();
-
-
-        _timer = 0;
-        while (_timer < 2)
-        {
-            _timer += Time.deltaTime * 5f;
-            transform.rotation = Quaternion.Euler(Vector3.Slerp(new Vector3(0, 720, 0), Vector3.zero, _timer));
-            transform.localScale = Vector3.Lerp(Vector3.up, Vector3.one, _timer);
-            yield return null;
-        }
+        _animator.SetTrigger("TeleportIn");
+        yield return new WaitForSeconds(0.5f);
 
         transform.rotation = Quaternion.identity;
         transform.localScale = Vector3.one;
 
-        _isDoingNothing = true;
+        yield return new WaitForSeconds(1f);
 
-        _actionCoroutine = Wait(1);
-        StartCoroutine(_actionCoroutine);
+        if(teleportsLeft > 0)
+            actionCoroutine = StartCoroutine(Teleport());
+        else
+            actionCoroutine = StartCoroutine(ChargeAttack());
     }
 
-    IEnumerator Disappear()
+    IEnumerator Recover()
     {
-        _animator.SetTrigger("StaffDown");
+        _animator.SetTrigger("Damage");
 
-        particleRenderer.SetActive(false);
-        _boxCollider.enabled = false;   // can't be hit when despawning
-        _isDoingNothing = false;
+        yield return new WaitForSeconds(2);
 
-        _soundManager.PlaySound(_disappear);
-
-        _timer = 0;
-        while (_timer < 5)
-        {
-            _timer += Time.deltaTime * 5f;
-            transform.rotation = Quaternion.Euler(Vector3.Slerp(Vector3.zero, new Vector3(0, 720, 0), _timer));
-            transform.localScale = Vector3.Lerp(Vector3.one, Vector3.up, _timer);
-            yield return null;
-        }
-
-        Destroy(gameObject);
-    }
-
-    IEnumerator DeathByDefeat()
-    {
-        _timer = 0f;
-        _startScale = transform.localScale;
-
-        while (_timer < 1f)
-        {
-            _timer += Time.deltaTime * 5f;
-            transform.localScale = Vector3.Lerp(_startScale, Vector3.zero, _timer);
-            yield return null;
-        }
-        Instantiate(_deathExplosion, transform.position, Quaternion.identity);
-        Destroy(gameObject);
+        teleportsLeft = GenerateTeleportAmount();
+        actionCoroutine = StartCoroutine(Teleport());
     }
 
     private void Attack()
     {
         _soundManager.PlaySound(_attack);
 
-        GameObject fb = Instantiate(Effect);
-        fb.transform.parent = transform.parent;
+        Effect newSplat = _fxPool.Spawn(InkBlot);
+        newSplat.SetColor(_colors.toRGB());
+
+        GameObject.Find("Player").GetComponent<Player>().TakeDamage();
     }
 
-    private GameColor GenerateColor()
+    private int GenerateTeleportAmount()
     {
-        return (GameColor)Random.Range(0, 3);
+        return Random.Range(2, 5);
     }
-    */
+
+    private void GenerateColor()
+    {
+        _colors = new ArrayColor();
+        for (int i = 0; i < Random.Range(4, 6); i++)
+        {
+            _colors.Add((GameColor)Random.Range(0, 3));
+        }
+        _originalColorCount = _colors.Count();
+    }
 }

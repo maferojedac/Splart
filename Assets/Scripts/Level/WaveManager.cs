@@ -8,11 +8,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class WaveManager : MonoBehaviour
+public class WaveManager : MonoBehaviour, ILevelEvent
 {
     [Header("Initialization configuration")]
     [Tooltip("Provide level communication!")] public LevelData _levelData;
     [Tooltip("Attach spawner objects here!")] public Spawner[] _spawners;
+
+    [Header("Level Wave Starting Difficulty")]
+    public int ColorComplexity = 1;
+    public int TimeComplexity = 1;
+    public int WaveLength = 0;
+    public int EnemiesSpeed = 0;
 
     private int _wave;
 
@@ -21,20 +27,26 @@ public class WaveManager : MonoBehaviour
     private int _waveScore;
     private int _speedScore;
 
-    private bool _allowBoss;
+    private bool _wasBossGenerated;
 
     private LevelLoader _loader;
 
     private GameObject[] SpawnablesCommon;
     private GameObject[] SpawnablesMinibosses;
+    private GameObject SpawnableBoss;
+    private GameObject[] SpawnablesBonus;
 
     void Awake()
     {
         // Get from level settings
         SpawnablesCommon = transform.parent.GetComponent<LevelSettings>().SpawnablesCommon;
         SpawnablesMinibosses = transform.parent.GetComponent<LevelSettings>().SpawnablesMinibosses;
+        SpawnableBoss = transform.parent.GetComponent<LevelSettings>().SpawnablesStageBoss;
+        SpawnablesBonus = transform.parent.GetComponent<LevelSettings>().SpawnablesBonus;
 
         _loader = transform.parent.GetComponent<LevelLoader>();
+
+        _levelData.SubscribeToEvents(this);
     }
 
     void OnEnable()
@@ -42,13 +54,15 @@ public class WaveManager : MonoBehaviour
         _wave = 1;
 
         // Initialize variables
-        _complexityScore = 1;
-        _timeScore = 1;
-        _waveScore = 0;
-        _speedScore = 0;
-        _allowBoss = true;
+        _complexityScore = ColorComplexity;
+        _timeScore = TimeComplexity;
+        _waveScore = WaveLength;
+        _speedScore = EnemiesSpeed;
+        _wasBossGenerated = false;
 
-        GenerateWave(1);
+        _levelData.SetGlobalSpeedWaveMultiplier(1 + (_speedScore / 10f));
+
+        GenerateWave();
     }
 
     public bool AllDone()
@@ -61,17 +75,19 @@ public class WaveManager : MonoBehaviour
         return true;
     }
 
-    public void GenerateWave(int Wave)
+    public void GenerateWave()
     {
-        Debug.Log("Generating new wave!");
         int Length = Random.Range(4 + _waveScore, 5 + _waveScore);
         List<SpawnableObject> GeneratedWave = new();
 
-        Debug.Log(SpawnablesCommon);
-        for(int i = 0; i < Length; i++)
+        if (Random.value > 0.9)
+            GeneratedWave.Add(new SpawnableObject(0, SpawnablesBonus[Random.Range(0, SpawnablesBonus.Length)]));
+
+        for (int i = 0; i < Length; i++)
         {
-            if (_allowBoss && i == Length - 1)
+            if (!_wasBossGenerated && Random.value < 0.5f)
             {
+                _wasBossGenerated = true;
                 ArrayColor bossColor = GenerateLevelPaintingColor();
 
                 GeneratedWave.Add(new SpawnableObject(GenerateTime(_timeScore, i), SpawnablesMinibosses[Random.Range(0, SpawnablesMinibosses.Length)], bossColor));
@@ -99,7 +115,6 @@ public class WaveManager : MonoBehaviour
         RYBColor paintColor = new RYBColor(_loader._nextPaintingColor);
 
         paintColor = paintColor * 3f;
-        Debug.Log("Boss Color > "+paintColor);
         // paintColor = paintColor.floor();
 
         ArrayColor generatedColor = new ArrayColor();
@@ -130,6 +145,19 @@ public class WaveManager : MonoBehaviour
         return newTime;
     }
 
+    public void SpawnBoss()
+    {
+        DisableSpawners();
+        _spawners[0].AddToQueue(new SpawnableObject(0.1f, SpawnableBoss));
+        StartCoroutine(WaitBeforeBossSpawn());
+    }
+
+    IEnumerator WaitBeforeBossSpawn()
+    {
+        yield return new WaitForSeconds(2f);
+        _spawners[0].StartGeneration();
+    }
+
     public void DisableSpawners()
     {
         foreach (Spawner spawner in _spawners)
@@ -146,6 +174,17 @@ public class WaveManager : MonoBehaviour
         }
     }
 
+    // If an object was painted, it's time to increase difficulty
+    public void PaintObject()
+    {
+        _wave++;
+        _complexityScore++;
+        _timeScore++;
+        _waveScore++;
+        _speedScore++;
+        _levelData.SetGlobalSpeedWaveMultiplier(1 + (_speedScore / 10f));
+    }
+
     IEnumerator WaitForWaveEnd()
     {
         bool condition = true;
@@ -153,19 +192,9 @@ public class WaveManager : MonoBehaviour
         {
             if (AllDone())
             {
-                _wave++;
-                _complexityScore++;
-                _timeScore++;
-                _waveScore++;
-                if (_speedScore < 10 && _waveScore % 2 == 0)
-                {
-                    _speedScore++;
-                    _levelData.SetGlobalSpeedWaveMultiplier(_levelData.GetGlobalSpeedMultiplier() + (_speedScore / 10f));
-                }
-                _allowBoss = Random.value > 0.5;
-                _allowBoss = true;
+                _wasBossGenerated = false;
                 _levelData.NextWave();
-                GenerateWave(_wave);
+                GenerateWave();
             }
 
             yield return new WaitForSeconds(0.1f);  // Check for wave end 10 times per second (We don't need it to be *that* precise)

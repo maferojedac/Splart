@@ -13,7 +13,7 @@ public class Ally : MonoBehaviour
     protected bool _released;
 
     protected PlayerData _playerData;
-    protected AllySoundManager _soundManager;
+    protected SoundManager _soundManager;
     protected FXPooling _fxPool;
 
     protected Rigidbody _rigidBody;
@@ -47,7 +47,7 @@ public class Ally : MonoBehaviour
         _color = color;
     }
 
-    public void SetSoundManager(AllySoundManager manager)
+    public void SetSoundManager(SoundManager manager)
     {
         _soundManager = manager;
     }

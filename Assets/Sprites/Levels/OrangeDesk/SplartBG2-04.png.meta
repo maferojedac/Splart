@@ -1,0 +1,1108 @@
+fileFormatVersion: 2
+guid: 6a0ac58fef299a646a395c385871d2e9
+TextureImporter:
+  internalIDToNameTable: []
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: SplartBG2-04_0
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 4439
+        width: 9
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cf65e86f178c73943adbb44dad77acf3
+      internalID: -165463128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_1
+      rect:
+        serializedVersion: 2
+        x: 608
+        y: 4446
+        width: 4
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 03ea14f397b60d2498c4b6f5f254ba2f
+      internalID: -1052060317
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_2
+      rect:
+        serializedVersion: 2
+        x: 78
+        y: 3751
+        width: 1439
+        height: 690
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc7e5244f18951f4b822e69c7278a906
+      internalID: -1127126570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_3
+      rect:
+        serializedVersion: 2
+        x: 555
+        y: 4435
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd2a41b5d13bda14fb07664d97e4432f
+      internalID: 1849545932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_4
+      rect:
+        serializedVersion: 2
+        x: 1763
+        y: 3696
+        width: 1417
+        height: 713
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f1df5e71f1453814aadb1c3b7c994a91
+      internalID: -1221015431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_5
+      rect:
+        serializedVersion: 2
+        x: 3537
+        y: 3631
+        width: 405
+        height: 654
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66432bec908b32546b5522dfe50ac1d7
+      internalID: 2048171191
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_6
+      rect:
+        serializedVersion: 2
+        x: 3599
+        y: 4280
+        width: 74
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5b32de1845f13f640b8a9fd08a6d2448
+      internalID: 568932725
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_7
+      rect:
+        serializedVersion: 2
+        x: 3700
+        y: 4280
+        width: 111
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fde6b8abc343d4041b865271db5d4009
+      internalID: -29878953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_8
+      rect:
+        serializedVersion: 2
+        x: 74
+        y: 4115
+        width: 9
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: abdbbc1a5dc27d0469ec1e25d7f642d6
+      internalID: 497454452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_9
+      rect:
+        serializedVersion: 2
+        x: 3176
+        y: 4087
+        width: 9
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 920f32307219bea43845e1be9757e8a7
+      internalID: -716382452
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_10
+      rect:
+        serializedVersion: 2
+        x: 3949
+        y: 3728
+        width: 18
+        height: 497
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e2529fb29bfa2b54aa2bc7030d0adecc
+      internalID: 1669472293
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_11
+      rect:
+        serializedVersion: 2
+        x: 1519
+        y: 3976
+        width: 14
+        height: 83
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: bee6f81099eaddf4ca0aff3950c65401
+      internalID: -1945704785
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_12
+      rect:
+        serializedVersion: 2
+        x: 3176
+        y: 4041
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9271e5347b25ee645a13dc862abaf859
+      internalID: -841358671
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_13
+      rect:
+        serializedVersion: 2
+        x: 1519
+        y: 3931
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 773c0ac47cb730d4e9081dfeedfa632a
+      internalID: -330632060
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_14
+      rect:
+        serializedVersion: 2
+        x: 888
+        y: 3742
+        width: 51
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d46216685e3f22b4e8cee1a4999a52f2
+      internalID: 2093476083
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_15
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 3747
+        width: 18
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f34a14efd7c7932458744b7bbd136259
+      internalID: -202162676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_16
+      rect:
+        serializedVersion: 2
+        x: 2545
+        y: 3696
+        width: 23
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 39e3a027f6ffa1c469fa90e54b135fff
+      internalID: -1256168222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_17
+      rect:
+        serializedVersion: 2
+        x: 3512
+        y: 3677
+        width: 23
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b224ddf02db34cb47aa9686125765ceb
+      internalID: 1305138740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_18
+      rect:
+        serializedVersion: 2
+        x: 3949
+        y: 3682
+        width: 18
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3de005167ca678940b2f099ea6a82eec
+      internalID: 720586218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_19
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 2987
+        width: 1503
+        height: 667
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ac78e8cb7d1c7194d8d764a550dfb2b4
+      internalID: 207917033
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_20
+      rect:
+        serializedVersion: 2
+        x: 1625
+        y: 3341
+        width: 9
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 36e876d42ef18ef4b804cc085197a0db
+      internalID: -179059657
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_21
+      rect:
+        serializedVersion: 2
+        x: 1873
+        y: 2895
+        width: 1473
+        height: 699
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5574ffdce4a8ed244856860f51cc4820
+      internalID: -957580610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_22
+      rect:
+        serializedVersion: 2
+        x: 3677
+        y: 2379
+        width: 129
+        height: 1073
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9793f05221f60374ab36a85163cd9876
+      internalID: 841733131
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_23
+      rect:
+        serializedVersion: 2
+        x: 902
+        y: 2978
+        width: 9
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4a013ce4f57563f428a4ff874e2762a3
+      internalID: 685126733
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_24
+      rect:
+        serializedVersion: 2
+        x: 939
+        y: 2978
+        width: 9
+        height: 4
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 42342dea7634eab49bb9192bbacd8e9f
+      internalID: 177095933
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_25
+      rect:
+        serializedVersion: 2
+        x: 189
+        y: 2126
+        width: 1537
+        height: 668
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4b2b59074307f004cbbb26a9c1ff3692
+      internalID: -828005792
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_26
+      rect:
+        serializedVersion: 2
+        x: 1928
+        y: 2232
+        width: 1406
+        height: 539
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3663096e30b7be744b8d048518ed8e57
+      internalID: 499273345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_27
+      rect:
+        serializedVersion: 2
+        x: 3341
+        y: 2568
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 093da6c82477fd54d8ac7ff92018e86e
+      internalID: -2095548231
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_28
+      rect:
+        serializedVersion: 2
+        x: 3341
+        y: 2458
+        width: 5
+        height: 82
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d99b1b89e55223943b06c6fdaa0bf50e
+      internalID: -1386702974
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_29
+      rect:
+        serializedVersion: 2
+        x: 3811
+        y: 2412
+        width: 5
+        height: 69
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 16c11b0fccb26dc488e063ca06f32b14
+      internalID: 842368513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_30
+      rect:
+        serializedVersion: 2
+        x: 3341
+        y: 2412
+        width: 19
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c4868b69ed6e1984980d45b35e23b4d3
+      internalID: -1915871470
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_31
+      rect:
+        serializedVersion: 2
+        x: 2706
+        y: 2223
+        width: 28
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 27a1d3538364ab747a8cae9b382e2060
+      internalID: -964865014
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_32
+      rect:
+        serializedVersion: 2
+        x: 967
+        y: 2117
+        width: 27
+        height: 9
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c9048544a8ed0d94fb6038d978c6d0dd
+      internalID: -1937270950
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_33
+      rect:
+        serializedVersion: 2
+        x: 253
+        y: 318
+        width: 1050
+        height: 1509
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce34c813ecc98fa45a529b2baae05b1e
+      internalID: -233875895
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_34
+      rect:
+        serializedVersion: 2
+        x: 2555
+        y: 1519
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6a9e49594638eb34fb4c9fdf079056f2
+      internalID: -2036286487
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_35
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 1519
+        width: 1104
+        height: 18
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f496c0869f10f2a419c561dab04a5bcc
+      internalID: -9225268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_36
+      rect:
+        serializedVersion: 2
+        x: 2541
+        y: 1123
+        width: 1192
+        height: 389
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80add50a4d8d76845ab7d30d6356c00a
+      internalID: 680551587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_37
+      rect:
+        serializedVersion: 2
+        x: 1254
+        y: 315
+        width: 905
+        height: 790
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 651534756e44b3842a7a0fe89d89230a
+      internalID: -72161429
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_38
+      rect:
+        serializedVersion: 2
+        x: 2536
+        y: 315
+        width: 1201
+        height: 477
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5db6a0bcc1bf21f4e9da165f1fcd6ffe
+      internalID: -1417177094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_39
+      rect:
+        serializedVersion: 2
+        x: 1270
+        y: 290
+        width: 221
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 15157cc643130be478ec4df4c197b934
+      internalID: -733947786
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_40
+      rect:
+        serializedVersion: 2
+        x: 1519
+        y: 290
+        width: 497
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 198b8f70d0f74b04cb27f96651356af6
+      internalID: 2025944105
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_41
+      rect:
+        serializedVersion: 2
+        x: 2044
+        y: 299
+        width: 4
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 66832582bcc13194eaa5b31113550691
+      internalID: -520411662
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_42
+      rect:
+        serializedVersion: 2
+        x: 2554
+        y: 290
+        width: 14
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 80317de27d2080446b475e0ffc66934c
+      internalID: -1860633202
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SplartBG2-04_43
+      rect:
+        serializedVersion: 2
+        x: 2596
+        y: 290
+        width: 1104
+        height: 14
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c1ac180f7fab09845899d394e59fa6dc
+      internalID: -1881025204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: c12099c602aaef14c81aeee07350e2e5
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      SplartBG2-04_0: -165463128
+      SplartBG2-04_1: -1052060317
+      SplartBG2-04_10: 1669472293
+      SplartBG2-04_11: -1945704785
+      SplartBG2-04_12: -841358671
+      SplartBG2-04_13: -330632060
+      SplartBG2-04_14: 2093476083
+      SplartBG2-04_15: -202162676
+      SplartBG2-04_16: -1256168222
+      SplartBG2-04_17: 1305138740
+      SplartBG2-04_18: 720586218
+      SplartBG2-04_19: 207917033
+      SplartBG2-04_2: -1127126570
+      SplartBG2-04_20: -179059657
+      SplartBG2-04_21: -957580610
+      SplartBG2-04_22: 841733131
+      SplartBG2-04_23: 685126733
+      SplartBG2-04_24: 177095933
+      SplartBG2-04_25: -828005792
+      SplartBG2-04_26: 499273345
+      SplartBG2-04_27: -2095548231
+      SplartBG2-04_28: -1386702974
+      SplartBG2-04_29: 842368513
+      SplartBG2-04_3: 1849545932
+      SplartBG2-04_30: -1915871470
+      SplartBG2-04_31: -964865014
+      SplartBG2-04_32: -1937270950
+      SplartBG2-04_33: -233875895
+      SplartBG2-04_34: -2036286487
+      SplartBG2-04_35: -9225268
+      SplartBG2-04_36: 680551587
+      SplartBG2-04_37: -72161429
+      SplartBG2-04_38: -1417177094
+      SplartBG2-04_39: -733947786
+      SplartBG2-04_4: -1221015431
+      SplartBG2-04_40: 2025944105
+      SplartBG2-04_41: -520411662
+      SplartBG2-04_42: -1860633202
+      SplartBG2-04_43: -1881025204
+      SplartBG2-04_5: 2048171191
+      SplartBG2-04_6: 568932725
+      SplartBG2-04_7: -29878953
+      SplartBG2-04_8: 497454452
+      SplartBG2-04_9: -716382452
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

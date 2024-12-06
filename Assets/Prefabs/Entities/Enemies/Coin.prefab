@@ -26,9 +26,9 @@ Transform:
   m_GameObject: {fileID: 4030945740093874549}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.1, y: 0, z: -0.031}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: -0.295, y: 0.33, z: -0.233}
+  m_LocalScale: {x: 0.41, y: 0.41, z: 0.41}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6877095455382371078}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -156,6 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 6956683243872593262}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
+  _spawn: {fileID: 0}
   _damage: {fileID: 8300000, guid: bc966cd6b0dfc4b44a8149951159da35, type: 3}
   _resist: {fileID: 8300000, guid: e424fb61ecf41344eba6211b50483ddf, type: 3}
   _die: {fileID: 8300000, guid: 7eb4a091545c29e47b9527dc834656ad, type: 3}
@@ -163,14 +164,13 @@ MonoBehaviour:
     type: 3}
   _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
     type: 3}
-  DefeatScore: 100
-  CanDamage: 1
+  DefeatScore: 0
+  CanDamage: 0
+  IgnoreColor: 1
   _enemyState: 0
-  RunSpeed: 3
-  TurnSpeed: 0.5
-  spawnTossSpeed: 4
-  spawnTossSpeedY: 2
-  _spawn: {fileID: 0}
+  RunSpeed: 10
+  TurnSpeed: 0.05
+  NodeProximity: 4
 --- !u!54 &5232177867496499023
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -299,7 +299,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.71, y: 0.71, z: 0.71}
+  m_LocalScale: {x: 1.09, y: 1.09, z: 1.09}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2837755134578151054}

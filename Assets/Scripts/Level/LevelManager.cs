@@ -106,9 +106,11 @@ public class LevelManager : MonoBehaviour, IGameState
 
         string newLevelName = Levels[UnityEngine.Random.Range(0, Levels.Length)].name;  // Get new level name
         _lastLevel = SpawnLevel(newLevelName);  // Get reference for loading level
+        _lastLevel.name = newLevelName; // Change name for pooling reasons
 
         _lastLevel.SetActive(true);
         _gameState.SetLevelInstance(_lastLevel.GetComponent<IGameState>());         // Set levelData's reference to the loaded level
+
         _levelData.StartGame();                 // Start game
     }
 

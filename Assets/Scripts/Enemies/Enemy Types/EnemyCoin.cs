@@ -7,50 +7,42 @@ public class EnemyCoin : Enemy
     [Header("Enemy traits")]
     public /*static*/ float RunSpeed;   // Upon discussion, it was decided that all enemies should share the same speed
     public float TurnSpeed;
+    public float NodeProximity;
 
     private MapNode _targetNode;     // Siguiente nodo del mapa
 
-    [Header("Enemy Setup")]
-    public float spawnTossSpeed = 5f;
-    public float spawnTossSpeedY = 5f;
-
-    [Header("Blot Sound Effects")]
-    public AudioClip _spawn;
+    private PlayerData _playerData;
 
     private bool touchingGround;
+    private bool canTouchGround;
 
     public override void Spawn(Vector3 position)
     {
         base.Spawn(position);
-        _soundManager.PlaySound(_spawn);
+
+        if (_playerData == null)
+            _playerData = GameObject.Find("CommunicationPrefab").GetComponent<CommunicationPrefabScript>()._playerData;
 
         Entity.DisableCollision(GetComponent<BoxCollider>());
 
-        // Coin should only have one color.
-        if (_colors.Count() == 0)
-            _colors.Add((GameColor)Random.Range(0, 3));
-        else
-            _colors = new ArrayColor(_colors[0]);
+        _spriteRenderer.color = Color.white;
 
         // Adjust coin to new color
-        _spriteRenderer.color = _colors.toRGB();
+        touchingGround = false;
+        canTouchGround = false;
 
-         // Toss coin into the air
+        // Toss coin into the air
         StartCoroutine(CoinToss());
     }
 
     IEnumerator CoinToss()
     {
         yield return null;
-        // Get random direction
-        Vector3 randomDirection = new Vector3(Random.value - 0.5f, 0.5f, Random.value - 0.5f);
-        randomDirection.Normalize();
-        randomDirection.y = spawnTossSpeedY;
-
-        _rigidBody.velocity = randomDirection * spawnTossSpeed;
 
         while (!touchingGround)
         {
+            Debug.Log("Coin Speed > " + _rigidBody.velocity);
+            canTouchGround = _rigidBody.velocity.y < 0;
             yield return null;
         }
 
@@ -58,19 +50,25 @@ public class EnemyCoin : Enemy
         StartRunning();
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    public override void OnDamageTaken()
     {
-        if(collision.otherCollider.gameObject.layer == 6)  // Six for terrain layer
-        {
-            touchingGround = true;
-        }
+        base.OnDamageTaken();
+
+        Kill();
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
+    public override void OnDie()
     {
-        if (collision.otherCollider.gameObject.layer == 6)  // Six for terrain layer
+        base.OnDie();
+        if(_levelData._gameRunning)
+            _playerData.SumMoney(10);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if(collision.collider.gameObject.layer == 6 && canTouchGround)  // Six for terrain layer
         {
-            touchingGround = false;
+            touchingGround = true;
         }
     }
 
@@ -82,7 +80,7 @@ public class EnemyCoin : Enemy
 
     IEnumerator FollowNode()
     {
-        while (true)
+        while ((_targetNode.Position - transform.position).magnitude > NodeProximity)
         {
             Vector3 newSpeed = _rigidBody.velocity;
             float SpeedY = _rigidBody.velocity.y;
@@ -97,6 +95,9 @@ public class EnemyCoin : Enemy
 
             yield return null;
         }
+
+        _targetNode = _levelData.RandomNode();
+        StartCoroutine(FollowNode());
     }
 
     public void StartRunning()

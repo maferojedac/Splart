@@ -13,6 +13,7 @@ public class Spawner : MonoBehaviour
 
     [Header("Spawner configuration")]
     [Tooltip("Attach Node to which enemies will go to!")] public MapNode _startingNode;
+    [Tooltip("Speed at which enemies exit the spawner!")] public float ExitSpeed;
 
     private bool _generating;
     private GameObject _lastGenerated;
@@ -53,16 +54,17 @@ public class Spawner : MonoBehaviour
             if (_spawnableQueue[0].forcedColor != null)
             {
                 enemy.SetColor(_spawnableQueue[0].forcedColor);
-                // _forcedColor = null;
             }
             else
             {
                 enemy.SetColor(GenerateColor(_complexity, _allowedKey));
             }
 
+            enemy.SetSpeed(transform.forward * ExitSpeed);
+
             enemy.Spawn(transform.position);
 
-            EnemyMovement refe = enemy.gameObject.GetComponent<EnemyMovement>();
+            EnemyMovement refe = enemy.GetComponent<EnemyMovement>();
             if (refe != null)
             {
                 refe.SetStartingNode(_startingNode);
@@ -139,6 +141,7 @@ public class Spawner : MonoBehaviour
     {
         Debug.Log("Stopping all spawners!");
         StopAllCoroutines();
+        _spawnableQueue.Clear();
         _enableSpawning = false;
     }
 

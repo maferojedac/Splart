@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using UnityEngine;
 
 public class LevelObject : MonoBehaviour
@@ -15,29 +17,11 @@ public class LevelObject : MonoBehaviour
     private Vector3 _exitPosition;
     private Vector3 _atLevelPosition;
 
-    private float _time;
-    private bool _painting;
-    private LevelObjectState _state;
+    private bool isPainted;
 
-    void Start()
+    private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-
-        _painting = false;
-        _time = 0f;
-
-        if (Decolor)
-        {
-            Vector3 hsv = Vector3.zero;
-            Color.RGBToHSV(_spriteRenderer.color, out hsv.x, out hsv.y, out hsv.z);
-            _originalHSV = hsv;
-            hsv.y = 0;
-            hsv.z = 1f;
-            _grayscaleHSV = hsv;
-            _spriteRenderer.color = Color.HSVToRGB(hsv.x, hsv.y, hsv.z);
-        }
-        
-        _state = LevelObjectState.None;
 
         _atLevelPosition = transform.position;
         switch (ExitDirection)
@@ -49,28 +33,39 @@ public class LevelObject : MonoBehaviour
             default: _exitPosition = transform.position; break;
         }
         transform.position = _exitPosition;
+
+        // Save both Grayscale and Colored HSVs
+        Vector3 TempHSV = Vector3.zero;
+        Color.RGBToHSV(_spriteRenderer.color, out TempHSV.x, out TempHSV.y, out TempHSV.z);
+        _originalHSV = TempHSV;
+        TempHSV.y = 0;
+        _grayscaleHSV = TempHSV;
+        _spriteRenderer.color = Color.HSVToRGB(TempHSV.x, TempHSV.y, TempHSV.z);
+    }
+
+    void OnEnable()
+    {
+        if (Decolor)
+        {
+            isPainted = false;
+            _spriteRenderer.color = Color.HSVToRGB(_grayscaleHSV.x, _grayscaleHSV.y, _grayscaleHSV.z);
+        }
     }
 
     public void SlideIn()
     {
-        _painting = false;
-        _time = 0;
-        transform.position = _exitPosition;
-        _state = LevelObjectState.SlidingIn;
+        StartCoroutine(SlideInCoroutine());
     }
 
     public void SlideOut()
     {
-        _painting = false;
-        _time = 0;
-        transform.position = _atLevelPosition;
-        _state = LevelObjectState.SlidingOut;
+        StartCoroutine(SlideOutCoroutine());
     }
 
     public void Paint()
     {
-        _time = 0;
-        _painting = true;
+        isPainted = true;
+        StartCoroutine(PaintCoroutine());
     }
 
     public void SetMaterial(Material material)
@@ -78,29 +73,68 @@ public class LevelObject : MonoBehaviour
         _spriteRenderer.material = material;
     }
 
-    void Update() 
+    public void Dharken(float ExitTime)
     {
-        if(_painting)
+        StartCoroutine(DharkenCoroutine(ExitTime));
+    }
+
+    IEnumerator PaintCoroutine()
+    {
+        float timer = 0;
+        while(timer < 1f)
         {
-            _time += Time.deltaTime;
-            Vector3 hsv = Vector3.zero;
-            hsv = Vector3.Lerp(_grayscaleHSV, _originalHSV, _time);
-            _spriteRenderer.color = Color.HSVToRGB(hsv.x, hsv.y, hsv.z);
+            timer += Time.deltaTime;
+            Vector3 LerpedHSV = LerpedHSV = Vector3.Lerp(_grayscaleHSV, _originalHSV, timer);
+
+            _spriteRenderer.color = Color.HSVToRGB(LerpedHSV.x, LerpedHSV.y, LerpedHSV.z);
+            yield return null;
         }
+    }
+
+    IEnumerator SlideOutCoroutine()
+    {
+        transform.position = _atLevelPosition;
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            timer += Time.deltaTime * 3;
+            transform.position = Vector3.Slerp(_atLevelPosition, _exitPosition, timer);
+            yield return null;
+        }
+    }
+
+    IEnumerator SlideInCoroutine()
+    {
+        transform.position = _exitPosition;
+        float timer = 0f;
+        while (timer < 1f)
+        {
+            timer += Time.deltaTime * 3;
+            transform.position = Vector3.Slerp(_exitPosition, _atLevelPosition, timer);
+            yield return null;
+        }
+    }
+
+    IEnumerator DharkenCoroutine(float ExitTime)
+    {
+        Vector3 ReturnColor;
+        if (isPainted)
+            ReturnColor = _originalHSV;
         else
+            ReturnColor = _grayscaleHSV;
+
+        Vector3 BlackHSV = new Vector3(ReturnColor.x, 0, 0);
+
+        float timer = 0f;
+        while (timer < 1f)
         {
-            if(_state != LevelObjectState.None)
-            {
-                _time += Time.deltaTime;
-                if (_state == LevelObjectState.SlidingIn)
-                {
-                    transform.position = Vector3.Slerp(_exitPosition, _atLevelPosition, _time);
-                }
-                if(_state == LevelObjectState.SlidingOut)
-                {
-                    transform.position = Vector3.Slerp(_atLevelPosition, _exitPosition, _time);
-                }
-            }
+            timer += Time.deltaTime / ExitTime;
+
+            Vector3 LerpedHSV = Vector3.Lerp(BlackHSV, ReturnColor, timer);
+            _spriteRenderer.color = Color.HSVToRGB(LerpedHSV.x, LerpedHSV.y, LerpedHSV.z);
+
+            yield return null;
         }
+
     }
 }

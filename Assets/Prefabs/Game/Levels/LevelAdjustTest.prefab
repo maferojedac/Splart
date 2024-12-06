@@ -443,6 +443,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingNode: {fileID: 2601804659278615464}
+  ExitSpeed: 5
 --- !u!212 &8132631002215278379
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1954,18 +1955,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a19a816f80e8bd04a82145882dd8728e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  LevelName: Level Test
   SpawnablesCommon:
-  - {fileID: 5852056623976522717, guid: 0255bfb8423f6e74db47ef2919d3a481, type: 3}
+  - {fileID: 5852056623976522717, guid: c2bb2f4ea8a23184aab92d206fefba65, type: 3}
   SpawnablesMinibosses:
   - {fileID: 5852056623976522717, guid: 4379b71d20ae0854a85c1bd6bc4ab6e0, type: 3}
+  SpawnablesStageBoss: {fileID: 5852056623976522717, guid: 9fa3e6fca183956448b67c928b49071f,
+    type: 3}
   LevelPalette:
   - {r: 1, g: 0, b: 0, a: 0}
-  - {r: 0, g: 1, b: 0, a: 0}
-  - {r: 0, g: 0, b: 1, a: 0}
-  - {r: 1, g: 1, b: 0, a: 0}
-  - {r: 1, g: 0.49803922, b: 0, a: 0}
-  - {r: 0, g: 1, b: 1, a: 0}
-  - {r: 1, g: 0, b: 1, a: 0}
 --- !u!114 &598213703563156372
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1980,6 +1978,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _levelData: {fileID: 0}
   _playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
+  _bossMusic: {fileID: 8300000, guid: 78df3b53c446cf54e9329a1902cea982, type: 3}
+  _levelMusic: {fileID: 8300000, guid: 47cd301fe4fd70d4ba5e853f503eb9f4, type: 3}
   _nextPaintingColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!82 &5154674134841421569
 AudioSource:
@@ -1991,7 +1991,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e53bfbb7f93875c45bb89cefac3f461b, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 47cd301fe4fd70d4ba5e853f503eb9f4, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -2124,6 +2124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _startingNode: {fileID: 324167550698109347}
+  ExitSpeed: 5
 --- !u!212 &6219161561190945095
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3511,6 +3512,10 @@ MonoBehaviour:
   _spawners:
   - {fileID: 3009724704991107936}
   - {fileID: 6261504756254734973}
+  ColorComplexity: 1
+  TimeComplexity: 1
+  WaveLength: 0
+  EnemiesSpeed: 0
 --- !u!1 &7285281982966043414
 GameObject:
   m_ObjectHideFlags: 0

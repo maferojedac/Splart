@@ -22,6 +22,7 @@ public abstract class Enemy : MonoBehaviour
     public /*static*/ LevelData _levelData;
 
     [Header("General Sound Effects")]
+    public AudioClip _spawn;
     public /*static*/ AudioClip _damage;
     public /*static*/ AudioClip _resist;
     public /*static*/ AudioClip _die;
@@ -33,6 +34,7 @@ public abstract class Enemy : MonoBehaviour
     [Header("General Enemy Settings")]
     public int DefeatScore = 10;
     public bool CanDamage = true;
+    public bool IgnoreColor = false;    // If ignorecolor is true, death has to be manually managed by class
 
     public EnemyState _enemyState;
 
@@ -61,7 +63,7 @@ public abstract class Enemy : MonoBehaviour
     {
         if (_isVulnerable)
         {
-            bool didHit = _colors.Contains(color);
+            bool didHit = _colors.Contains(color) || IgnoreColor;
             if (didHit)
             {
                 OnDamageTaken();
@@ -72,7 +74,7 @@ public abstract class Enemy : MonoBehaviour
             }
 
             _colors.Remove(color);
-            if(_colors.Count() > 0)
+            if(_colors.Count() > 0 && !IgnoreColor)
                 _spriteRenderer.color = _colors.toRGB();
 
             if (didHit)
@@ -87,13 +89,14 @@ public abstract class Enemy : MonoBehaviour
                 Kill();
         }
     }
+
     public virtual void Kill(bool ForceKill = false)
     {
         _enemyState = EnemyState.Die;
         _rigidBody.velocity = Vector3.zero;
 
         if (!ForceKill)
-            _levelData.SumScore(DefeatScore);
+            _levelData.SumScore(DefeatScore * _originalColorCount);
 
         _animator.SetTrigger("Death");
     }
@@ -108,6 +111,12 @@ public abstract class Enemy : MonoBehaviour
     #endregion
 
     #region Spawning Setup
+
+    public void SetSpeed(Vector3 speed)
+    {
+        _rigidBody.velocity = speed;
+        Debug.Log("For "+gameObject.name+", Received speed > " + speed + " > Applied speed > " + _rigidBody.velocity);
+    }
 
     public void SetColor(ArrayColor startColor)
     {
@@ -126,6 +135,8 @@ public abstract class Enemy : MonoBehaviour
     {
         gameObject.SetActive(true);
         _enemyState = EnemyState.Rush;
+
+        _soundManager.PlaySound(_spawn);
 
         _isVulnerable = true;
 

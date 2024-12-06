@@ -4,5 +4,6 @@
 public interface ILevelEvent
 {
     void UpdateScore() { }
+    void UpdateMoney() { }
     void PaintObject() { }
 }
