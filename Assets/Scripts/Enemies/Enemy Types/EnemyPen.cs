@@ -67,7 +67,7 @@ public class EnemyPen : Enemy, IRusherEnemy
         Vector2 BrushDirection = (new Vector2(Screen.width / 2, Screen.height / 2) - BrushPosition).normalized;
         Vector2 BrushOscilationSpeed = new Vector2(Random.Range(0, 8) * Mathf.PI * 2f, Random.Range(0, 8) * Mathf.PI * 2f);
         float BrushSize = 0;
-        float BrushPixelMax = Mathf.RoundToInt(Screen.width / 100);
+        float BrushPixelMax = Mathf.RoundToInt(Screen.width / 80);
 
         float timer = 0f;
 

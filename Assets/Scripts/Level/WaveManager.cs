@@ -1,6 +1,6 @@
 // WaveManager expects to be attached to a child of Level's Master Prefab. Preferably to an object of the same name as script.
 // WaveManager is one way to define objectives and goals for each level
-// WaveManager currently generates waves infinitely until player loses all lives.
+// WaveManager will generate waves until the boss's level is spawned.
 
 // Created by Javier Soto
 
@@ -155,6 +155,7 @@ public class WaveManager : MonoBehaviour, ILevelEvent
 
     IEnumerator WaitBeforeBossSpawn()
     {
+        yield return StartCoroutine(WaitForWaveEnd());
         yield return new WaitForSeconds(2f);
         _spawners[0].StartGeneration();
     }
@@ -189,17 +190,13 @@ public class WaveManager : MonoBehaviour, ILevelEvent
 
     IEnumerator WaitForWaveEnd()
     {
-        bool condition = true;
-        while (condition)
+        while (!AllDone())
         {
-            if (AllDone())
-            {
-                _wasBossGenerated = false;
-                _levelData.NextWave();
-                GenerateWave();
-            }
-
             yield return new WaitForSeconds(0.1f);  // Check for wave end 10 times per second (We don't need it to be *that* precise)
         }
+
+        _wasBossGenerated = false;
+        _levelData.NextWave();
+        GenerateWave();
     }
 }

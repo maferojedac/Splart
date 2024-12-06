@@ -2795,6 +2795,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f1b2da1881a592438391a3d32381a11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  AllLevelSprites: []
+  ColorPickQueue: []
   _levelData: {fileID: 0}
   _playerData: {fileID: 11400000, guid: 791ee467444fb4a46aed595c09ec1af5, type: 2}
   _bossMusic: {fileID: 8300000, guid: 78df3b53c446cf54e9329a1902cea982, type: 3}
@@ -4591,6 +4593,7 @@ MonoBehaviour:
   _spawners:
   - {fileID: 3009724704991107936}
   - {fileID: 6261504756254734973}
+  BonusChance: 0.1
   ColorComplexity: 1
   TimeComplexity: 1
   WaveLength: 0
