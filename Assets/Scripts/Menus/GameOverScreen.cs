@@ -8,8 +8,14 @@ public class GameOverScreen : MonoBehaviour
 {
     public int TestScore;
 
-    [Header("Screen elements")]
+    [Header("Level progress elements")]
+    [SerializeField] private TextMeshProUGUI _title;
+    [SerializeField] private Image _progressBar;
+    [SerializeField] private TextMeshProUGUI _defeatedEnemies;
+
+    [Header("Level performance and rewards elements")]
     [SerializeField] private TextMeshProUGUI _scoreText;
+    [SerializeField] private TextMeshProUGUI _maxScoreText;
     [SerializeField] private TextMeshProUGUI _moneyText;
     [SerializeField] private TextMeshProUGUI _totalMoneyText;
     [SerializeField] private Button _homeButton;
@@ -26,26 +32,22 @@ public class GameOverScreen : MonoBehaviour
     private Vector3 _exitPosition;
     private Vector3 _displayPosition;
 
-    private int _oldScore;
-    private float _timer;
-
     void Start()
     {
         _displayPosition = Vector3.zero;
         _exitPosition = Vector3.zero + _exitOffset;
     }
 
-    public void Invoke()
+    public void Invoke(bool Victory)
     {
         if (!_isMenuIn)
         {
             gameObject.SetActive(true);
-            _playerData.Money += _levelData.GetScore();
-            _playerData.SaveData();
 
             _homeButton.interactable = false;
 
-            StartCoroutine(SlideIn());
+            ResetDisplays(Victory);
+            StartCoroutine(SlideIn(Victory));
         }
     }
 
@@ -61,38 +63,124 @@ public class GameOverScreen : MonoBehaviour
         StartCoroutine(SlideOut());
     }
 
-    IEnumerator Animate()
+    IEnumerator AnimatePerformance()
     {
-        _timer = 0f;
-        _oldScore = _levelData.GetScore();
+        float timer = 0f;
+        int score = _levelData.GetScore();
 
-        while(_timer < 1f)
+        
+
+        while (timer < 1f)
         {
-            _timer += Time.deltaTime;
+            timer += Time.deltaTime;
 
-            _scoreText.text = $"{_oldScore}";
-            _moneyText.text = $"+{Mathf.RoundToInt(Mathf.SmoothStep(0f, _oldScore, _timer))}";
-            _totalMoneyText.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(_playerData.Money - _oldScore, _playerData.Money, _timer))}";
+            _scoreText.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(0f, score, timer))}";
+
+            _moneyText.text = $"+{Mathf.RoundToInt(Mathf.SmoothStep(0f, _playerData.LastMoneyBatch, timer))}";
+            _totalMoneyText.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(_playerData.Money - _playerData.LastMoneyBatch, _playerData.Money, timer))}";
 
             yield return null;
         }
 
-        _scoreText.text = "0";
-        _moneyText.text = $"+{_oldScore}";
+        _scoreText.text = $"{score}";
+        _moneyText.text = $"+{_playerData.LastMoneyBatch}";
         _totalMoneyText.text = $"{_playerData.Money}";
 
         _homeButton.interactable = true;
     }
 
-    IEnumerator SlideIn()
+    IEnumerator AnimateProgressWin()
     {
-        _timer = 0f;
+        // Get progress
+        float levelProgress = 1f;
+        int defeatedEnemies = _levelData._enemiesDefeatedCount;
 
-        while (_timer < 1f)
+        float timer = 0f;
+
+        while (timer < 1f)
         {
-            _timer += Time.deltaTime * 5f;
+            timer += Time.deltaTime;
 
-            transform.localPosition = Vector3.Slerp(_exitPosition, _displayPosition, _timer);
+            _progressBar.fillAmount = SmoothProgress(timer, levelProgress);
+            _defeatedEnemies.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(0f, defeatedEnemies, timer))}";
+
+            yield return null;
+        }
+
+        _progressBar.fillAmount = levelProgress;
+        _defeatedEnemies.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(0f, defeatedEnemies, timer))}";
+
+        StartCoroutine(AnimatePerformance());
+    }
+
+    IEnumerator AnimateProgressLose()
+    {
+
+        // Get progress
+        float levelProgress = _levelData._currentColorCount * 1f / _levelData._maxColorCount;
+        if (levelProgress >= 1f)    // If boss wasn't defeated
+            levelProgress = 0.9f;
+
+        int defeatedEnemies = _levelData._enemiesDefeatedCount;
+
+        float timer = 0f;
+
+        while (timer < 1f)
+        {
+            timer += Time.deltaTime;
+
+            _progressBar.fillAmount = SmoothProgress(timer, levelProgress);
+            _defeatedEnemies.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(0f, defeatedEnemies, timer))}";
+
+            yield return null;
+        }
+
+        _progressBar.fillAmount = levelProgress;
+        _defeatedEnemies.text = $"{Mathf.RoundToInt(Mathf.SmoothStep(0f, defeatedEnemies, timer))}";
+
+        StartCoroutine(AnimatePerformance());
+    }
+
+    private void ResetDisplays(bool Victory)
+    {
+        if(Victory)
+            _title.text = $"¡Has pintado a {_levelData._levelName}!";
+        else
+            _title.text = "Fin del juego";
+
+        _maxScoreText.text = $"Puntuacion Max. {_playerData.MaxScore}";
+
+        _progressBar.fillAmount = 0f;
+        _defeatedEnemies.text = "0";
+
+        _scoreText.text = "0";
+        _moneyText.text = "+0"; 
+        _totalMoneyText.text = "0";
+    }
+
+    private float SmoothProgress(float progress, float value)
+    {
+        // Map timer to PI
+        progress = Mathf.Lerp(-Mathf.PI / 2, Mathf.PI / 2, progress);
+        // Get smoothed sine
+        progress = Mathf.Sin(progress);
+        // Remap from (-1)-(1) to (0)-(1)
+        progress = (progress / 2f) + 0.5f;
+
+        progress *= value;
+
+        return progress;
+    }
+
+    IEnumerator SlideIn(bool Victory)
+    {
+        float timer = 0f;
+
+        while (timer < 1f)
+        {
+            timer += Time.deltaTime * 5f;
+
+            transform.localPosition = Vector3.Slerp(_exitPosition, _displayPosition, timer);
 
             yield return null;
         }
@@ -101,20 +189,23 @@ public class GameOverScreen : MonoBehaviour
 
         // yield return new WaitForSeconds(0.5f);
 
-        StartCoroutine(Animate());
+        if(Victory)
+            StartCoroutine(AnimateProgressWin());
+        else
+            StartCoroutine(AnimateProgressLose());
 
         _isMenuIn = true;
     }
 
     IEnumerator SlideOut()
     {
-        _timer = 0f;
+        float timer = 0f;
 
-        while (_timer < 1f)
+        while (timer < 1f)
         {
-            _timer += Time.deltaTime * 5f;
+            timer += Time.deltaTime * 5f;
             
-            transform.localPosition = Vector3.Slerp(_displayPosition, _exitPosition, _timer);
+            transform.localPosition = Vector3.Slerp(_displayPosition, _exitPosition, timer);
 
             yield return null;
         }

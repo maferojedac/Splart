@@ -7,6 +7,9 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Communication/Game State Asset")]
 public class GameState : ScriptableObject
 {
+    public PlayerData _playerData;
+    public LevelData _levelData;
+
     public IGameState _levelInstance;       // Reference to current loaded level
     private IGameState _menusInstance;      // Reference to menu instance
     private IGameState _baseGameInstance;   // Reference to base game instance
@@ -38,11 +41,20 @@ public class GameState : ScriptableObject
         _baseGameInstance.NextWave();
     }
 
-    public void GameOver()
+    public void GameOver(bool Victory)
     {
-        _levelInstance.GameOver();
-        _menusInstance.GameOver();
-        _baseGameInstance.GameOver();
+        _levelInstance.GameOver(Victory);
+        _menusInstance.GameOver(Victory);
+        _baseGameInstance.GameOver(Victory);
+
+        // Apply money changes!
+        if(_levelData.GetScore() > _playerData.MaxScore)
+            _playerData.MaxScore = _levelData.GetScore();
+
+        int MoneyBatch = Mathf.RoundToInt(_levelData.GetScore() * _playerData.GetMoneyMultiplier());
+        _playerData.LastMoneyBatch = MoneyBatch;
+        _playerData.Money += MoneyBatch;
+        _playerData.SaveData();
     }
 
     public void EndGame()

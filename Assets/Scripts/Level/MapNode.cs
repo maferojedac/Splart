@@ -1,6 +1,7 @@
 // Map nodes utilized to create levels
 // Created by Javier Soto
 
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,12 +14,21 @@ public class MapNode : MonoBehaviour
 
     [DoNotSerialize] public Vector3 Position; // Publicly accesible position for classes that need MapNode
 
-    void Start()
+    void OnEnable()
     {
+        Debug.Log("Registed nodes!");
         Position = transform.position;  // set position
 
-        if(isSource)
-            movementMap.RegisterNode(this); // If publicly accesible mapnodes, register here. Like for enemies who fall from sky, for example.
+        StartCoroutine(RegisterNodes());
+    }
+
+    IEnumerator RegisterNodes() // Unfortunately, we have to wait one frame
+    {
+        yield return null;
+
+        movementMap.RegisterNode(this); // Generic map nodes
+        if (isSource)
+            movementMap.RegisterSourceNode(this); // If publicly accesible mapnodes, register here. Like for enemies who fall from sky, for example.
     }
 
     public bool IsEnd() {

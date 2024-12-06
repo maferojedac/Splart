@@ -8,7 +8,7 @@ public class AllyPooling : MonoBehaviour
 
     private Dictionary<GameObject, List<Ally>> allies = new Dictionary<GameObject, List<Ally>>();    // Dynamic pooling
 
-    private AllySoundManager soundManager;
+    private SoundManager soundManager;
 
     public Ally Spawn(GameObject type)
     {
@@ -38,7 +38,7 @@ public class AllyPooling : MonoBehaviour
         return newAlly;
     }
 
-    public AllySoundManager GetSoundManager()
+    public SoundManager GetSoundManager()
     {
         return soundManager;
     }
@@ -48,8 +48,8 @@ public class AllyPooling : MonoBehaviour
 
     }
 
-    void Start()
+    void Awake()
     {
-        soundManager = GetComponent<AllySoundManager>();
+        soundManager = GetComponent<SoundManager>();
     }
 }

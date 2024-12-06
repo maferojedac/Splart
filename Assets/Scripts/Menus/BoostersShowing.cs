@@ -180,7 +180,7 @@ public class BoostersShowing : MonoBehaviour
         if (_playerData.BoosterThunder > 0) BoostThunder.interactable = true;
         if (_playerData.BoosterClean > 0) BoostClean.interactable = true;
         if (_playerData.BoosterLife > 0) BoostLifeShield.interactable = true;
-        if (_playerData.Booster_ScoreUpgrade > 0) BoostScore.interactable = true;
+        if (_playerData.Booster_ScoreMultiplier > 0) BoostScore.interactable = true;
     }
 
     void HoldButton()   // Effects of a held button

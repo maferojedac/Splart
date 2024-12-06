@@ -14,10 +14,3 @@ public enum Direction
     Left,
     Right,
 }
-
-public enum LevelObjectState
-{
-    SlidingIn,
-    SlidingOut,
-    None
-}

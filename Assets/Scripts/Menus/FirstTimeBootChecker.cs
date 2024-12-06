@@ -12,7 +12,9 @@ public class FirstTimeBootChecker : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(DelayCheck());
+        ThrowMenus.Invoke();
+        // StartCoroutine(DelayCheck());
+        // Skip tutorial for now
     }
 
     IEnumerator DelayCheck()

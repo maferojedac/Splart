@@ -6,7 +6,7 @@ public class FXPooling : MonoBehaviour
 {
     private Dictionary<GameObject, List<Effect>> effects = new Dictionary<GameObject, List<Effect>>();    // Dynamic pooling
 
-    private EnemySoundManager soundManager;
+    private SoundManager soundManager;
 
     public Effect Spawn(GameObject type)
     {
@@ -27,6 +27,7 @@ public class FXPooling : MonoBehaviour
         GameObject newEffectObj = Instantiate(type);
 
         Effect newEffect = newEffectObj.GetComponent<Effect>();
+        newEffect.SetSoundManager(soundManager);
         newEffect.Execute();
 
         currentList.Add(newEffect);
@@ -44,5 +45,10 @@ public class FXPooling : MonoBehaviour
                     effect.Cancel();
             }
         }
+    }
+
+    void Awake()
+    {
+        soundManager = GetComponent<SoundManager>();
     }
 }

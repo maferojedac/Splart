@@ -10,16 +10,24 @@ public class EnemyPiggy : Enemy
     [Range(0, 1)] public float Generosity;
     [Range(1, 10)] public int ExplodeCoinAmount;
 
+    public float RunSpeed;
+
+    public int lifeAtStart = 10;
+
+    public float spawnTossSpeedY;
+    public float spawnTossSpeedXZ;
+
     private MapNode _targetNode;     // Siguiente nodo del mapa
 
     [Header("Enemy Setup")]
     public float verticalOffset = 50f;
 
     [Header("Piggy Sound Effects")]
-    public AudioClip _spawn;
     public AudioClip _hitGround;
 
     private bool touchingGround;
+
+    private int life;
 
     private EnemyPooling _enemyPooling;
 
@@ -34,23 +42,18 @@ public class EnemyPiggy : Enemy
     public override void Spawn(Vector3 position)
     {
         base.Spawn(position);
-        _soundManager.PlaySound(_spawn);
 
         Entity.DisableCollision(GetComponent<BoxCollider>());
 
-        // Triplicate piggy life
-        List<GameColor> duplicated = new List<GameColor>();
+        _rigidBody.velocity = Vector3.zero;
 
-        foreach (GameColor color in _colors)
-        {
-            duplicated.Add(color);
-        }
+        life = lifeAtStart;
+        _spriteRenderer.color = Color.white;
 
-        _colors.Add(duplicated);
-        _colors.Add(duplicated);
+        _targetNode = _levelData.RandomNode();
+        transform.position = _targetNode.Position + (verticalOffset * Vector3.up);
 
-        // Adjust coin to new color
-        _spriteRenderer.color = _colors.toRGB();
+        _originalColorCount = 10;
 
          // Drop from sky
         StartCoroutine(Drop());
@@ -59,8 +62,6 @@ public class EnemyPiggy : Enemy
     IEnumerator Drop()
     {
         yield return null;
-        _targetNode = _levelData.RandomNode();
-        transform.position = _targetNode.Position + (verticalOffset * Vector3.up);
 
         touchingGround = false;
 
@@ -70,35 +71,97 @@ public class EnemyPiggy : Enemy
         }
 
         _soundManager.PlaySound(_hitGround);
+
+        StartCoroutine(Countdown());
+    }
+
+    IEnumerator Countdown()
+    {
+        yield return new WaitForSeconds(15f);
+        StartRunning();
     }
 
     public override void OnDamageTaken()
     {
         base.OnDamageTaken();
-        if (Random.value < Generosity)
+        life--;
+        if(life > 0)
         {
-            Enemy coin = _enemyPooling.Spawn(CoinPrefab);
-            coin.SetSoundManager(_soundManager);
-            coin.Spawn(transform.position);
+            if (Random.value < Generosity)
+            {
+                ShootCoin();
+            }
         }
+        else
+        {
+            Kill();
+        }
+        
     }
 
     public override void OnDie()
     {
         base.OnDie();
-        _levelData.PaintObject();
 
         for(int i = 0; i < ExplodeCoinAmount; i++)
         {
-            Enemy coin = _enemyPooling.Spawn(CoinPrefab);
-            coin.SetSoundManager(_soundManager);
-            coin.Spawn(transform.position);
+            ShootCoin();
         }
     }
 
-    void OnCollisionEnter2D(Collision2D collision)
+    private void ShootCoin()
     {
-        if (collision.otherCollider.gameObject.layer == 6)
+        Vector3 randomVector = new Vector3(Random.value - 0.5f, 0, Random.value - 0.5f);
+        randomVector.Normalize();
+        randomVector *= spawnTossSpeedXZ;
+        randomVector.y = spawnTossSpeedY;
+
+        Enemy coin = _enemyPooling.Spawn(CoinPrefab);
+        coin.SetSoundManager(_soundManager);
+        coin.Spawn(transform.position);
+
+        coin.gameObject.SetActive(true);
+
+        coin.SetSpeed(randomVector);
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.gameObject.layer == 6)
             touchingGround = true;
+    }
+
+    IEnumerator FollowNode()
+    {
+        while ((_targetNode.Position - transform.position).magnitude > 3f)
+        {
+            Vector3 newSpeed = _rigidBody.velocity;
+            float SpeedY = _rigidBody.velocity.y;
+            // _targetNode.Position.y = transform.position.y;   // I don't feel comfortable leaving this commented, but also it would change the Y position of the nodes. Make radius more generous?
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation((_targetNode.Position - transform.position).normalized), Time.fixedDeltaTime * 0.1f);
+
+            newSpeed = transform.rotation * Vector3.forward * RunSpeed * _levelData.GetGlobalSpeedMultiplier();
+            newSpeed.y = SpeedY;
+
+            _rigidBody.velocity = newSpeed;
+
+            yield return null;
+        }
+
+        _targetNode = _levelData.RandomNode();
+        StartCoroutine(FollowNode());
+    }
+
+    void OnBecameInvisible()
+    {
+        StopAllCoroutines();
+        gameObject.SetActive(false);
+    }
+
+    public void StartRunning()
+    {
+        _targetNode = _levelData.RandomNode();
+        StartCoroutine(FollowNode());
     }
 }
