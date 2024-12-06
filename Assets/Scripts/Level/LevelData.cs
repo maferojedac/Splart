@@ -16,7 +16,6 @@ public class LevelData : ScriptableObject
     public bool _gameRunning;   // Control boolean
 
     public int _currentScore;   // Game Score
-    public int _currentAccumulatedMoney;
 
     public float _globalEnemySpeedMultiplier;   // Self explanatory
     public float _globalEnemyWaveSpeedMultiplier;   // For wave speed managing
@@ -104,15 +103,6 @@ public class LevelData : ScriptableObject
         }
     }
 
-    public void SumMoney(int money)
-    {
-        _currentAccumulatedMoney += money;
-        foreach (ILevelEvent listener in _listenerObjects)
-        {
-            listener.UpdateMoney();
-        }
-    }
-
     public int GetScore()
     {
         return _currentScore;
@@ -148,7 +138,6 @@ public class LevelData : ScriptableObject
         _nodes.Clear();
         _sourceNodes.Clear();
         _currentScore = 0;
-        _currentAccumulatedMoney = 0;
         _enemiesDefeatedCount = 0;
         _globalEnemySpeedMultiplier = 1f;
         _gameRunning = true;

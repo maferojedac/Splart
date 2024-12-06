@@ -6,10 +6,10 @@ using UnityEngine;
 
 public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
 {
-    private List<LevelObject> AllLevelSprites = new();
+    public List<LevelObject> AllLevelSprites = new();
 
     private Dictionary<Color, List<LevelObject>> ColorSpritesQueue = new();
-    private List<Color> ColorPickQueue = new();
+    public List<Color> ColorPickQueue = new();
 
     private float _timer;
     private int DictionaryIndex;
@@ -116,7 +116,7 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
     }
 
     public void PaintObject() {
-        if(ColorPickQueue.Count > 0)
+        if(ColorPickQueue.Count > 0 && gameObject.activeInHierarchy)
         {
             foreach(LevelObject levelobj in ColorSpritesQueue[_nextPaintingColor])
             {

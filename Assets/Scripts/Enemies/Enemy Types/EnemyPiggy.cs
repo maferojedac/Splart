@@ -27,7 +27,7 @@ public class EnemyPiggy : Enemy
 
     private bool touchingGround;
 
-    private int life;
+    public int life;
 
     private EnemyPooling _enemyPooling;
 
@@ -49,6 +49,8 @@ public class EnemyPiggy : Enemy
 
         life = lifeAtStart;
         _spriteRenderer.color = Color.white;
+
+        touchingGround = false;
 
         _targetNode = _levelData.RandomNode();
         transform.position = _targetNode.Position + (verticalOffset * Vector3.up);
@@ -85,7 +87,7 @@ public class EnemyPiggy : Enemy
     {
         base.OnDamageTaken();
         life--;
-        if(life > 0)
+        if (life > 0)
         {
             if (Random.value < Generosity)
             {
@@ -102,8 +104,8 @@ public class EnemyPiggy : Enemy
     public override void OnDie()
     {
         base.OnDie();
-
-        for(int i = 0; i < ExplodeCoinAmount; i++)
+        StopAllCoroutines();
+        for (int i = 0; i < ExplodeCoinAmount; i++)
         {
             ShootCoin();
         }
