@@ -139,7 +139,6 @@ public class Spawner : MonoBehaviour
 
     public void Disable()   // Disable spawner
     {
-        Debug.Log("Stopping all spawners!");
         StopAllCoroutines();
         _spawnableQueue.Clear();
         _enableSpawning = false;
