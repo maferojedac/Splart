@@ -62,7 +62,7 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
             ColorSpritesQueue[closestPaletteColor].Add(currentLevelObject);
         }
 
-        StartGame();
+
     }
 
     void OnEnable()
@@ -130,9 +130,15 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
             else
             {
                 _levelData.SpawnBoss();
-                StartCoroutine(PlayBossMusic());
             }
         }
+    }
+
+    public void SpawnBoss()
+    {
+        // Ideally this function should be called when the boss spawns and not when the boss is scheduled to spawn
+        // This will make it so music will be synchronized with the boss spawn
+        StartCoroutine(PlayBossMusic());
     }
 
     IEnumerator PlayBossMusic()
@@ -159,7 +165,6 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
 
     IEnumerator SlideAllObjectsIn()
     {
-        _timer = 0;
         int Index = 0;
         while(Index < AllLevelSprites.Count)
         {
@@ -171,7 +176,6 @@ public class LevelLoader : MonoBehaviour, IGameState, ILevelEvent
 
     IEnumerator SlideAllObjectsOut()
     {
-        _timer = 0;
         int Index = 0;
         while (Index < AllLevelSprites.Count)
         {

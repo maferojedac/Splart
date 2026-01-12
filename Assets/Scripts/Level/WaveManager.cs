@@ -81,7 +81,7 @@ public class WaveManager : MonoBehaviour, ILevelEvent
         int Length = Random.Range(4 + _waveScore, 5 + _waveScore);
         List<SpawnableObject> GeneratedWave = new();
 
-        if (Random.value < BonusChance)
+        if (Random.value < BonusChance && _wave != 1)
             GeneratedWave.Add(new SpawnableObject(0, SpawnablesBonus[Random.Range(0, SpawnablesBonus.Length)]));
 
         for (int i = 0; i < Length; i++)
@@ -148,6 +148,7 @@ public class WaveManager : MonoBehaviour, ILevelEvent
 
     public void SpawnBoss()
     {
+        StopAllCoroutines();
         DisableSpawners();
         _spawners[0].AddToQueue(new SpawnableObject(0.1f, SpawnableBoss));
         StartCoroutine(WaitBeforeBossSpawn());
@@ -155,7 +156,10 @@ public class WaveManager : MonoBehaviour, ILevelEvent
 
     IEnumerator WaitBeforeBossSpawn()
     {
-        yield return StartCoroutine(WaitForWaveEnd());
+        // Glitch when using thunder to kill enemies where for some reason this gets broken and doesn't detect that all enemies were killed. Idk why though.
+        Debug.Log("WAiting for all enemies to be killed");
+        while (!AllDone()) { yield return new WaitForSeconds(0.1f); }
+        Debug.Log("Will spawn boss in 2 secs");
         yield return new WaitForSeconds(2f);
         _spawners[0].StartGeneration();
     }
@@ -164,7 +168,7 @@ public class WaveManager : MonoBehaviour, ILevelEvent
     {
         foreach (Spawner spawner in _spawners)
         {
-            spawner.Disable();
+            spawner.Disable(true);
         }
     }
 

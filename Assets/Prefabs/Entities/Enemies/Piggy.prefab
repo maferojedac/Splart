@@ -156,7 +156,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 6956683243872593262}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  _spawn: {fileID: 0}
+  _spawn: {fileID: 8300000, guid: 8c35ff1f7dac79348b41425b60e06422, type: 3}
   _damage: {fileID: 8300000, guid: bc966cd6b0dfc4b44a8149951159da35, type: 3}
   _resist: {fileID: 8300000, guid: e424fb61ecf41344eba6211b50483ddf, type: 3}
   _die: {fileID: 8300000, guid: 7eb4a091545c29e47b9527dc834656ad, type: 3}
@@ -177,7 +177,8 @@ MonoBehaviour:
   spawnTossSpeedY: 15
   spawnTossSpeedXZ: 10
   verticalOffset: 50
-  _hitGround: {fileID: 0}
+  _hitGround: {fileID: 8300000, guid: bd4557388242a6149b24ef4b407b2e5e, type: 3}
+  life: 0
 --- !u!54 &5232177867496499023
 Rigidbody:
   m_ObjectHideFlags: 0

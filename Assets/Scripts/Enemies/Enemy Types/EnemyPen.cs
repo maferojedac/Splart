@@ -59,6 +59,7 @@ public class EnemyPen : Enemy, IRusherEnemy
         effect.SetColor(_colors.toRGB());
 
         _animator.SetTrigger("Attack");
+        _soundManager.PlaySound(_attack);
 
         Vector2 ScreenSizing = new Vector2((Screen.width - 0.2f), (Screen.height - 0.2f));
 

@@ -5241,6 +5241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 7066199562542882625}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
+  _spawn: {fileID: 8300000, guid: 407f712e5fb4d574298b47780263c578, type: 3}
   _damage: {fileID: 8300000, guid: bc966cd6b0dfc4b44a8149951159da35, type: 3}
   _resist: {fileID: 0}
   _die: {fileID: 8300000, guid: 7eb4a091545c29e47b9527dc834656ad, type: 3}
@@ -5250,13 +5251,13 @@ MonoBehaviour:
     type: 3}
   DefeatScore: 10
   CanDamage: 1
+  IgnoreColor: 0
   _enemyState: 0
   ColorCycleSpeed: 2
   FloatingYAmount: 3
   BossDeathEffect: {fileID: 7224044146086580376, guid: 1ee3ec78b83c74d4687a8617f4f25b12,
     type: 3}
   InkBlot: {fileID: 5529770688874983475, guid: fd9c14ef50f872b41bdf099b85f376a2, type: 3}
-  _spawn: {fileID: 0}
   _charge: {fileID: 8300000, guid: 33f96f3403c79c243badb370db4fc0b9, type: 3}
   _attack: {fileID: 8300000, guid: 2645eeaa51f29aa4fa6b0cc09f5ac300, type: 3}
   _disappear: {fileID: 8300000, guid: 2758f8451069dcc418d2d190c7b49f62, type: 3}

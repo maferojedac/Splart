@@ -9,20 +9,17 @@ using UnityEngine;
 
 public class Spawner : MonoBehaviour
 {
-    private List<SpawnableObject> _spawnableQueue = new();
+    private readonly List<SpawnableObject> _spawnableQueue = new();
 
     [Header("Spawner configuration")]
     [Tooltip("Attach Node to which enemies will go to!")] public MapNode _startingNode;
     [Tooltip("Speed at which enemies exit the spawner!")] public float ExitSpeed;
 
-    private bool _generating;
+    public bool _generating;
     private GameObject _lastGenerated;
 
     private int _complexity;
     private bool _allowedKey;
-
-    private bool _enableSpawning;
-    private ArrayColor _forcedColor;
 
     private EnemyPooling _enemyPooler;
     private EnemySoundManager _enemySoundManager;
@@ -35,11 +32,6 @@ public class Spawner : MonoBehaviour
             _enemySoundManager = GameObject.Find("Enemies").GetComponent<EnemySoundManager>();
     }
 
-    void OnEnable()
-    {
-        _enableSpawning = true;
-    }
-
     IEnumerator StartSpawnSequence()    // Coroutine that spawns all enemies
     {
         _generating = true;
@@ -48,31 +40,34 @@ public class Spawner : MonoBehaviour
         {
             yield return new WaitForSeconds(_spawnableQueue[0].Delay);
 
-            Enemy enemy = _enemyPooler.Spawn(_spawnableQueue[0].enemyType);
-            enemy.SetSoundManager(_enemySoundManager);
-
-            if (_spawnableQueue[0].forcedColor != null)
+            if(_spawnableQueue.Count > 0) // Check again to see if array was changed upon the wait had been started
             {
-                enemy.SetColor(_spawnableQueue[0].forcedColor);
+                Enemy enemy = _enemyPooler.Spawn(_spawnableQueue[0].enemyType);
+                enemy.SetSoundManager(_enemySoundManager);
+
+                if (_spawnableQueue[0].forcedColor != null)
+                {
+                    enemy.SetColor(_spawnableQueue[0].forcedColor);
+                }
+                else
+                {
+                    enemy.SetColor(GenerateColor(_complexity, _allowedKey));
+                }
+
+                enemy.SetSpeed(transform.forward * ExitSpeed);
+
+                enemy.Spawn(transform.position);
+
+                EnemyMovement refe = enemy.GetComponent<EnemyMovement>();
+                if (refe != null)
+                {
+                    refe.SetStartingNode(_startingNode);
+                    refe.StartRunning();
+                }
+
+                _lastGenerated = enemy.gameObject;
+                _spawnableQueue.RemoveAt(0);
             }
-            else
-            {
-                enemy.SetColor(GenerateColor(_complexity, _allowedKey));
-            }
-
-            enemy.SetSpeed(transform.forward * ExitSpeed);
-
-            enemy.Spawn(transform.position);
-
-            EnemyMovement refe = enemy.GetComponent<EnemyMovement>();
-            if (refe != null)
-            {
-                refe.SetStartingNode(_startingNode);
-                refe.StartRunning();
-            }
-
-            _lastGenerated = enemy.gameObject;
-            _spawnableQueue.RemoveAt(0);
         }
 
         StartCoroutine(StartWatchSequence());
@@ -137,16 +132,18 @@ public class Spawner : MonoBehaviour
         StartCoroutine(StartSpawnSequence());
     }
 
-    public void Disable()   // Disable spawner
+    public void Disable(bool Watch)   // Disable spawner
     {
         StopAllCoroutines();
         _spawnableQueue.Clear();
-        _enableSpawning = false;
+
+        if(Watch)
+            StartCoroutine(StartWatchSequence());
     }
 
     public void ForceColor(ArrayColor color)    // Set forced color for next enemy
     {
-        _forcedColor = color;
+        Debug.Log("OLD FORCED COLOR IMPLEMENTATION");
     }
 
     public void SetComplexity(int complexity)   // Calculate complexity based on Wave's complexity

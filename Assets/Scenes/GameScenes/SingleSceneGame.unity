@@ -726,6 +726,12 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4974613194237610866, guid: c04dffc5ba7d2f547bc9a4de6b665478,
         type: 3}
+    - target: {fileID: 8070114203248986353, guid: 5d135ac02e3925b40b0fdf1bbab4f38f,
+        type: 3}
+      propertyPath: Levels.Array.data[1]
+      value: 
+      objectReference: {fileID: 4974613194237610866, guid: 802a39336deb4ff41a9acacd2b0e900a,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

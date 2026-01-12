@@ -16,7 +16,6 @@ public class MapNode : MonoBehaviour
 
     void OnEnable()
     {
-        Debug.Log("Registed nodes!");
         Position = transform.position;  // set position
 
         StartCoroutine(RegisterNodes());

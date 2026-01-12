@@ -68,10 +68,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 6956683243872593262}
   _levelData: {fileID: 11400000, guid: 027410278e814ff43acfca63b0381a81, type: 2}
-  _spawn: {fileID: 0}
-  _damage: {fileID: 0}
-  _resist: {fileID: 0}
-  _die: {fileID: 0}
+  _spawn: {fileID: 8300000, guid: f9c164fc926682b4388e5aee2c05e4e5, type: 3}
+  _damage: {fileID: 8300000, guid: bc966cd6b0dfc4b44a8149951159da35, type: 3}
+  _resist: {fileID: 8300000, guid: e424fb61ecf41344eba6211b50483ddf, type: 3}
+  _die: {fileID: 8300000, guid: 7eb4a091545c29e47b9527dc834656ad, type: 3}
   _damageExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
     type: 3}
   _deathExplosion: {fileID: 5213833512123402065, guid: 608dfc2d4330f964eab844afdc4c0dd5,
@@ -82,7 +82,7 @@ MonoBehaviour:
   _enemyState: 0
   ScratchPrefab: {fileID: 2420867949384873090, guid: f8e7851dd8b669c409917bf1b4d2f427,
     type: 3}
-  _attack: {fileID: 0}
+  _attack: {fileID: 8300000, guid: b562b79b50033a94484ee3f42c3036eb, type: 3}
 --- !u!65 &6693550080536186207
 BoxCollider:
   m_ObjectHideFlags: 0

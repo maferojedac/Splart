@@ -83,8 +83,12 @@ public class LevelData : ScriptableObject
 
     public void SpawnBoss()
     {
-        // No boss sequence right now
-        GameObject.Find("WaveManager").GetComponent<WaveManager>().SpawnBoss();
+        // Ideally this function should be called when the boss spawns and not when the boss is scheduled to spawn
+        // This will make it so music will be synchronized with the boss spawn
+        foreach (ILevelEvent listener in _listenerObjects)
+        {
+            listener.SpawnBoss();
+        }
     }
 
     public void KillBoss()
